@@ -1,0 +1,24 @@
+#include"server.h"
+
+int main(){
+	struct sockaddr_in bindSocket, dataSocket;
+	memset(&bindSocket,0,sizeof(bindSocket));
+	bindSocket.sin_family = AF_INET;
+	bindSocket.sin_addr.s_addr = htonl(INADDR_ANY);
+	bindSocket.sin_port = htons(PORT);
+	
+	int socketFD = socket(AF_INET,SOCK_DGRAM,0);
+
+	printf("Waiting for Clients...\n");
+	
+	if(bind(socketFD,(struct sockaddr*) &bindSocket,sizeof(bindSocket))==-1)
+	{	
+		printf("Can not bind\n");
+		return -1;
+	}
+	
+
+	echoServer(socketFD, (struct sockaddr*)&dataSocket,sizeof(dataSocket));
+	
+	return 0;
+}

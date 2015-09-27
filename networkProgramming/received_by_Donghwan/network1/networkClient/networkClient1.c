@@ -1,0 +1,35 @@
+#include"../network1.h"
+
+int main(int argc, char** argv){
+	if (argc != 2){
+		printf("Usage: %s IPv4-address\n", argv[0]);
+		return -1;
+	}
+
+	//Connect Socket initial
+	struct sockaddr_in connectSocket;
+	memset(&connectSocket, 0, sizeof(connectSocket));
+	connectSocket.sin_family = AF_INET;
+	inet_aton(argv[1], &connectSocket.sin_addr.s_addr);
+	connectSocket.sin_port = htons(PORT);
+	
+	int connectFD = socket(AF_INET, SOCK_STREAM, 0);
+	
+	//Connect
+	if(connect(connectFD, (struct sockaddr*) &connectSocket, sizeof(connectSocket)) == -1){
+		printf("Can not connect.\n");
+		return -1;
+	}
+
+	else{
+		char buffer[BUFFER_SIZE];
+		int n = read(connectFD, buffer, BUFFER_SIZE); // n = num of read size
+		printf("%d bytes read\n",n);
+		buffer[n] = '\0';
+		fputs(buffer,stdout);
+	}
+
+	close(connectFD);
+	
+	return 0;
+}
