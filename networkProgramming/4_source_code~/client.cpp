@@ -1,4 +1,4 @@
-#include "header.h"
+# include "header.h"
 int main(int argc, char** argv) {
     if (argc != 2) {
         printf("Usage: %s IPv4-address\n", argv[0]);
@@ -18,12 +18,12 @@ int main(int argc, char** argv) {
         int readBytes, writtenBytes;
         char buffer[BUFFER_SIZE];
 
-        printf("Input: ");
-        scanf("%s", buffer);
 
         while (true) {
             //서버에 문자열을 보낸 뒤 서버가 보낸 echo를 받아 출력하시오.
             //memset(buffer, 0, BUFFER_SIZE);
+            printf("Input: ");
+            scanf("%s", buffer);
             //fgets(buffer, BUFFER_SIZE, stdin);
             //fflush(stdin);
 
@@ -34,7 +34,7 @@ int main(int argc, char** argv) {
             }
 
             if(buffer[0] == 'q' && buffer[1]=='\0') {
-                printf("%s\n", buffer);
+                printf("%s", buffer);
                 printf("shut down !!\n");
                 break;
             }
@@ -51,7 +51,7 @@ int main(int argc, char** argv) {
             } else {
                 buffer[n] = '\0';
                 printf("Echo: ");
-                printf("%s\n", buffer);
+                printf("%s", buffer);
                 //fputs(buffer, stdout);
                 //fflush(stdout);
             }

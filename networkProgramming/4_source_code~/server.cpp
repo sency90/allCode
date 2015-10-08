@@ -14,14 +14,18 @@ void echo(int connfd) {
         n = read(connfd, buffer, BUFFER_SIZE);
 
         if( n < 0 ) {
-            if(errno == EINTR) {
-                n = 0;
-                printf("Interrupt occured!!\n");
-            }
+            if(errno == EINTR) n = 0;
+            //printf("buffer: %s\n", buffer);
+            fflush(stdout);
         }
         else if( n == 0 ) return;
         else {
             buffer[n] = '\0';
+            fputs(buffer, stdout);
+            fflush(stdout);
+
+            //if(std::strcmp(buffer, "q") || std::strcmp(buffer, "Q")) break; // q라는 문자가 전송되면 echo프로그램을 종료
+
             write(connfd, buffer, strlen(buffer));
         }
     }
