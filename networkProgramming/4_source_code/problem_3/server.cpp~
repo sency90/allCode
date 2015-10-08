@@ -29,8 +29,10 @@ int main() {
         } else {
             sendBuffer[readBytes] = '\0';
             printf("Client: %s", sendBuffer);
+            printf("before sent~\n");
             sendto(serverSocketFD, sendBuffer, strlen(sendBuffer), 0,
                     (struct sockaddr*)&clientSocket, len);
+            printf("sent!!!!!\n");
         }
     }
     return 0;

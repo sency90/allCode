@@ -47,7 +47,6 @@ int main(int argc, char** argv) {
         if((readBytes = recvfrom(clientSocketFD, receiveBuffer, BUFFER_SIZE, 0, NULL, NULL)) < 0 ) {
             if(errno == EINTR) {
                 fprintf(stderr, "socket timeout\n");
-                return -1; //shut down because of an interrupt.
             }
             else {
                 printf("recvfrom error occured!!\n");

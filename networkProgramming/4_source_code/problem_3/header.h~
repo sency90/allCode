@@ -6,8 +6,9 @@
 #include <unistd.h>
 #include <signal.h>
 #include <sys/wait.h>
+#include <cstring>
 #include <stdlib.h>
-#include <errno.h>
+#include "unp.h"
 
 #define BUFFER_SIZE 1000
 #define PORT 7777
