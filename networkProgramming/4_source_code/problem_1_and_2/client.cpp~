@@ -32,7 +32,7 @@ int main(int argc, char** argv) {
                 continue;
             }
 
-            if(strncmp(sendBuffer, "exit", strlen(sendBuffer)-1) == 0) {
+            if(strncmp(sendBuffer, "exit", strlen(sendBuffer)-1)) {
                 printf("--------------------------------\n");
                 printf("You let this program shut down.\n");
                 printf("Bye Bye~\n");
