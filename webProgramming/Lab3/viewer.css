@@ -1,0 +1,59 @@
+a {
+	text-decoration: none;
+	color: blue;
+}
+
+li:hover {
+	background-color: #FFEEBB;
+}
+
+
+body {
+	background-color:  #BBCCDD;
+	margin-left: 1em;
+}
+
+h1 {
+	color: #000066;
+	font-family: Fantasy;
+	font-size: 24pt;
+	margin-bottom: 0;
+}
+
+h2 {
+	color: #006600;
+	font-family: Arial;
+	font-size: 14pt;
+	margin-top: 0;
+	padding-left: 2em;
+}
+
+li {
+	padding-bottom: 0.5em;
+	font-family: Verdana;
+}
+
+#listarea {
+	background-color: #DDEEFF;
+	border: 5px double blue;
+	padding: 0;
+	width: 50%;
+	min-width: 500px;
+}
+
+.mp3item {
+	list-style-image: url(http://www.cs.washington.edu/education/courses/cse190m/09sp/labs/3-music/mp3icon.gif);
+}
+
+.playlistitem {
+	list-style-image: url(http://www.cs.washington.edu/education/courses/cse190m/09sp/labs/3-music/playlisticon.gif);
+}
+
+#return {
+	list-style-image: url(back.gif);
+}
+
+ul {
+	margin-bottom: 0.5em;
+	margin-top: 0.5em;
+}

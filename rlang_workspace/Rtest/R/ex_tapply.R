@@ -1,0 +1,7 @@
+# tapply()
+ages = c(20, 30, 40, 27, 32, 43)
+print(ages)
+gender = c("F", "M", "M", "F", "F", "M")
+print(gender)
+tx = tapply(ages, gender, mean)
+print(tx)
