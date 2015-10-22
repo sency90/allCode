@@ -20,7 +20,7 @@ ssize_t writen(int sockfd, char* buffer, size_t length) {
             if(errno == EINTR) {
                 nwritten = 0; //call write again
             } else {
-                return -1;
+                return -1; // error occurred.
             }
         }
 
@@ -28,7 +28,7 @@ ssize_t writen(int sockfd, char* buffer, size_t length) {
         ptr += nwritten;
     }
 
-    return length; // return >= 0;
+    return length-nleft; // return >= 0;
 }
 
 
