@@ -1,0 +1,127 @@
+//writevn.cpp
+#include "header.h"
+
+//errno를 위한 헤더를 추가하시오
+#include <errno.h>
+
+ssize_t writen(int sockfd, char* buffer, size_t length) {
+    /********/
+    //writen 함수를 완성하시오
+    /********/
+
+    size_t nleft;
+    ssize_t nwritten;
+    char *ptr;
+
+    ptr = buffer;
+    nleft = length;
+    while(nleft > 0) {
+        if(( nwritten = write(sockfd, ptr, nleft )) <= 0 ) {
+            if(errno == EINTR) {
+                nwritten = 0; //call write again
+            } else {
+                return -1;
+            }
+        }
+
+        nleft -= nwritten;
+        ptr += nwritten;
+    }
+
+    return length; // return >= 0;
+}
+
+/*
+ssize_t writevn(int sockfd, char* buffer, size_t length) {
+    //writen 함수를 완성하시오
+
+    size_t nleft;
+    ssize_t nwritten;
+    char *ptr;
+
+    printf("%zu\n", length); //for test
+    ptr = buffer;
+    nleft = length;
+    while(nleft > 0) {
+        if(( nwritten = write(sockfd, ptr, nleft )) <= 0 ) {
+            if(errno == EINTR) {
+                nwritten = 0; //call write again
+            } else {
+                return -1;
+            }
+        }
+
+        nleft -= nwritten;
+        ptr += nwritten;
+    }
+
+    return length; // return >= 0;
+}
+*/
+
+ssize_t writevn(int sockfd, char* buffer, size_t length) {
+    ssize_t nwritten;
+    size_t tempBuffer = htonl(length);
+
+    nwritten = writen(sockfd, (char*)&tempBuffer, sizeof(int));
+    //nwritten = writen(sockfd, (char*)&length, sizeof(int));
+    writen(sockfd, buffer, length);
+
+    return nwritten;
+}
+
+/*
+ssize_t writevn(int sockfd, char* buffer, size_t length) {
+    //writevn 함수를 완성하시오
+
+    size_t nleft = length;
+    printf("%zu\n", nleft);//////////////////////////////////////////////////////////
+    ssize_t nwritten = 0;
+    char* ptr;
+    int intSize = sizeof(int);
+    char splittedBuffer[intSize];
+
+    printf("Start----!!!!!\n\n\n");/////////////////////////////////////////////////////
+    ptr = buffer;
+    //while(nleft > 0) {
+        if(nleft > sizeof(int)) {
+            printf("splittedBuffer: %s\n", splittedBuffer); ////////////////////////////////////////////////
+            for(int i=0; i<sizeof(int)-1; i++) {
+                splittedBuffer[i] = ptr[i];
+                printf("ptr[%d]:%c\n", i, ptr[i]);
+            }
+            ptr = ptr + sizeof(int)-1;
+            splittedBuffer[sizeof(int)-1] = 0; //null
+
+            nleft -= nwritten;
+            nwritten = writen( sockfd, splittedBuffer, sizeof(int));
+            printf("nwritten: %zd\n", nwritten);//////////////////////////////////////////
+            //nwritten = writen( sockfd, splittedBuffer, strlen(splittedBuffer));
+            nleft = length - nwritten;
+        } else {
+            printf("we are stucked in else\n");
+            writen(sockfd, ptr, nleft);
+            //break;
+        }
+    //}
+
+    return length;
+}*/
+    /*
+    size_t nleft;
+    ssize_t nwritten = htonl(length);
+    char *ptr;
+
+    nwritten = write(sockfd, (char*)&nleft, sizeof(size_t));
+    if(nwritten < 0) {
+        return -1;
+    }
+
+    nwritten = write(sockfd, buffer, length);
+    if(nwritten < 0) {
+        return -1;
+    }
+
+    return length;
+    */
+//}

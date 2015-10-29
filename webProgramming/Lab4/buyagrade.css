@@ -1,0 +1,26 @@
+html {
+    background-color: #39275B;
+}
+
+body {
+    width: 600px;
+    margin: 1em auto;
+    background-color: white;
+    border: 10px #D8C858 solid;
+    padding: 0.5em;
+}
+
+hr {
+    width: 90%;
+    border: 1px solid #D8C858;
+}
+
+h1, h2 {
+    font-family: sans-serif;
+    text-align: center;
+}
+
+input[type="submit"] {
+    font-size: 2em;
+    width: 100%;
+}
