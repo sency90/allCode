@@ -7,17 +7,23 @@ void* workerThreadFunction(void *argument) {
     int connfd = *(int*)argument;
     pthread_detach(pthread_self());
     free(argument);
+
+
     char buf1[BUFFER_SIZE], buf2[BUFFER_SIZE];
-    readvn(connfd, buf1, BUFFER_SIZE);
-    readvn(connfd, buf2, BUFFER_SIZE);
-
     char result[BUFFER_SIZE];
-    int res = atoi(buf1) + atoi(buf2);
-    sprintf(result, "%d", res);
-    writevn(connfd, (char*)&result, sizeof(result));
+    int res;
 
-    //클라이언트 ID를 포함해 받은 메시지와 두 랜덤 넘버의 합을 출력하시오
-    printf("%d + %d = %d\n", atoi(buf1), atoi(buf2), res);
+    for(int i=0; i<10; i++) {
+        readvn(connfd, buf1, BUFFER_SIZE);
+        readvn(connfd, buf2, BUFFER_SIZE);
+
+        res = atoi(buf1) + atoi(buf2);
+        sprintf(result, "%d", res);
+        writevn(connfd, (char*)&result, sizeof(result));
+
+        //클라이언트 ID를 포함해 받은 메시지와 두 랜덤 넘버의 합을 출력하시오
+        printf("%d + %d = %d\n", atoi(buf1), atoi(buf2), res);
+    }
 
     close(connfd);
     return NULL;
