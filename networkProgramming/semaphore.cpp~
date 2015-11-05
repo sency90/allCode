@@ -1,0 +1,64 @@
+#include <semaphore.h>
+
+#define NITERS 5
+
+void *producer(void *arg);
+void *consumer(void *arg);
+
+struct shared{
+    int buf; //shared var
+    sem_t full; //semaphore
+    sem_t empty;
+};
+typedef struct shared shared;
+
+int main() {
+
+    pthread_t tid_producer;
+    pthread_t tid_consumer;
+
+    sem_init(&shared.empty, 0, 1);
+    sem_init(&shared.full, 0, 0);
+
+    pthread_create(&tid_producer, NULL, producer, NULL);
+    pthread_create(&tid_consumer, NULL, consumer, NULL);
+    pthread_join(tid_producer, NULL);
+    pthread_join(tid_consumer, NULL);
+
+    exit(0);
+
+    return 0;
+}
+
+void *producer(void *arg) {
+    int i, item;
+
+    for(i=0; i<NITERS; i++) {
+        //produce item
+        item = i;
+        printf("produced %d\n", item);
+
+        //write item to buf
+        P(&shared.empty);
+        shared.buf = item;
+        V(&shared.full);
+    }
+
+    return NULL;
+}
+
+void *consumer(void *arg) {
+    int i, item;
+
+    for(i=0; i<NITERS; i++) {
+        //read item from buf
+        P(&shared.full);
+        item = shared.buf;
+        V(&shared.empty);
+
+        //consume item
+        printf("consumed %d\n", item);
+    }
+
+    return NULL;
+}
