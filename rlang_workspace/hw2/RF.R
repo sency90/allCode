@@ -50,7 +50,7 @@ table(train.set$credit_risk, predict.train)
 # confusion matrix and accuracies - gogeubjin bangbeob
 library(caret)
 # let bad class be positive class
-cm.train.set = confusionMatrix(train.set$credit_risk, predict.train, positive = 'bad')
+cm.train.set = confusionMatrix(predict.train, train.set$credit_risk, positive = 'bad')
 cm.train.set
 # i want accuracy only...
 cm.train.set$overall[1] 
@@ -58,7 +58,7 @@ cm.train.set$overall[1]
 # testing set ?
 predict.test = predict(RF, newdata = test.set, type = 'response')
 predict.test
-cm.test.set = confusionMatrix(test.set$credit_risk, predict.test, positive = 'bad')
+cm.test.set = confusionMatrix(predict.test, test.set$credit_risk, positive = 'bad')
 cm.test.set
 cm.test.set$overall[1] 
 
@@ -84,6 +84,6 @@ cm.test.set$overall[1]
 predict.train = predict(RF, type = 'response') # no data set given, use oob samples
 predict.train
 table(train.set$credit_risk, predict.train)
-cm.train.set = confusionMatrix(train.set$credit_risk, predict.train, positive = 'bad')
+cm.train.set = confusionMatrix(predict.train, train.set$credit_risk, positive = 'bad')
 cm.train.set
 cm.train.set$overall[1] 
