@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Buy Your Way to a Better Education!</title>
+		<link rel="stylesheet" href="buyagrade.css" />
+	</head>
+	<?php $file='people.txt'; $current=file_get_contents($file); ?>
+
+	<body>
+		<form action="" method="get">
+<?php
+
+			$name = $_POST['name'];
+			$section = $_POST['section'];
+			$cardnumber = $_POST['cardnumber'];
+			$cardtype = $_POST['cardtype'];
+
+			$isEmpty = TRUE;
+			if(isset($_POST['name'])
+				&& isset($_POST['section'])
+				&& isset($_POST['cardnumber'])
+				&& isset($_POST['cardtype']) ) {
+
+				$isEmpty = FALSE;
+			}
+			
+			if($isEmpty == FALSE) {
+				if(
+					//hypen을 쓰는 경우
+					(
+						strlen($cardnumber)==19
+						&&
+						( $cardnumber[4]=="-" && $cardnumber[9]=="-" && $cardnumber[14]=="-" )
+						&&
+						( ($cardtype=='mastercard' && $cardnumber[0]==5) || ($cardtype=='visa' && $cardnumber[0]==4) )
+					)
+
+					||
+
+					//hypen을 쓰지 않는 경우	
+					(	
+						strlen($cardnumber)==16
+						&&
+						( ($cardtype=='mastercard' && $cardnumber[0]==5) || ($cardtype=='visa' && $cardnumber[0]==4) )
+					)
+				) //end condition(if)
+				{
+?>
+					<h1>Thanks, sucker!</h1>
+					<p>Your information has been recorded.</p>
+					<dl>
+						<dt>Name</dt>
+						<dd><?php echo $name ?></dd>
+
+						<dt>Section</dt>
+						<dd><?php echo $section ?></dd>
+
+						<dt>Credit Card</dt>
+						<dd>
+							<?php echo $cardnumber; echo " ( "?>
+							<?php echo $cardtype; echo " )" ?>
+						</dd>
+
+						<dt>Here are all the suckers who have submitted here:</dt>
+						<dd>
+<?php
+							$file = 'people.txt';
+							$current = $name;
+							$current .= ";";
+							$current .= $section;
+							$current .= ";";
+							$current .= $cardnumber;
+							$current .= ";";
+							$current .= $cardtype;
+							$current .= "\r\n";
+
+							//file을 write용으로 열어서 쓰는 부분이다.
+							file_put_contents($file, $current, FILE_APPEND | LOCK_EX);
+
+							//file을 read용으로 열어서 읽어들인 것을 string형태로 저장하는 것이다.
+							//그러므로 allData는 string 변수이다.
+							$allData = file_get_contents($file);
+
+							//explode는 전체 스트링을 separator 단위로 끊어서 배열에 저장해준다.
+							//여기서 lines가 배열 변수이고 "\r\n"이 separator(구분자)에 해당되며 allData가 전체 string에 해당된다.
+							$lines = explode("\r\n", $allData);
+
+							//배열에 관해서 반복문을 돌릴때에는 foreach 반복문이 편하다.
+							//기본적인 c언어의 for문도 제공한다.
+							//아무튼 아래의 코드는 lines라는 배열을 하나씩 반복문으로 돌리는데,
+							//각 배열의 값을 line 변수에 담는다는 것이다.
+							//참고로 띄어쓰기 부분에서 <br>을 써주지 않으면 절대로 new line이 안되니 참고하자.
+							foreach($lines as $line) {
+								echo "$line <br>";
+							}
+?>
+						</dd>
+					</dl>
+<?php
+				} else {
+					print "<h1>Sorry</h1>";
+       				print "You didn't provide a valid card number.  <a href='index.html'>Try again?</a>";
+
+				}
+	
+			} else {
+				print "<h1>Sorry</h1>";
+       			print "You didn't fill out form completely.  <a href='index.html'>Try again?</a>";
+			}
+?>				
+			</dl>
+		</form>
+	</body>
+</html>
