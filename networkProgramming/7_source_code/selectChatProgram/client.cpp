@@ -1,7 +1,5 @@
 #include "header.h"
 
-#define ID_SIZE 100
-
 using namespace std;
 
 char id[ID_SIZE];
@@ -18,9 +16,9 @@ ssize_t readvnChat(int sockfd, char* buffer, size_t length, char* userID) {
     return readvn(sockfd, buffer, BUFFER_SIZE);
 }
 
-static void inputMsg() {
+static void scanMsg(int connfd, char* wBuffer) {
     printf("[%s]Input: ", id);
-    scnaf("%s", wBuffer);
+    scanf("%s", wBuffer);
     if(wBuffer == "exit") {
         //terminating this tid_sendMsg thread, and then this client will be closed.
         exit(0);
@@ -29,7 +27,7 @@ static void inputMsg() {
     writevnChat(connfd, wBuffer, sizeof(wBuffer), id);
 }
 
-static void outputMsg() {
+static void printMsg(int connfd, char* rBuffer, char* userID) {
     //Print messages if the ones are in the readBuffer
     if( 0 < readvnChat(connfd, rBuffer, BUFFER_SIZE, userID) ) {
         printf("[%s]: %s\n", userID, rBuffer);
@@ -38,10 +36,19 @@ static void outputMsg() {
 
 
 
+void* broadcastEnteredID(void *arg) {
+    int connfd = *(int*)arg;
+
+    pthread_detach(pthread_self());
+    free(arg);
+
+    char tempBuffer[BUFFER_SIZE];
+    sprintf(tempBuffer, "%s", "<<NEWBIE ENTERED THIS ROOM>>\n");
+    writevnChat(connfd, tempBuffer, sizeof(tempBuffer), id);
+}
 
 
-
-void sendMsg(void *arg) {
+void* sendMsg(void *arg) {
     int connfd = *(int*)arg;
 
     //for running independently of other threads to separate this thread with others.
@@ -51,11 +58,13 @@ void sendMsg(void *arg) {
 
     char wBuffer[BUFFER_SIZE];
     while(1) {
-        inputMsg();
+        scanMsg(connfd, wBuffer);
     }
+
+    return NULL;
 }
 
-void recvMsg(void *arg) {
+void* recvMsg(void *arg) {
     int connfd = *(int*)arg;
 
     //for running independently of other threads to separate this thread with others.
@@ -65,9 +74,11 @@ void recvMsg(void *arg) {
 
     char rBuffer[BUFFER_SIZE];
     char userID[ID_SIZE];
-    while(1) {        
-        outputMsg();
+    while(1) {
+        printMsg(connfd, rBuffer, userID);
     }
+
+    return NULL;
 }
 
 
@@ -78,8 +89,9 @@ int main(int argc, char** argv) {
     clientAddr.sin_addr.s_addr = inet_addr(argv[1]);//inet_aton(argv[1]);
     clientAddr.sin_port = htons(PORT);
 
-    pirntf("Waiting for creating a client socket...\n");
-    int connfd = socket(AF_INET, SOCK_STREAM, 0);
+    printf("Waiting for creating a client socket...\n");
+    int* connfd = (int*)malloc(sizeof(int));
+    *connfd = socket(AF_INET, SOCK_STREAM, 0);
     printf("The socket was created successfully!!\n\n");
 
     printf("Please enter your username\n");
@@ -87,11 +99,14 @@ int main(int argc, char** argv) {
     scanf("%s", id);
 
     printf("Waiting for connection to the chatting server...\n");
-    if(connect(connfd, (struct sockaddr*)&clientAddr, sizeof(clientAddr)) < 0 ) {
+    if(connect(*connfd, (struct sockaddr*)&clientAddr, sizeof(clientAddr)) < 0 ) {
         printf("Error: Cannot connect with the server\n");
         exit(-1);
     } else {
         printf("Connection complete!!\n");
+
+        //broadcasting to inform that this client has entered.
+        broadcastEnteredID(connfd);
 
         //creating thread IDs for sending and receiving messages.
         pthread_t tid_sendMsg;
@@ -100,7 +115,7 @@ int main(int argc, char** argv) {
         //creating threads with the above IDs.
         pthread_create(&tid_sendMsg, NULL, sendMsg, connfd);
         pthread_create(&tid_recvMsg, NULL, recvMsg, connfd);
-        
+
         //joining threads with the main thread if they were terminated.
         pthread_join(tid_sendMsg, NULL);
         pthread_join(tid_recvMsg, NULL);

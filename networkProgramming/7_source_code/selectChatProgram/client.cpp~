@@ -1,76 +1,126 @@
-# include "header.h"
+#include "header.h"
+
 using namespace std;
-//pthread를 위한 헤더를 추가하시오
-void randomMessage (int id, int connectFD){
-    //writevn, readvn으로 두 랜덤 넘버를 전송하고 그 합을 받으시오.
-    //seed값으로 Process ID를 줬는데,
-    //현재시각을 seed값으로 주면 fork 시간차가 별로 나지 않기 때문에
-    //전부 같은 random seed값을 가져서 이렇게 하였다.
-    unsigned int realID = getpid();
-    srand(realID);
 
-    char wBuffer[BUFFER_SIZE];
-    char rBuffer[BUFFER_SIZE];
-    int num1, num2;
-    int result;
+char id[ID_SIZE];
 
-    for(int i=0; i<10; i++) {
-        num1 = rand()%101+100;
-        sprintf(wBuffer, "%d", num1);
-        writevn(connectFD, wBuffer, sizeof(wBuffer));
-
-        num2 = rand()%101+100;
-        sprintf(wBuffer, "%d", num2);
-        writevn(connectFD, wBuffer, sizeof(wBuffer));
-
-        readvn(connectFD, rBuffer, BUFFER_SIZE);
-
-        result = atoi(rBuffer);
-        printf("[%d]CLIENT-ASK: %d + %d   =>   [%d]SERVER-ANSWER: %d\n", realID, num1, num2, realID, result);
-    }
-
-    close(connectFD);
-    exit(result);
+//This function must be performed atomically
+ssize_t writevnChat(int sockfd, char* buffer, size_t length, char* userID) {
+    writevn(sockfd, userID, sizeof(userID));
+    return writevn(sockfd, buffer, sizeof(buffer));
 }
 
-int main(int argc, char** argv) {
+//This function must be performed atomically
+ssize_t readvnChat(int sockfd, char* buffer, size_t length, char* userID) {
+    readvn(sockfd, userID, ID_SIZE);
+    return readvn(sockfd, buffer, BUFFER_SIZE);
+}
 
-    //순차적으로 ID를 생성하면서 10개의 클라이언트 프로세스를 fork하시오.
-    int pid;
+static void scanMsg(int connfd, char* wBuffer) {
+    printf("[%s]Input: ", id);
+    scanf("%s", wBuffer);
+    if(wBuffer == "exit") {
+        //terminating this tid_sendMsg thread, and then this client will be closed.
+        exit(0);
+    }
+
+    writevnChat(connfd, wBuffer, sizeof(wBuffer), id);
+}
+
+static void printMsg(int connfd, char* rBuffer, char* userID) {
+    //Print messages if the ones are in the readBuffer
+    if( 0 < readvnChat(connfd, rBuffer, BUFFER_SIZE, userID) ) {
+        printf("[%s]: %s\n", userID, rBuffer);
+    }
+}
+
+
+
+void* broadcastEnteredID(void *arg) {
+    int connfd = *(int*)arg;
+
+    pthread_detach(pthread_self());
+    free(arg);
+
+    char tempBuffer[BUFFER_SIZE];
+    sprintf(tempBuffer, "%s", "<<NEWBIE ENTERED THIS ROOM>>\n");
+    writevnChat(connfd, tempBuffer, sizeof(tempBuffer), id);
+}
+
+
+void* sendMsg(void *arg) {
+    int connfd = *(int*)arg;
+
+    //for running independently of other threads to separate this thread with others.
+    //and for being reaped when it terminates
+    pthread_detach(pthread_self());
+    free(arg);
+
+    char wBuffer[BUFFER_SIZE];
+    while(1) {
+        scanMsg(connfd, wBuffer);
+    }
+
+    return NULL;
+}
+
+void* recvMsg(void *arg) {
+    int connfd = *(int*)arg;
+
+    //for running independently of other threads to separate this thread with others.
+    //and for being reaped when it terminates
+    pthread_detach(pthread_self());
+    free(arg);
+
+    char rBuffer[BUFFER_SIZE];
+    char userID[ID_SIZE];
+    while(1) {
+        printMsg(connfd, rBuffer, userID);
+    }
+
+    return NULL;
+}
+
+
+int main(int argc, char** argv) {
 
     struct sockaddr_in clientAddr;
     clientAddr.sin_family = AF_INET;
     clientAddr.sin_addr.s_addr = inet_addr(argv[1]);//inet_aton(argv[1]);
     clientAddr.sin_port = htons(PORT);
 
-    for(int i=0; i<10; i++) {
-        //자식 프로세스일 경우 서버와 접속하여 통신을 10번 반복한 후 접속을 끊으시오.
-        if((pid=fork())==0) {
+    printf("Waiting for creating a client socket...\n");
+    int* connfd = (int*)malloc(sizeof(int));
+    *connfd = socket(AF_INET, SOCK_STREAM, 0);
+    printf("The socket was created successfully!!\n\n");
 
-            int connfd = socket(AF_INET, SOCK_STREAM, 0);
-            if(connect(connfd, (struct sockaddr*)&clientAddr, sizeof(clientAddr)) < 0 ) {
-                printf("Error: Cannot connect with the Server\n");
-                exit(-1);
-            } //else {
-            //printf("Connection Success!!\n");
-            //}
+    printf("Please enter your username\n");
+    printf("Username: ");
+    scanf("%s", id);
 
-            randomMessage(pid, connfd);
+    printf("Waiting for connection to the chatting server...\n");
+    if(connect(*connfd, (struct sockaddr*)&clientAddr, sizeof(clientAddr)) < 0 ) {
+        printf("Error: Cannot connect with the server\n");
+        exit(-1);
+    } else {
+        printf("Connection complete!!\n");
 
-            break;
-            //close(connfd);
-            //exit(0);
-        }
-    }
+        //broadcasting to inform that this client has entered.
+        boradcastEnteredID(connfd);
 
-    //부모 프로세스일 경우 10개의 자식 프로세스가 끝나기를 기다리시오
-    int child_status;
-    for(int i=0; i<10; i++) {
-        pid_t wpid = wait(&child_status);
-        if( WIFEXITED(child_status));
-        //printf("----- Child %d terminated with exit status %d -----\n", wpid, WEXITSTATUS(child_status));
-        else
-            printf("----- Child %d terminated abnormally -----\n", wpid);
+        //creating thread IDs for sending and receiving messages.
+        pthread_t tid_sendMsg;
+        pthread_t tid_recvMsg;
+
+        //creating threads with the above IDs.
+        pthread_create(&tid_sendMsg, NULL, sendMsg, connfd);
+        pthread_create(&tid_recvMsg, NULL, recvMsg, connfd);
+
+        //joining threads with the main thread if they were terminated.
+        pthread_join(tid_sendMsg, NULL);
+        pthread_join(tid_recvMsg, NULL);
+
+        printf("Disconnected to the server.\n");
     }
 
     return 0;
