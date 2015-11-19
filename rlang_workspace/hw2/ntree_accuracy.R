@@ -14,7 +14,7 @@ sonar.train$col61
 
 
 #sonar.train data를 바탕으로 randomForest 모델을 만든다.
-ntree_val = seq(1, 130, 1)
+ntree_val = seq(1, 500, 1)
 RF = c()
 for(i in 1:length(ntree_val)) {
   RF[[i]] <- randomForest(col61 ~ ., sonar.train, ntree = ntree_val[i])
@@ -42,4 +42,4 @@ df = data.frame(accu, ntree_val)
 plot(df)
 
 #ggplot(df, aes(x=ntree_val, y=accu)) + geom_histogram() + stat_identity()
-plot(ntree_val, accu, xlab="N-tree", ylab="accuracy", ylim=c(0.4, 1), xlim=c(1,130))
+plot(ntree_val, accu, xlab="N-tree", ylab="accuracy", ylim=c(0.4, 1), xlim=c(1,500))

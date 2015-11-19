@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <title>Cookie example </title>
+      <link href="pimpmytext.css" type="text/css" rel="stylesheet" />
+
+      
+      <script src="prototype.js" type="text/javascript"></script>
+
+      
+      <script src="cookieex.js" type="text/javascript"></script>
+   </head>
+
+   <body id = "body">
+      <h1>Cookie</h1>
+      <div>
+         
+      </div>
+
+      <fieldset>
+
+
+         
+         <legend>cookie javascript</legend>
+            <button onclick="Create_cookie();">create</button> <br />
+             <br /><br />
+            <button onclick="alert(Read_cookie('hs_cookie_javascript'))">Read</button>
+
+            <br />
+             <br /><br />
+            <button onclick="Update_cookie();">Update</button>
+      
+            <br />
+             <br /><br />
+            <button onclick="Delete_cookie();">Delete</button>
+      </fieldset>
+   </body>
+</html>
