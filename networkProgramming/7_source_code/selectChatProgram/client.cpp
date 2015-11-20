@@ -24,14 +24,23 @@ void V(sem_t *sem) {
 
 //This function must be performed atomically
 ssize_t writevnChat(int sockfd, char* buffer, size_t length, char* userID) {
-    writevn(sockfd, userID, sizeof(userID));
-    return writevn(sockfd, buffer, sizeof(buffer));
+    writevn(sockfd, userID, strlen(userID));
+    return writevn(sockfd, buffer, strlen(buffer));
 }
 
 //This function must be performed atomically
 ssize_t readvnChat(int sockfd, char* buffer, size_t length, char* userID) {
-    readvn(sockfd, userID, ID_SIZE);
-    return readvn(sockfd, buffer, BUFFER_SIZE);
+    int n;
+
+    if( (n = readvn(sockfd, userID, ID_SIZE)) == 0 ) {
+        userID[n]='\0';
+        printf("Connection was down. Server was dead.\n");
+    }
+    userID[n]='\0';
+    n = readvn(sockfd, buffer, BUFFER_SIZE);
+    buffer[n]='\0';
+
+    return n;
 }
 
 static void scanMsg(int connfd, char* wBuffer) {
@@ -42,7 +51,7 @@ static void scanMsg(int connfd, char* wBuffer) {
         exit(0);
     }
 
-    writevnChat(connfd, wBuffer, sizeof(wBuffer), id);
+    writevnChat(connfd, wBuffer, strlen(wBuffer), id);
 }
 
 static void printMsg(int connfd, char* rBuffer, char* userID) {
@@ -123,8 +132,10 @@ int main(int argc, char** argv) {
     printf("The socket was created successfully!!\n\n");
 
     printf("Please enter your username\n");
-    printf("Username: ");
-    scanf("%s", id);
+    do {
+        printf("Username: ");
+        scanf("%s", id);
+    } while(id == NULL);
 
     printf("Waiting for connection to the chatting server...\n");
     if(connect(*connfd, (struct sockaddr*)&clientAddr, sizeof(clientAddr)) < 0 ) {
