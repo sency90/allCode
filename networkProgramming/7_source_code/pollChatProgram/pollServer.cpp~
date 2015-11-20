@@ -82,8 +82,9 @@ int main(int argc, char **argv) {
         //handling messages which were sent by some clients
         for(i=1; i<=maxi; i++) { //check all clients for data
             switch(pollfds[i].revents) {
-                case 0: break; //no events
+                case 0: printf("test 0\n"); break; //no events
                 case POLLIN:
+                    printf("test POLLIN\n");
                     //read a client ID
                     if((n_id = readvn(pollfds[i].fd, temp_id, ID_SIZE)) == 0) {
                         printf("%s님께서 종료하셨습니다.\n", user_id[i]);
@@ -109,6 +110,7 @@ int main(int argc, char **argv) {
                         }
                     }
                     else {
+                        printf("test 정상출력\n");
                         temp_id[n_id]='\0';
                         strcpy(user_id[i], temp_id);
                         user_id[i][n_id]='\0';
