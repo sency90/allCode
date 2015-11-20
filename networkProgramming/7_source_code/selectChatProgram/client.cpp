@@ -1,8 +1,26 @@
 #include "header.h"
+#include <semaphore.h> //for synchronization
 
 using namespace std;
 
 char id[ID_SIZE];
+
+sem_t s;
+
+struct shared_st {
+    sem_t s;
+    sem_t synch;
+};
+
+struct shared_st shared;
+
+void P(sem_t *sem) {
+    sem_wait(sem);
+}
+
+void V(sem_t *sem) {
+    sem_post(sem);
+}
 
 //This function must be performed atomically
 ssize_t writevnChat(int sockfd, char* buffer, size_t length, char* userID) {
@@ -17,7 +35,7 @@ ssize_t readvnChat(int sockfd, char* buffer, size_t length, char* userID) {
 }
 
 static void scanMsg(int connfd, char* wBuffer) {
-    printf("[%s]Input: ", id);
+    //printf("[%s]Input: ", id);
     scanf("%s", wBuffer);
     if(wBuffer == "exit") {
         //terminating this tid_sendMsg thread, and then this client will be closed.
@@ -40,21 +58,26 @@ void* broadcastEnteredID(void *arg) {
     int connfd = *(int*)arg;
 
     pthread_detach(pthread_self());
-    free(arg);
+    //free(arg);
 
     char tempBuffer[BUFFER_SIZE];
-    sprintf(tempBuffer, "%s", "<<NEWBIE ENTERED THIS ROOM>>\n");
+    sprintf(tempBuffer, "%s", "<<NEWBIE_ENTERED_THIS_ROOM>>\n");
     writevnChat(connfd, tempBuffer, sizeof(tempBuffer), id);
+
+    exit(0);
 }
 
 
 void* sendMsg(void *arg) {
+    P(&s);
     int connfd = *(int*)arg;
 
     //for running independently of other threads to separate this thread with others.
     //and for being reaped when it terminates
     pthread_detach(pthread_self());
     free(arg);
+    V(&shared.s);
+    V(&shared.synch);
 
     char wBuffer[BUFFER_SIZE];
     while(1) {
@@ -65,12 +88,14 @@ void* sendMsg(void *arg) {
 }
 
 void* recvMsg(void *arg) {
+    V(&s);
     int connfd = *(int*)arg;
 
     //for running independently of other threads to separate this thread with others.
     //and for being reaped when it terminates
     pthread_detach(pthread_self());
-    free(arg);
+    P(&shared.s);
+    P(&shared.synch);
 
     char rBuffer[BUFFER_SIZE];
     char userID[ID_SIZE];
@@ -83,6 +108,9 @@ void* recvMsg(void *arg) {
 
 
 int main(int argc, char** argv) {
+
+    sem_init(&shared.s, 0, 0); //initialize the semaphore
+    sem_init(&shared.synch, 0, 0);
 
     struct sockaddr_in clientAddr;
     clientAddr.sin_family = AF_INET;
@@ -106,7 +134,11 @@ int main(int argc, char** argv) {
         printf("Connection complete!!\n");
 
         //broadcasting to inform that this client has entered.
-        broadcastEnteredID(connfd);
+        char tempBuffer[BUFFER_SIZE];
+        sprintf(tempBuffer, "%s", "<<NEWBIE_ENTERED_THIS_ROOM>>\n");
+        writevnChat(*connfd, tempBuffer, sizeof(tempBuffer), id);
+
+        //broadcastEnteredID(connfd);
 
         //creating thread IDs for sending and receiving messages.
         pthread_t tid_sendMsg;

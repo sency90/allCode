@@ -76,10 +76,6 @@ int main(int argc, char **argv) {
 
                 //read a client ID
                 if((n_id = readvn(sockfd, user_id[i], ID_SIZE)) == 0) {
-
-                    //사용하지 않을거지만 다음 read를 위해 남은 message도 처리해줘야 한다.
-                    n_message = readvn(sockfd, line, BUFFER_SIZE);
-
                     close(sockfd);
                     FD_CLR(sockfd, &allset);
                     client[i] = -1;
