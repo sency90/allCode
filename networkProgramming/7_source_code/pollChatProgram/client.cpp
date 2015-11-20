@@ -46,7 +46,7 @@ ssize_t readvnChat(int sockfd, char* buffer, size_t length, char* userID) {
 static void scanMsg(int connfd, char* wBuffer) {
     //printf("[%s]Input: ", id);
     scanf("%s", wBuffer);
-    if(wBuffer == "exit") {
+    if(strcmp(wBuffer, "exit")) {
         //terminating this tid_sendMsg thread, and then this client will be closed.
         exit(0);
     }
