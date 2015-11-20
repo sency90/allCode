@@ -1,6 +1,7 @@
 #include "header.h"
 #include <sys/poll.h>
 #define NUMPOLL 50
+#define LIMIT_FD 5
 
 void err_quit(const char* str) {
     perror(str);
@@ -8,7 +9,9 @@ void err_quit(const char* str) {
 }
 
 int main(int argc, char **argv) {
-    int i, maxi, maxfd, listenfd, connfd;
+    char server_id[ID_SIZE] = "SERVER";
+
+    int i, n, maxi, maxfd, listenfd, connfd;
     int nready = 0;
     ssize_t n_message;
     ssize_t n_id;
@@ -59,6 +62,16 @@ int main(int argc, char **argv) {
             connfd = accept(listenfd, (sockaddr*)&cliaddr, &clilen);
             n_conn++;
 
+            if(n_conn == LIMIT_FD) {
+                writevn(connfd, server_id, strlen(server_id));
+                sprintf(line, "Too many clients. Your connection request was rejected\n");
+                writevn(connfd, line, strlen(line));
+
+                close(connfd);
+                n_conn--;
+                continue;
+            }
+
             for(i=1; i<NUMPOLL; i++) {
                 if(pollfds[i].fd == -1) {
                     pollfds[i].fd = connfd;
@@ -67,6 +80,7 @@ int main(int argc, char **argv) {
                     break;
                 }
             }
+
 
             if(i == NUMPOLL) {
                 perror("too many clients.\n The limited number of client is 4.\n");

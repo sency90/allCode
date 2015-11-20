@@ -35,6 +35,7 @@ ssize_t readvnChat(int sockfd, char* buffer, size_t length, char* userID) {
     if( (n = readvn(sockfd, userID, ID_SIZE)) == 0 ) {
         userID[n]='\0';
         printf("Connection was down. Server was dead.\n");
+        exit(1);
     }
     userID[n]='\0';
     n = readvn(sockfd, buffer, BUFFER_SIZE);
@@ -143,11 +144,10 @@ int main(int argc, char** argv) {
         printf("Error: Cannot connect with the server\n");
         exit(-1);
     } else {
-        printf("Connection complete!!\n");
 
         //broadcasting to inform that this client has entered.
         char tempBuffer[BUFFER_SIZE];
-        sprintf(tempBuffer, "%s", "<<NEWBIE_ENTERED_THIS_ROOM>>\n");
+        sprintf(tempBuffer, "%s님이 입장하셨습니다.\n", id);
         writevnChat(*connfd, tempBuffer, strlen(tempBuffer), id);
 
         //broadcastEnteredID(connfd);

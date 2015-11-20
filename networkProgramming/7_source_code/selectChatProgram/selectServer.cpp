@@ -1,5 +1,6 @@
 #include "header.h"
 #include <sys/select.h>
+#define LIMIT_FD 5
 
 void err_quit(const char* str) {
     perror(str);
@@ -52,12 +53,21 @@ int main(int argc, char **argv) {
             connfd = accept(listenfd, (sockaddr*)&cliaddr, &clilen);
             n_conn++;
 
+            //The limited number of clients is 4.
+            if(n_conn == LIMIT_FD) {
+                close(connfd);
+                n_conn--;
+                continue;
+            }
+
+
             for(i=0; i<FD_SETSIZE; i++) {
                 if(client[i] < 0) {
                     client[i] = connfd; //save descriptor
                     break;
                 }
             }
+
 
             if(i == FD_SETSIZE) {
                 err_quit("too many clients\n");
