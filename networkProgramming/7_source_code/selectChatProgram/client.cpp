@@ -71,7 +71,7 @@ void* broadcastEnteredID(void *arg) {
 
     char tempBuffer[BUFFER_SIZE];
     sprintf(tempBuffer, "%s", "<<NEWBIE_ENTERED_THIS_ROOM>>\n");
-    writevnChat(connfd, tempBuffer, sizeof(tempBuffer), id);
+    writevnChat(connfd, tempBuffer, strlen(tempBuffer), id);
 
     exit(0);
 }
@@ -138,7 +138,8 @@ int main(int argc, char** argv) {
     } while(id == NULL);
 
     printf("Waiting for connection to the chatting server...\n");
-    if(connect(*connfd, (struct sockaddr*)&clientAddr, sizeof(clientAddr)) < 0 ) {
+    int x;
+    if((x=connect(*connfd, (struct sockaddr*)&clientAddr, sizeof(clientAddr))) < 0 ) {
         printf("Error: Cannot connect with the server\n");
         exit(-1);
     } else {
@@ -147,7 +148,7 @@ int main(int argc, char** argv) {
         //broadcasting to inform that this client has entered.
         char tempBuffer[BUFFER_SIZE];
         sprintf(tempBuffer, "%s", "<<NEWBIE_ENTERED_THIS_ROOM>>\n");
-        writevnChat(*connfd, tempBuffer, sizeof(tempBuffer), id);
+        writevnChat(*connfd, tempBuffer, strlen(tempBuffer), id);
 
         //broadcastEnteredID(connfd);
 

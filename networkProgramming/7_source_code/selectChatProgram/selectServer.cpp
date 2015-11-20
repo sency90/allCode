@@ -48,31 +48,25 @@ int main(int argc, char **argv) {
         /* 1 */
         //accepting clients which requested to connect to this server
         if( FD_ISSET(listenfd, &rset)) { //new client connection
-            if(n_conn >= 4) {
-                printf("Too many clients. Only 4 clients can connect!");
-                --nready;
-                continue;
-            } else {
-                clilen = sizeof(cliaddr);
-                connfd = accept(listenfd, (sockaddr*)&cliaddr, &clilen);
-                n_conn++;
+            clilen = sizeof(cliaddr);
+            connfd = accept(listenfd, (sockaddr*)&cliaddr, &clilen);
+            n_conn++;
 
-                for(i=0; i<FD_SETSIZE; i++) {
-                    if(client[i] < 0) {
-                        client[i] = connfd; //save descriptor
-                        break;
-                    }
+            for(i=0; i<FD_SETSIZE; i++) {
+                if(client[i] < 0) {
+                    client[i] = connfd; //save descriptor
+                    break;
                 }
-
-                if(i == FD_SETSIZE) {
-                    err_quit("too many clients\n");
-                }
-                FD_SET(connfd, &allset); //add new descriptor to set
-
-                if(connfd > maxfd) maxfd = connfd; //for select
-                if(i > maxi) maxi = i; //max index in client[] array
-                if(--nready <= 0) continue; //no more readable descriptors
             }
+
+            if(i == FD_SETSIZE) {
+                err_quit("too many clients\n");
+            }
+            FD_SET(connfd, &allset); //add new descriptor to set
+
+            if(connfd > maxfd) maxfd = connfd; //for select
+            if(i > maxi) maxi = i; //max index in client[] array
+            if(--nready <= 0) continue; //no more readable descriptors
         }
 
         /* 2 */
