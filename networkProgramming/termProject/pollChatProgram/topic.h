@@ -21,11 +21,17 @@
 #define ID_INIT 0
 
 #define ERR_MSG_SIZE 100
-/*
-struct msgBox {
+
+struct topicMsg_ID1 {
     char msg[MSG_SIZE];
 };
-*/
+
+struct topicMsg_ID2 {
+    char topic
+    char msg[MSG_SIZE];
+
+};
+
 class TopicBox {
 public:
     TopicBox(); //creator
@@ -36,17 +42,17 @@ public:
     bool hasMsg;
     char errMsg[ERR_MSG_SIZE];
 
-    char topicName[TOPIC_NAME_SIZE];
+    char topicBoxName[TOPIC_NAME_SIZE];
     int pub_id;
     int sub_id[SUB_NUM]; //ID_INIT이 0이기 때문에 다음과 같이 쓰는것이 가능.
 
-    //msgBox msg[MSG_SIZE];
-    char msg[MSG_SIZE];
+    topicMsg msg[MSG_SIZE];
+    //char msg[MSG_SIZE];
 };
 
 //topic을 등록하는 대상이 Publisher인지 subscriber인지는 id값으로 판별한다.
 //id가 1,2,3이면 publisher이고, 5,6,7이면 subscriber이다.
-int topicRegiSend(int sockfd, int id, char *topicName);
+int topicRegiSend(int sockfd, int id, char *topicBoxName);
 TopicBox topicRegiRecv(int sockfd);
 
 
