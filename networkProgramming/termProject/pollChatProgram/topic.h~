@@ -49,7 +49,6 @@ public:
 int topicRegiSend(int sockfd, int id, char *topicName);
 TopicBox topicRegiRecv(int sockfd);
 
-
 int topicMsgSend(int sockfd, int pub_id, char *msg);
 TopicBox topicMsgRecv(int sockfd);
 
