@@ -120,7 +120,8 @@ public:
 	int sendTopicRegi(int sockfd, bool isPub, int topicBoxId);
 	void recvTopicRegi(int sockfd);
 
-	int sendTopicMsg(int sockfd, bool isPub, int topicBoxId);
+	//int sendTopicMsg(int sockfd, bool isPub, int topicBoxId);
+	int sendTopicMsg(int sockfd, int id, TopicMsg tMsg);
 	void recvTopicMsg(int sockfd);
 
 	const char* btoa(bool b);

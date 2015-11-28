@@ -180,16 +180,24 @@ void TopicBox::recvTopicRegi(int sockfd) {
         char issId[ID_SIZE];
         sprintf(issId, "%d", issuedId);
         writevn(sockfd, issId, strlen(issId));
-
     }
 }
 
 
 
-int TopicBox::sendTopicMsg(int sockfd, bool isPub, int topicBoxId) {
 
+
+/* TO DO */
+int TopicBox::sendTopicMsg(int sockfd, int id, TopicMsg tMsg) {
+    char issId[ID_SIZE];
+    sprintf(issId, "%d", id);
+    writevn(sockfd, issId, strlen(issId));
+    writevn(sockfd, tMsg, sizeof(tMsg)); //TopicMsg전용 writevn이 필요.
 }
 
 void TopicBox::recvTopicMsg(int sockfd) {
+    char issId[ID_SIZE];
+    readvn(sockfd, issId, sizeof(issId));
 
+    if()
 }
