@@ -3,28 +3,22 @@
 
 //TopicMsg constructor
 TopicMsg::TopicMsg() {
-    //TID = -1;
-    tid = ID_INIT;
+    topicBoxId = ID_INIT;
+
+    /*
+    time( &(this->tStamp) );
+    timeinfo = localtime( &tStamp );
+    sprintf(chTimeInfo, "%s", asctime(timeinfo));
+    */
 }
 
 TopicMsg::TopicMsg( int topicId ) {
-    tid = topicId;
+    topicBoxId = topicId;
+
+    time( &(this->tStamp) );
+    timeinfo = localtime( &tStamp );
+    sprintf(chTimeInfo, "%s", asctime(timeinfo));
 }
-
-//TopicMSGTID1 constructor
-TopicMsgTID1::TopicMsgTID1() {
-    TopicMsg(1);
-}
-
-TopicMsgTID2::TopicMsgTID2() {
-    TopicMsg(2);
-}
-
-TopicMsgTID3::TopicMsgTID3() {
-    TopicMsg(3);
-}
-
-
 
 //initialize variables
 TopicBox::TopicBox() {
@@ -66,11 +60,17 @@ void TopicBox::recordErr(const char *errMsg) {
 //create the publisher's ID
 int TopicBox::createPubId(int sockfd) {
     if(this->pubId == ID_INIT) {
+        char realPubId[ID_SIZE];
         this->pubId = sockfd;
+        sprintf(realPubId, "%d", this->pubId);
+        writevn(sockfd, realPubId, strlen(realPubId));
         return this->pubId;
     } else {
         recordErr("Only one publisher can be registered to a topic. Another publisher has already been registered.");
-        return -1;
+        char fakePubId[ID_SIZE];
+        sprintf(fakePubId, "%d", FAKE_ID);
+        writevn(sockfd, fakePubId, strlen(fakePubId));
+        return FAKE_ID;
     }
 }
 
@@ -80,7 +80,10 @@ int TopicBox::createSubId(int sockfd) {
 
     for(i=0; i<SUB_NUM; i++) {
         if(this->subId[i] == ID_INIT) {
+            char realSubId[ID_SIZE];
             this->subId[i] = sockfd;
+            sprintf(realSubId, "%d", this->subId[i]);
+            writevn(sockfd, realSubId, strlen(realSubId));
             return this->subId[i];
         }
     }
@@ -89,7 +92,10 @@ int TopicBox::createSubId(int sockfd) {
     //i가 4라면 위의 반복문들 모두 돌고 나온 것이므로 sub를 등록할 자리가 없다는 뜻.
     if(i == 4) {
         recordErr("The number limit of subscribers which can be registered to this topic has already been exceeded.");
-        return -1;
+        char fakeSubId[ID_SIZE];
+        sprintf(fakeSubId, "%d", FAKE_ID);
+        writevn(sockfd, fakeSubId, strlen(fakeSubId));
+        return FAKE_ID;
     }
 }
 
@@ -101,7 +107,7 @@ int TopicBox::sendTopicRegi(int sockfd, bool isPub, int topicBoxId) {
     char issuedId[ID_SIZE];
 
     //참고로 topicBoxId가 1이라는 것은 clients(pub or sub)가 나중에
-    //TopicMsg를 TopicMsgTID1로 보내겠다는 뜻이다.
+    //TopicMsg의 topicBoxId를 1로 보내겠다는 뜻이다.
     char tBoxId[ID_SIZE];
     sprintf(tBoxId, "%d", topicBoxId);
     writevn(sockfd, tBoxId, strlen(tBoxId));
@@ -150,24 +156,11 @@ void TopicBox::recvTopicRegi(int sockfd) {
         //recordErr(errMsg, &tBox);
     } else {
         tBoxId[n] = '\0';
-        this->topicBoxId = atoi(tBoxId);
-
-        switch(this->topicBoxId) {
-
-            case 1:
-                topicMsg = new TopicMsgTID1();
-                break;
-            case 2:
-                topicMsg = new TopicMsgTID2();
-                break;
-            case 3:
-                topicMsg = new TopicMsgTID3();
-                break;
-            default:
-                recordErr("invalid topicBoxId");
-                //sprintf(errMsg, "invalid topicBoxId");
-                //recordErr(errMsg, &tBox);
-                break;
+        int temp = atoi(tBoxId);
+        if(temp == 1 || temp == 2 || temp == 3) {
+            this->topicBoxId = atoi(tBoxId);
+        } else {
+            recordErr("invalid topicBoxId");
         }
     }
 
@@ -188,16 +181,111 @@ void TopicBox::recvTopicRegi(int sockfd) {
 
 
 /* TO DO */
-int TopicBox::sendTopicMsg(int sockfd, int id, TopicMsg tMsg) {
+//for publishers
+void TopicBox::sendTopicMsgForPub(int sockfd, int id, TopicMsg tMsg) {
+    /*
+       TopicMsgTID1 *tMsg1;
+       TopicMsgTID2 *tMsg2;
+       TopicMsgTID3 *tMsg3;
+       */
+
     char issId[ID_SIZE];
     sprintf(issId, "%d", id);
+
+    char tBoxId[ID_SIZE];
+    sprintf(tBoxId, "%d", tMsg.topicBoxId);
+
+    //broker로 부터 할당받은 publisher의 ID를 보낸다.
     writevn(sockfd, issId, strlen(issId));
-    writevn(sockfd, tMsg, sizeof(tMsg)); //TopicMsg전용 writevn이 필요.
+    writevn(sockfd, tBoxId, strlen(tBoxId));
+    writevn(sockfd, tMsg.msg, strlen(tMsg.msg));
+    writevn(sockfd, tMsg.chTimeInfo, strlen(tMsg.chTimeInfo));
+
 }
 
-void TopicBox::recvTopicMsg(int sockfd) {
-    char issId[ID_SIZE];
-    readvn(sockfd, issId, sizeof(issId));
+//for broker
+void TopicBox::recvTopicMsgForBro(int sockfd) {
+    TopicBox tBox = *this;
 
-    if()
+    int n;
+    bool hasMsg;
+
+    char recvdPubId[ID_SIZE];
+    if( (n = readvn(sockfd, recvdPubId, sizeof(recvdPubId))) == 0 ) {
+        recvdPubId[n] = '\0';
+        this->recordErr("[pubId] hasn't been received.");
+    }
+    else {
+        recvdPubId[n] = '\0';
+        if( atoi(recvdPubId) != this->pubId ){
+            this->recordErr("mismatch between received publisher's ID and the issued pubId");
+        }
+    }
+
+
+    //receive tMsg.topicBoxId
+    char tBoxId[ID_SIZE];
+    if( (n = readvn(sockfd, tBoxId, sizeof(tBoxId))) == 0 ) {
+        tBoxId[n] = '\0';
+        this->recordErr("[topicBoxId] hasn't been received.");
+    }
+    else {
+        tBoxId[n] = '\0';
+        (this->topicMsg).topicBoxId = atoi(tBoxId);
+        if(this->topicMsg.topicBoxId != this->topicBoxId) {
+            this->recordErr("Received topic is not for this Topic Box.");
+        }
+    }
+
+    if((n = readvn(sockfd, this->topicMsg.msg, MSG_SIZE)) == 0) {
+        hasMsg = false;
+    } else {
+        hasMsg = true;
+        this->topicMsg.msg[n] = '\0';
+    }
+
+    n = readvn(sockfd, this->topicMsg.chTimeInfo, TIMEINFO_SIZE);
+    this->topicMsg.chTimeInfo[n] = '\0';
+
+    //if received msgs from a publisher and doesn't have any error from the above process
+    if(this->hasErr) {
+        (*this) = tBox;
+        printf("Since the error was occured, Nothing has been changed.\n");
+    } else if(hasMsg) {
+        //message를 제대로 받았으므로 이제 여기서 subscribe 한다.
+        printf("[broker]: Subscribe complete from publisher[%d]!!\n", atoi(recvdPubId));
+        for(int i=0; i<SUB_NUM; i++) {
+            if(this->subId[i] != ID_INIT) {
+                writevn(this->subId[i], tBoxId, strlen(tBoxId));
+                writevn(this->subId[i], this->topicMsg.msg, strlen(this->topicMsg.msg));
+                writevn(this->subId[i], this->topicMsg.chTimeInfo, strlen(this->topicMsg.chTimeInfo));
+                printf("[broker]: Publish complete to subscriber[%d]!!\n", this->subId[i]);
+            }
+        }
+    }
+    else {
+        //error는 발생하지 않았으나 message가 없는경우 아무것도 하지 않는다.
+    }
+
+}
+
+void TopicBox::recvTopicMsgForSub(int sockfd) {
+    char tBoxId[ID_SIZE];
+    char tMsg[MSG_SIZE];
+    char chTimeInfo[TIMEINFO_SIZE];
+    //readvn(sockfd, issId, sizeof(issId));
+
+
+    readvn(sockfd, tBoxId, ID_SIZE);
+    readvn(sockfd, tMsg, MSG_SIZE);
+    readvn(sockfd, chTimeInfo, TIMEINFO_SIZE);
+
+    printf("--------------------------------------------------------------------\n");
+    printf("Message received from publisehr[%d]\n", sockfd);
+    printf("Topic: %s\n", tBoxId);
+    printf("Message: %s\n", tMsg);
+    printf("Timestamp: %s\n", chTimeInfo);
+    printf("--------------------------------------------------------------------\n");
+    printf("\n");
+
 }
