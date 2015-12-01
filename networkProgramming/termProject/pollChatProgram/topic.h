@@ -62,7 +62,6 @@ private:
 class TopicBox {
 public:
 	TopicBox();
-	~TopicBox();
 
 public:
 	char topicBoxName[TOPIC_NUM + 1][TOPICBOX_NAME_SIZE]; //const variable
