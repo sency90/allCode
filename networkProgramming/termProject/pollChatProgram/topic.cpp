@@ -1,4 +1,4 @@
-#include "topic2.h"
+#include "topic.h"
 #include "rw_vn.h"
 
 //TopicMsg constructor
