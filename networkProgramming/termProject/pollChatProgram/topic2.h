@@ -5,6 +5,7 @@
 #include <string.h> //for strlen()
 #include <stdlib.h> //for atoi()
 #include <time.h> //for timestamp
+#include <sys/poll.h> //for pollfd
 
 /*
 #include <boost/archive/text_oarchieve.hpp>
@@ -14,7 +15,7 @@
 */
 
 #define TOPICBOX_NAME_SIZE 20
-#define ERR_MSG_SIZE 150
+#define ERR_MSG_SIZE 300
 #define MSG_SIZE 300
 #define TIMEINFO_SIZE 200
 #define ID_SIZE 5
@@ -70,11 +71,12 @@ public:
 	bool hasErr;
 	char errMsg[ERR_MSG_SIZE];
 
-	bool hasTopicMsg;
+	//bool hasTopicMsg;
 	TopicMsg topicMsg;
 
-	int pubId; //It will be set from the broker to the publisher
-	int subId[SUB_NUM]; //It will be set from the broker to the publisher
+	//ahems tBoxdpeogks wjdqhfmf ekarh dlTek.
+	int pubId[TOPIC_NUM]; //It will be set from the broker to the publisher
+	int subId[TOPIC_NUM][SUB_NUM]; //It will be set from the broker to the publisher
 
 	bool isPub;
 
@@ -91,7 +93,7 @@ public:
 	//int sendTopicMsg(int sockfd, bool isPub, int topicBoxId);
 	//int sendTopicMsgForPub(int sockfd, int id, TopicMsg *tMsg);
 	void sendTopicMsgForPub(int sockfd, int id, TopicMsg tMsg);
-	void recvTopicMsgForBro(int sockfd);
+	void recvTopicMsgForBro(struct pollfd *pollfds, int *n_pub, int *n_sub);
 	void recvTopicMsgForSub(int sockfd);
 
 	const char* btoa(bool b);

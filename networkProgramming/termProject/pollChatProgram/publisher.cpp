@@ -1,4 +1,5 @@
 #include "publisher.h"
+#include "topic2.h"
 
 char id[ID_SIZE];
 
