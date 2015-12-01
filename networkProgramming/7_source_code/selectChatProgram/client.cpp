@@ -122,10 +122,10 @@ int main(int argc, char** argv) {
     sem_init(&shared.s, 0, 0); //initialize the semaphore
     sem_init(&shared.synch, 0, 0);
 
-    struct sockaddr_in clientAddr;
-    clientAddr.sin_family = AF_INET;
-    clientAddr.sin_addr.s_addr = inet_addr(argv[1]);//inet_aton(argv[1]);
-    clientAddr.sin_port = htons(PORT);
+    struct sockaddr_in serverAddr;
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_addr.s_addr = inet_addr(argv[1]);//inet_aton(argv[1]);
+    serverAddr.sin_port = htons(PORT);
 
     printf("Waiting for creating a client socket...\n");
     int* connfd = (int*)malloc(sizeof(int));
@@ -140,7 +140,7 @@ int main(int argc, char** argv) {
 
     printf("Waiting for connection to the chatting server...\n");
     int x;
-    if((x=connect(*connfd, (struct sockaddr*)&clientAddr, sizeof(clientAddr))) < 0 ) {
+    if((x=connect(*connfd, (struct sockaddr*)&serverAddr, sizeof(serverAddr))) < 0 ) {
         printf("Error: Cannot connect with the server\n");
         exit(-1);
     } else {

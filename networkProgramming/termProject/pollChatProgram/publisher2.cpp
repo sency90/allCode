@@ -1,34 +1,8 @@
-#include "publisher.h"
+#include "commonHeader.h"
 //#include "rw_vn.h"
 #include "topic2.h"
 int thisPubId;
 TopicBox tBox;
-
-void* createMsg(void *arg) {
-    pthread_detach(pthread_self());
-
-    char tempMsg[MSG_SIZE];
-
-    //무한반복 하진 않고 100개만 돌려보자.
-    for(int n = 1; n<100 ;n++) {
-        //message를 생성할 때 4번중 한번은 아무 메세지도 생성하지 않도록 한다.
-        if(n%4 == 0) {
-            tempMsg[0]='\0';
-        }
-        else {
-            sprintf(tempMsg, "Publisher[%d]의 %d번째 Message!", thisPubId, n);
-        }
-        //start mutex
-        strcpy(tBox.topicMsg.msg, tempMsg);
-        //end mutex
-
-    }
-
-}
-
-void* sendMsg(void *connfd) {
-
-}
 
 int main(int argc, char** argv) {
 

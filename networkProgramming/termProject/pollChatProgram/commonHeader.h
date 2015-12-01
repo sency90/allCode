@@ -1,5 +1,5 @@
-#ifndef PUBLISHER_H
-#define PUBLISHER_H
+#ifndef COMMONHEADER_H
+#define COMMONHEADER_H
 
 #define BUFFER_SIZE 100
 #define LISTENQ 6
@@ -7,8 +7,8 @@
 #define PORT 10001
 //# define ID_SIZE 100
 
-#include <semaphore.h> //for synchronization
-#include <pthread.h> //for pthread
+//#include <semaphore.h> //for synchronization
+//#include <pthread.h> //for pthread
 #include <string.h> //for readvn(), writevn()
 #include <stdio.h> //for printf(), scanf()
 #include <arpa/inet.h> //for inet_addr()
