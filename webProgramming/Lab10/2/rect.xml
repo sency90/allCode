@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shapes>
+  <rectangle x="10"  y="40"  width="100" height="30" color="FFFF00" />
+  <rectangle x="190" y="10"  width="20"  height="60" color="9000DD" />
+  <rectangle x="30"  y="120" width="90"  height="55" color="00BB88" />
+</shapes>
