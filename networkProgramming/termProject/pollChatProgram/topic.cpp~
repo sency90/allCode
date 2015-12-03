@@ -12,8 +12,8 @@ TopicMsg::TopicMsg() {
     */
 }
 
-TopicMsg::TopicMsg( int tBoxId ) {
-    topicBoxId = tBoxId;
+TopicMsg::TopicMsg( int topicId ) {
+    topicBoxId = topicId;
 
     time( &(this->tStamp) );
     timeinfo = localtime( &tStamp );

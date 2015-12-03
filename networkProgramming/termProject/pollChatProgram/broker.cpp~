@@ -146,7 +146,6 @@ int main(int argc, char **argv) {
                                 //subscriber인 경우 사용하던 connfd를 초기화 해준다.
                                 else {
                                     printf("subscriber connection was lost\n");
-                                    printf("test- subId 회수\n");
                                     close(pollfds[j].fd);
                                     pollfds[j].revents = 0;
                                     n_sub--;

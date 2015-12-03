@@ -33,11 +33,7 @@
 #define ID_INIT 0
 #define FAKE_ID -1
 
-struct clientInfo {
-    int subfd[SUB_NUM];
-    int pubfd;
-    int tBoxId;
-};
+
 
 class TopicMsg {
 public:
@@ -68,8 +64,8 @@ public:
 	TopicBox();
 
 public:
-	//char topicBoxName[TOPIC_NUM + 1][TOPICBOX_NAME_SIZE]; //const variable
-	//int topicBoxId; // topicBox Identification
+	char topicBoxName[TOPIC_NUM + 1][TOPICBOX_NAME_SIZE]; //const variable
+	int topicBoxId; // topicBox Identification
 
 	bool hasErr;
 	char errMsg[ERR_MSG_SIZE];
@@ -78,10 +74,8 @@ public:
 	TopicMsg topicMsg;
 
 	//ahems tBoxdpeogks wjdqhfmf ekarh dlTek.
-	//int pubId[TOPIC_NUM]; //It will be set from the broker to the publisher
-	//int subId[TOPIC_NUM][SUB_NUM]; //It will be set from the broker to the publisher
-
-    struct clientInfo clientId;
+	int pubId[TOPIC_NUM]; //It will be set from the broker to the publisher
+	int subId[TOPIC_NUM][SUB_NUM]; //It will be set from the broker to the publisher
 
 	bool isPub;
 
