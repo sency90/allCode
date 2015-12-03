@@ -64,13 +64,6 @@ ssize_t readvn(int sockfd, char* buffer, size_t length) {
     return rc;
 }
 
-
-
-
-
-
-
-
 ssize_t writen(int sockfd, char* buffer, size_t length) {
     /********/
     //writen 함수를 완성하시오
