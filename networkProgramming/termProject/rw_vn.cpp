@@ -85,8 +85,10 @@ ssize_t writen(int sockfd, char* buffer, size_t length) {
     while(nleft > 0) {
         if(( nwritten = write(sockfd, ptr, nleft )) <= 0 ) {
             if(errno == EINTR) {
+                printf("test - write Error1\n");
                 nwritten = 0; //call write again
             } else {
+                printf("test - write Error\n");
                 return -1; // error occurred.
             }
         }

@@ -4,7 +4,6 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <signal.h>
-#include <sys/wait.h>
 #define N 4
 
 int count = 0;

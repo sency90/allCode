@@ -8,7 +8,7 @@ void initTopicMsg(struct TopicMsg *tMsg) {
 */
 
 void initTopicBox(struct TopicBox *tBox) {
-	tBox->isActive = false;
+	tBox->isActivePub = false;
 	tBox->hasMsg = false;
 
 	for(int i=0; i<SUB_NUM; i++) {

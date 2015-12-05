@@ -37,7 +37,7 @@ struct TopicBox {
 	struct clientInfo clientId;
 	TopicMsg tMsg;
 	bool hasMsg;
-	bool isActive;
+	bool isActivePub;
 };
 
 void initTopicMsg(struct TopicMsg *tMsg);

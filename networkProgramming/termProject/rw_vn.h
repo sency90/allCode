@@ -5,6 +5,7 @@
 #include <sys/types.h> //for size_t, ssize_t types
 #include <unistd.h> //for read(), write() functions
 #include <netinet/in.h> //for htons(), htonl(), ntohs(), ntohl() functions
+#include <stdio.h>
 
 
 ssize_t readn(int sockfd, char* buffer, size_t length);
