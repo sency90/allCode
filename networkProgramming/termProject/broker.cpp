@@ -1,8 +1,6 @@
 #include "commonHeader.h"
 #include "topic.h"
 #include <sys/poll.h>
-//#define NUMPOLL 50
-//#define LIMIT_FD 5
 
 struct pollfd pollfds[CLI_NUM];
 
@@ -14,6 +12,8 @@ int n_sub[TBOX_NUM + 1] = {0};
 char readBuffer[BUFFER_SIZE];
 char writeBuffer[BUFFER_SIZE];
 
+bool isPub;
+
 void err_quit(const char* str) {
     perror(str);
     exit(1);
@@ -23,7 +23,6 @@ void reapPollfds(int connfd) {
     for(int i=0; i<CLI_NUM; i++) {
         if(pollfds[i].fd == connfd) {
             pollfds[i].fd = -1;
-            pollfds[i].events = 0;
             pollfds[i].revents = 0;
             break;
         }
@@ -35,7 +34,7 @@ void reapPollfds(int connfd) {
             n_pub_all--;
             break;
         }
-        for(int j=0; j<SUB_NUM; j++) {
+        for(int j=1; j<=SUB_NUM; j++) {
             if(tBox[i].clientId.subfd[j] == connfd) {
                 tBox[i].clientId.subfd[j] = -1;
                 n_sub[i]--;
@@ -77,15 +76,13 @@ bool regiTopic(int connfd, int* tBoxNum) {
         //변경되기전 tBox[*topicBox]를 저장한다. (에러가 발생하면 다시 원상태로 되돌린다.)
         TopicBox origTBox = tBox[*tBoxNum];
 
-        //요청받은 tBoxNum에 해당하는 tBox를 active 시킨다.
-        //tBox[*tBoxNum].isActive = true;
-
         //Publisher가 topic 등록을 요청했다면,
         if(kindOfChar == PUB) {
-            if(tBox[*tBoxNum].clientId.pubfd == -1 || tBox[*tBoxNum].clientId.pubfd == connfd) {
+            if(tBox[*tBoxNum].clientId.pubfd == -1) {
                 tBox[*tBoxNum].isActivePub = true;
                 tBox[*tBoxNum].clientId.pubfd = connfd;
                 n_pub_all++;
+                isPub = true;
             }
             else {
                 hasErr = true;
@@ -97,9 +94,10 @@ bool regiTopic(int connfd, int* tBoxNum) {
         else if(kindOfChar == SUB) {
             int i; //for for-loop index
             for(i=0; i<SUB_NUM; i++) {
-                if(tBox[*tBoxNum].clientId.subfd[i] == -1 || tBox[*tBoxNum].clientId.subfd[i] == connfd) {
+                if(tBox[*tBoxNum].clientId.subfd[i] == -1) {
                     tBox[*tBoxNum].clientId.subfd[i] = connfd;
                     n_sub[*tBoxNum]++;
+                    isPub = false;
                     break;
                 }
             }
@@ -128,13 +126,13 @@ void recvMsg(int connfd, int *tBoxNum) {
     int n;
 
     if( (n = readvn(connfd, readBuffer, BUFFER_SIZE)) == 0 ) {
-        err("read nothing about 'TopicBox.clientInfo.tBoxNum'");
+        err("read nothing about 'TopicBox.clientInfo.pubfd'");
         err("connection lost");
         close(connfd);
         reapPollfds(connfd);
     } else {
         readBuffer[n] = '\0';
-        *tBoxNum = atoi(readBuffer);
+        (*tBoxNum) = atoi(readBuffer);
     }
 
     //read a msg
@@ -192,9 +190,6 @@ int main(int argc, char **argv) {
     bind(listenfd, (sockaddr*)&servaddr, sizeof(servaddr));
     listen(listenfd, LISTENQ);
 
-    //maxfd = listenfd; //initialize
-    //maxi = -1; //index into client[] array
-
     pollfds[0].fd = listenfd;
     pollfds[0].events = POLLIN;
     pollfds[0].revents = 0;
@@ -204,7 +199,9 @@ int main(int argc, char **argv) {
     }
 
     int tBoxNum;
+    bool hasMsg = false;
     while(1) {
+
         if((nready = poll(pollfds, CLI_NUM, -1)) < 0) {
             perror("poll failed");
             exit(3);
@@ -216,27 +213,21 @@ int main(int argc, char **argv) {
             clilen = sizeof(cliaddr);
             connfd = accept(listenfd, (sockaddr*)&cliaddr, &clilen);
             printf("Connection complete!\n");
-            //n_conn++;
-
-            //char kindOfChar[TBOXNUM_INDEX_SIZE];
-            //int tBoxNum;
 
             //regiTopic이 성공한 경우
             if(regiTopic(connfd, &tBoxNum)) {
                 for(int k=1; k<=CLI_NUM; k++) {
                     if(pollfds[k].fd == -1) {
                         pollfds[k].fd = connfd;
-                        pollfds[k].events = POLLIN;
-                        pollfds[k].revents = 0;
+                        if(isPub) pollfds[k].events = POLLIN;
+                        else pollfds[k].events = POLLOUT;
+                        //pollfds[k].revents = 0;
                         break;
                     }
                 }
                 //regiTopic이 성공하면 해당 connfd 자체를 client의 ID로 부여한다.
-                //char temp_fd[FD_INDEX_SIZE];
-                //sprintf(temp_fd, "%d", connfd);
                 sprintf(writeBuffer, "%d", connfd);
                 writevn(connfd, writeBuffer, strlen(writeBuffer));
-                //writevn(connfd, temp_fd, sizeof(temp_fd));
             }
             //regiTopic이 실패한 경우, 요청한 해당 클라이언트와 아예 연결을 끊어버린다.
             else {
@@ -252,44 +243,43 @@ int main(int argc, char **argv) {
 
         /* 2 */
         //receive and send a msg
-        for(i=1; i<CLI_NUM; i++) {
+        for(i=1; i<=CLI_NUM; i++) {
+            hasMsg = false;
             //first: receive a msg
             //printf("%d\n", maxi);
             switch(pollfds[i].revents) {
                 case 0:
                     break; //no events
+
                 case POLLIN:
                     recvMsg(pollfds[i].fd, &tBoxNum);
+                    pollfds[i].revents = 0;
+                    hasMsg = true;
                     break;
+
+                case POLLOUT:
+                    break;
+
                 default:
                     err("invalid revents");
                     close(pollfds[i].fd);
                     reapPollfds(pollfds[i].fd);
-                    //pollfds[i].fd = -1;
-                    //pollfds[i].revents = 0;
-
-                    /*
-                       for(int j=1; j<=TBOX_NUM; j++) {
-                       if(tBox[j].clientId.pubfd == connfd) {
-                       tBox[j].clientId.pubfd = -1;
-                       }
-                       }
-                       */
                     break;
             }
 
-            //second: send a msg
-            //message가 publish되지 않았으면 subscribe하지 않는다.
-            if(tBox[tBoxNum].hasMsg && tBox[tBoxNum].isActivePub) {
-                for(j=0; j<SUB_NUM; j++) {
-                    if(tBox[tBoxNum].clientId.subfd[j] != -1) {
-                        forwardMsg(tBox[tBoxNum].clientId.subfd[j], tBoxNum);
+                if(tBox[tBoxNum].hasMsg && tBox[tBoxNum].isActivePub && hasMsg) {
+                    for(j=0; j<SUB_NUM; j++) {
+                        if(tBox[tBoxNum].clientId.subfd[j] != -1) {
+                            printf("[[BROKER]]: subfd[%d]에게 메세지를 보냄.\n", tBox[tBoxNum].clientId.subfd[j]);
+                            forwardMsg(tBox[tBoxNum].clientId.subfd[j], tBoxNum);
+                        }
                     }
                 }
-            }
 
-            //////////////////////////
+
+
+
             if(--nready <= 0) break;
-        }
+        }// end for(i)
     }
 }

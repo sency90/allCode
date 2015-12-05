@@ -20,12 +20,13 @@ void sendRegiTopic(int connfd, char* tBoxNum);
 void recvMsg(int connfd);
 
 void handler(int signal) {
-    if(!strcmp(prevTimeInfo, tMsg.timeInfo) || tMsg.timeInfo[0]=='\0') {
+    if(!strcmp(prevTimeInfo, tMsg.timeInfo)) {
         alarm(3);
         //reset the msg box
         tMsg.msg[0] = '\0';
-        tMsg.timeInfo[0] = '\0';
+        //tMsg.timeInfo[0] = '\0';
 
+        printf("[[ SUBSCRIBER[%d] - registered topic number: %d ]]\n", thisSubInfo.subfd, thisSubInfo.tBoxNum);
         printf("This sub has waited a msg for 3 seconds and haven't recevied any msgs.\n");
         printf("So this msg box has been flushed\n");
         printf("Received Msg: %s\n", tMsg.msg);
@@ -45,10 +46,9 @@ void recvMsg(int connfd) {
     strcpy(prevTimeInfo, tMsg.timeInfo);
     globalConnfd = connfd; //global variable connfd에 local var connfd를 저장해둔다.
     if( (n = readvn(connfd, readBuffer, BUFFER_SIZE)) == 0 ) {
-        printf("Disconnected from the broker\n");
+        printf("Disconnected with the broker\n");
         exit(1);
     }
-    printf("test - haha\n");
     readBuffer[n]='\0';
     strcpy(tMsg.msg, readBuffer);
 
@@ -59,6 +59,7 @@ void recvMsg(int connfd) {
     readBuffer[n]='\0';
     strcpy(tMsg.timeInfo, readBuffer);
 
+    printf("[[ SUBSCRIBER[%d] - registered topic number: %d ]]\n", thisSubInfo.subfd, thisSubInfo.tBoxNum);
     printf("Received Msg: %s\n", tMsg.msg);
     printf("Time Stamp: %s\n\n", tMsg.timeInfo);
 }

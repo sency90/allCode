@@ -17,6 +17,7 @@ void sendRegiTopic(int connfd, char* tBoxNum) {
 }
 
 void createMsg(int connfd) {
+    int n;
 
     sprintf(writeBuffer, "%d", thisPubInfo.tBoxNum);
     writevn(connfd, writeBuffer, strlen(writeBuffer));
@@ -26,14 +27,15 @@ void createMsg(int connfd) {
         tMsg.msg[0] = '\0'; //empty message
         _si++;
     } else {
-        sprintf(tMsg.msg, "publisher[%d]가 생산한 %d번째 msg", thisPubInfo.pubfd, _si);
+        sprintf(tMsg.msg, "PUBLISHER[%d]가 만든 %d번째 Topic Message", thisPubInfo.pubfd, _si);
         _si++;
     }
-    if(_si>=1000000000) {
+    if(_si >= 1000000000) {
         err("too much big count index");
         _si = 1; //init count index
     }
 
+    printf("[[ PUBLISHER[%d] - registered topic number: %d]]\n", thisPubInfo.pubfd, thisPubInfo.tBoxNum);
     printf("%s\n", tMsg.msg);
     strcpy(writeBuffer, tMsg.msg);
     writevn(connfd, writeBuffer, strlen(writeBuffer));
