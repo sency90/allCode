@@ -4,31 +4,76 @@
 //#define NUMPOLL 50
 //#define LIMIT_FD 5
 
+struct pollfd pollfds[CLI_NUM];
+
+//참고로 tBox안에 clientInfo struct가 선언되어 있다.
 TopicBox tBox[TBOX_NUM + 1];
 int n_pub_all = 0;
 int n_sub[TBOX_NUM + 1] = {0};
+
+char readBuffer[BUFFER_SIZE];
+char writeBuffer[BUFFER_SIZE];
 
 void err_quit(const char* str) {
     perror(str);
     exit(1);
 }
 
+void repelPollfds(int connfd) {
+    for(int i=0; i<CLI_NUM; i++) {
+        if(pollfds[i].fd == connfd) {
+            pollfds[i].fd = -1;
+            pollfds[i].events = 0;
+            pollfds[i].revents = 0;
+            break;
+        }
+    }
 
-bool regiTopic(int connfd, char* kindOfChar, int* tBoxNum) {
+    for(int i=1; i<=TBOX_NUM; i++) {
+        if(tBox[i].clientId.pubfd == connfd) {
+            tBox[i].clientId.pubfd = -1;
+            n_pub_all--;
+            break;
+        }
+        for(int j=0; j<SUB_NUM; j++) {
+            if(tBox[i].clientId.subfd[j] == connfd) {
+                tBox[i].clientId.subfd[j] = -1;
+                n_sub[i]--;
+                break;
+            }
+        }
+    }
+
+    for(int i=1; i<=TBOX_NUM; i++) {
+        if(tBox[i].clientId.pubfd == -1 && n_sub[i] == 0) {
+            tBox[i].isActive = false;
+        }
+    }
+}
+
+bool regiTopic(int connfd, int* tBoxNum) {
     int n;
     bool hasErr = false;
     char topicBoxNum[TBOXNUM_INDEX_SIZE];
+    int kindOfChar;
 
-    n = readvn(connfd, kindOfChar, TBOXNUM_INDEX_SIZE);
-    kindOfChar[n] = '\0';
+    if((n = readvn(connfd, readBuffer, BUFFER_SIZE)) == 0) {
+        err("invalid kindOfChar");
+        hasErr = true;
+    }
+    readBuffer[n] = '\0';
+    kindOfChar = atoi(readBuffer);
 
-    n = readvn(connfd, topicBoxNum, sizeof(topicBoxNum));
+    if((n = readvn(connfd, topicBoxNum, TBOXNUM_INDEX_SIZE)) == 0) {
+        err("invalid topicBoxNum");
+        hasErr = true;
+    }
     topicBoxNum[n] = '\0';
 
     *tBoxNum = atoi(topicBoxNum);
 
     //if tBoxNum is valid
-    if(*tBoxNum == 1 || *tBoxNum == 2 || *tBoxNum == 3) {
+    if((*tBoxNum) == 1 || (*tBoxNum) == 2 || (*tBoxNum) == 3) {
         //변경되기전 tBox[*topicBox]를 저장한다. (에러가 발생하면 다시 원상태로 되돌린다.)
         TopicBox origTBox = tBox[*tBoxNum];
 
@@ -36,8 +81,8 @@ bool regiTopic(int connfd, char* kindOfChar, int* tBoxNum) {
         tBox[*tBoxNum].isActive = true;
 
         //Publisher가 topic 등록을 요청했다면,
-        if(strcmp(kindOfChar, PUB)) {
-            if(tBox[*tBoxNum].clientId.pubfd == INIT) {
+        if(kindOfChar == PUB) {
+            if(tBox[*tBoxNum].clientId.pubfd == -1 || tBox[*tBoxNum].clientId.pubfd == connfd) {
                 tBox[*tBoxNum].clientId.pubfd = connfd;
                 n_pub_all++;
             }
@@ -48,16 +93,16 @@ bool regiTopic(int connfd, char* kindOfChar, int* tBoxNum) {
             }
         }
         //subscriber가 topic 등록을 요청했다면,
-        else if(strcmp(kindOfChar, SUB)) {
+        else if(kindOfChar == SUB) {
             int i; //for for-loop index
             for(i=0; i<SUB_NUM; i++) {
-                if(tBox[*tBoxNum].clientId.subfd[i] == INIT) {
+                if(tBox[*tBoxNum].clientId.subfd[i] == -1 || tBox[*tBoxNum].clientId.subfd[i] == connfd) {
                     tBox[*tBoxNum].clientId.subfd[i] = connfd;
                     n_sub[*tBoxNum]++;
                     break;
                 }
             }
-            //바로 위에서 for 반복문을 모두 돌았는데도 subfd가 INIT인 애들이 없다면,
+            //바로 위에서 for 반복문을 모두 돌았는데도 subfd가 -1인 애들이 없다면,
             if(i == SUB_NUM+1) {
                 hasErr = true;
                 err("There are too many subscribers.");
@@ -78,6 +123,59 @@ bool regiTopic(int connfd, char* kindOfChar, int* tBoxNum) {
     return !hasErr;
 }
 
+bool recvMsg(int connfd, int *tBoxNum) {
+    int n;
+    bool hasMsg = false;
+
+    if( (n = readvn(connfd, readBuffer, BUFFER_SIZE)) == 0 ) {
+        err("connection lost");
+        for(int i = 1; i<=TBOX_NUM; i++) {
+            if(tBox[i].clientId.pubfd == connfd) {
+                tBox[i].clientId.pubfd = -1;
+                break;
+            }
+        }
+    } else {
+        readBuffer[n] = '\0';
+        *tBoxNum = atoi(readBuffer);
+    }
+
+    //read a msg
+    if( (n = readvn(connfd, readBuffer, BUFFER_SIZE)) == 0 ) {
+        printf("empty message!!\n");
+    } else {
+        hasMsg = true;
+        readBuffer[n] = '\0';
+        strcpy(tBox[*tBoxNum].tMsg.msg, readBuffer);
+    }
+
+    //read a time stamp
+    if( (n = readvn(connfd, readBuffer, BUFFER_SIZE)) == 0 ) {
+        err("read nothing about 'TopicMsg.tStamp'.");
+        err("connection lost");
+        close(connfd);
+        repelPollfds(connfd);
+        //n_pub_all--;
+
+        return false;
+    } else {
+        readBuffer[n] = '\0';
+        strcpy(tBox[*tBoxNum].tMsg.timeInfo, readBuffer);
+    }
+
+    return hasMsg;
+}
+
+void forwardMsg(int connfd, int tBoxNum) {
+
+    //sprintf(writeBuffer, "%s", tBox[tBoxNum].tMsg.msg);
+    strcpy(writeBuffer, tBox[tBoxNum].tMsg.msg);
+    writevn(connfd, writeBuffer, strlen(writeBuffer));
+
+    strcpy(writeBuffer, tBox[tBoxNum].tMsg.timeInfo);
+    writevn(connfd, writeBuffer, strlen(writeBuffer));
+}
+
 int main(int argc, char **argv) {
     //char server_id[ID_SIZE] = "SERVER";
 
@@ -86,7 +184,8 @@ int main(int argc, char **argv) {
     ssize_t n_message;
     ssize_t n_id;
     //fd_set rset, allset;
-    struct pollfd pollfds[CLI_NUM];
+    //struct pollfd pollfds[CLI_NUM];
+    bool hasMsg;
 
     //NUMPOLL 개수만큼 id저장 가능, 각각의 ID size는 ID_SIZE 크기를 넘지 못함.
     //char user_id[][ID_SIZE];
@@ -95,6 +194,10 @@ int main(int argc, char **argv) {
 
     socklen_t clilen;
     struct sockaddr_in cliaddr, servaddr;
+
+    for(i=0; i<=TBOX_NUM; i++) {
+        initTopicBox(&tBox[i]);
+    }
 
     listenfd = socket(AF_INET, SOCK_STREAM, 0);
     bzero(&servaddr, sizeof(servaddr));
@@ -118,6 +221,8 @@ int main(int argc, char **argv) {
     //FD_ZERO(&allset); //set all bits of 'allset' as 0
     //FD_SET(listenfd, &allset); //register listenfd to 'allset'
 
+    //char kindOfChar[TBOXNUM_INDEX_SIZE];
+    int tBoxNum;
     while(1) {
         if((nready = poll(pollfds, CLI_NUM, -1)) < 0) {
             perror("poll failed");
@@ -129,14 +234,15 @@ int main(int argc, char **argv) {
         if(pollfds[0].revents == POLLIN) { //request connection from new client
             clilen = sizeof(cliaddr);
             connfd = accept(listenfd, (sockaddr*)&cliaddr, &clilen);
+            printf("Connection complete!\n");
             //n_conn++;
 
-            char kindOfChar[TBOXNUM_INDEX_SIZE];
-            int tBoxNum;
+            //char kindOfChar[TBOXNUM_INDEX_SIZE];
+            //int tBoxNum;
 
             //regiTopic이 성공한 경우
-            if(regiTopic(connfd, kindOfChar, &tBoxNum)) {
-                for(int k=0; k<CLI_NUM; i++) {
+            if(regiTopic(connfd, &tBoxNum)) {
+                for(int k=0; k<CLI_NUM; k++) {
                     if(pollfds[k].fd == -1) {
                         pollfds[k].fd = connfd;
                         pollfds[k].events = POLLIN;
@@ -145,9 +251,11 @@ int main(int argc, char **argv) {
                     }
                 }
                 //regiTopic이 성공하면 해당 connfd 자체를 client의 ID로 부여한다.
-                char temp_fd[FD_INDEX_SIZE];
-                sprintf(temp_fd, "%d", connfd);
-                writevn(connfd, temp_fd, sizeof(temp_fd));
+                //char temp_fd[FD_INDEX_SIZE];
+                //sprintf(temp_fd, "%d", connfd);
+                sprintf(writeBuffer, "%d", connfd);
+                writevn(connfd, writeBuffer, strlen(writeBuffer));
+                //writevn(connfd, temp_fd, sizeof(temp_fd));
             }
             //regiTopic이 실패한 경우, 요청한 해당 클라이언트와 아예 연결을 끊어버린다.
             else {
@@ -157,106 +265,50 @@ int main(int argc, char **argv) {
                 close(connfd);
             }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
+            if(i > maxi) maxi = i;
+            if(--nready <= 0) continue;
+        }
 
 
+        /* 2 */
+        //initialize the 'hasMsg' variable
+        hasMsg = false;
+        //receive and send a msg
+        for(i=1; i<maxi; i++) {
+            //first: receive a msg
+            switch(pollfds[i].revents) {
+                case 0:
+                    break; //no events
+                case POLLIN:
+                    //when recv a msg, 'hasMsg' is turned to be true.
+                    hasMsg = recvMsg(pollfds[i].fd, &tBoxNum);
+                    break;
+                default:
+                    err("invalid revents");
+                    close(pollfds[i].fd);
+                    pollfds[i].fd = -1;
+                    pollfds[i].revents = 0;
 
-
-
-
-
-
-            if(n_conn == LIMIT_FD) {
-                writevn(connfd, server_id, strlen(server_id));
-                sprintf(line, "Too many clients. Your connection request was rejected\n");
-                writevn(connfd, line, strlen(line));
-
-                close(connfd);
-                n_conn--;
-                continue;
+                    for(int j=1; j<=TBOX_NUM; j++) {
+                        if(tBox[j].clientId.pubfd == connfd) {
+                            tBox[j].clientId.pubfd = -1;
+                        }
+                    }
+                    break;
             }
 
-            for(i=1; i<NUMPOLL; i++) {
-                if(pollfds[i].fd == -1) {
-                    pollfds[i].fd = connfd;
-                    pollfds[i].events = POLLIN;
-                    pollfds[i].revents = 0;
-                    break;
+            //second: send a msg
+            //TODO
+            if(hasMsg) {
+                for(int j=0; j<SUB_NUM; j++) {
+                    if(tBox[tBoxNum].clientId.subfd[j] != -1) {
+                        forwardMsg(tBox[tBoxNum].clientId.subfd[j], tBoxNum);
+                    }
                 }
             }
 
-
-            if(i == NUMPOLL) {
-                perror("too many clients.\n The limited number of client is 4.\n");
-                exit(1);
-            }
-
-            if(connfd > maxfd) maxfd = connfd; //for select
-            if(i > maxi) maxi = i; //max index in client[] array
-            if(--nready <= 0) continue; //no more readable descriptors
+            //////////////////////////
+            if(--nready <= 0) break;
         }
-
-        /* 2 */
-        //handling messages which were sent by some clients
-        for(i=1; i<=maxi; i++) { //check all clients for data
-            switch(pollfds[i].revents) {
-                case 0: break; //no events
-                case POLLIN:
-                        //read a client ID
-                        if((n_id = readvn(pollfds[i].fd, temp_id, ID_SIZE)) == 0) {
-                            printf("%s님께서 종료하셨습니다.\n", user_id[i]);
-                            temp_id[n_id]='\0';
-                            //user_id[i][n_id]='\0';
-
-                            //사용하지 않을거지만 다음 read를 위해 남은 message도 처리해줘야 한다.
-                            n_message = readvn(pollfds[i].fd, line, BUFFER_SIZE);
-                            line[n_message]='\0';
-
-                            close(pollfds[i].fd);
-                            pollfds[i].fd = -1;
-                            pollfds[i].revents = 0;
-                            n_conn--;
-
-                            sprintf(line, "%s님께서 종료하셨습니다.\n", user_id[i]);
-
-                            for(int j=1; j<=maxi; j++) {
-                                if(pollfds[j].fd >= 0) {
-                                    writevn(pollfds[j].fd, user_id[i], strlen(user_id[i]));
-                                    writevn(pollfds[j].fd, line, strlen(line));
-                                }
-                            }
-                        }
-                        else {
-                            temp_id[n_id]='\0';
-                            strcpy(user_id[i], temp_id);
-                            user_id[i][n_id]='\0';
-
-                            //read a message
-                            n_message = readvn(pollfds[i].fd, line, BUFFER_SIZE);
-                            line[n_message]='\0';
-
-                            //broadcasting the client ID and message to all clients
-                            for(int j=1; j<=maxi; j++) {
-                                if(pollfds[j].fd >= 0) { //broadcasting the received message to all clients
-                                    writevn(pollfds[j].fd, user_id[i], n_id);
-                                    writevn(pollfds[j].fd, line, n_message);
-                                }
-                            }
-                        }
-
-                        if(--nready <= 0) {
-                            break; //no more readable descriptors
-                        }
-                        break;
-
-                default:
-                        perror("error event");
-                        close(pollfds[i].fd);
-                        pollfds[i].fd = -1;
-                        pollfds[i].revents = 0;
-                        break;
-
-            } //end switch
-        } //end for(i)
     }
 }

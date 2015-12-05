@@ -4,7 +4,7 @@
 #define BUFFER_SIZE 100
 #define LISTENQ 6
 #define LOCAL_IP "127.0.0.1"
-#define PORT 10001
+#define PORT 10003
 //# define ID_SIZE 100
 
 //#include <semaphore.h> //for synchronization

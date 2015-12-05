@@ -10,14 +10,17 @@
 #define SUB_NUM 3
 #define PUB_NUM 3
 #define TBOX_NUM 3
-#define CLI_NUM ((SUB_NUM * TBOX_NUM) + PUB_NUM + 1)
+#define CLI_NUM 13
 
 #define MSG_SIZE 300
 #define TBOXNUM_INDEX_SIZE 3
 #define FD_INDEX_SIZE 5
+#define TIME_INDEX_SIZE 30
 #define INIT 0
-#define PUB "1"
-#define SUB "2"
+#define PUB 1
+#define SUB 2
+
+//#define test(x) printf("%s\n", x);
 
 struct clientInfo {
 	int subfd[SUB_NUM];
@@ -27,8 +30,7 @@ struct clientInfo {
 
 struct TopicMsg {
 	char msg[MSG_SIZE];
-	time_t tStamp;
-	struct tm *timeinfo;
+	char timeInfo[TIME_INDEX_SIZE]; //save timestamp as character
 };
 
 struct TopicBox {

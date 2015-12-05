@@ -1,17 +1,43 @@
 #include "commonHeader.h"
 #include "topic.h"
 
+char readBuffer[BUFFER_SIZE];
+char writeBuffer[BUFFER_SIZE];
+int n;
+
 struct clientInfoForSub {
     int subfd;
     int tBoxNum;
-};
+}thisSubInfo;
+
+struct TopicMsg tMsg;
 
 void sendRegiTopic(int connfd, char* tBoxNum) {
-    char temp_sub[2];
-    strcpy(temp_sub, SUB);
+    //char temp_sub[2];
+    //strcpy(temp_sub, SUB);
 
-    writevn(connfd, temp_sub, strlen(temp_sub));
+    sprintf(writeBuffer, "%d", SUB);
+    writevn(connfd, writeBuffer, strlen(writeBuffer));
     writevn(connfd, tBoxNum, strlen(tBoxNum));
+}
+
+void recvMsg(int connfd) {
+    if( (n = readvn(connfd, readBuffer, BUFFER_SIZE)) == 0 ) {
+        printf("Disconnected from the broker\n");
+        exit(1);
+    }
+    readBuffer[n]='\0';
+    strcpy(tMsg.msg, readBuffer);
+
+    if( (n = readvn(connfd, readBuffer, BUFFER_SIZE)) == 0 ) {
+        printf("Disconnected from the broker\n");
+        exit(1);
+    }
+    readBuffer[n]='\0';
+    strcpy(tMsg.timeInfo, readBuffer);
+
+    printf("Received Msg: %s\n", tMsg.msg);
+    printf("Time Stamp: %s\n\n", tMsg.timeInfo);
 }
 
 int main(int argc, char** argv) {
@@ -21,8 +47,7 @@ int main(int argc, char** argv) {
 
     char tBoxNum[TBOXNUM_INDEX_SIZE];
     strcpy(tBoxNum, argv[1]);
-
-    struct clientInfoForSub thisSubInfo;
+    thisSubInfo.tBoxNum = atoi(tBoxNum);
 
     struct sockaddr_in clientAddr;
     clientAddr.sin_family = AF_INET;
@@ -32,7 +57,7 @@ int main(int argc, char** argv) {
     printf("Waiting for creating a client socket...\n");
     //int* connfd = (int*)malloc(sizeof(int));
     int connfd = socket(AF_INET, SOCK_STREAM, 0);
-    printf("The socket was created successfully!!\n\n");
+    printf("The socket was created successfully!!\n");
 
     printf("Waiting for connection to the chatting server...\n");
     int x;
@@ -40,37 +65,28 @@ int main(int argc, char** argv) {
         printf("Error: Cannot connect with the server\n");
         exit(-1);
     } else {
+        printf("Connection complete!\n");
+        //topic box number를 broker에 등록한다.
         sendRegiTopic(connfd, tBoxNum);
         //clientId.tBoxNum = atoi(tBoxNum);
-        char thisSubFd[FD_INDEX_SIZE];
-        n = readvn(connfd, thisSubFd, sizeof(thisSubFd));
-        thisSubFd[n] = '\0';
-        if(strcmp(thisSubFd, "-1")) {
-            err("sendRegiTopic was failed.");
-            return -1; //exit this publisher
+        
+        if( (n = readvn(connfd, readBuffer, BUFFER_SIZE)) == 0 ) {
+            err("no allocated subfd");
+            exit(1);
         }
-        thisSubInfo.tBoxNum = atoi(tBoxNum);
-        thisSubInfo.subfd = atoi(thisSubFd);
-////////////////////////////////////////////////////////////////////////////////////////////////////
+        readBuffer[n] = '\0';
+        thisSubInfo.subfd = atoi(readBuffer);
+        if(thisSubInfo.subfd == -1) {
+            err("sendRegiTopic was failed.");
+            exit(1); //exit this subscriber
+        }
+        printf("test - REGISTER COMPLETE!\n");
+        //thisSubInfo.tBoxNum = atoi(tBoxNum);
+        //thisSubInfo.subfd = atoi(thisSubFd);
 
-        //broadcasting to inform that this client has entered.
-        char tempBuffer[BUFFER_SIZE];
-        sprintf(tempBuffer, "%s님이 입장하셨습니다.\n", id);
-        writevnChat(*connfd, tempBuffer, strlen(tempBuffer), id);
-
-        //creating thread IDs for sending and receiving messages.
-        pthread_t tid_sendMsg;
-        pthread_t tid_recvMsg;
-
-        //creating threads with the above IDs.
-        pthread_create(&tid_sendMsg, NULL, sendMsg, connfd);
-        pthread_create(&tid_recvMsg, NULL, recvMsg, connfd);
-
-        //joining threads with the main thread if they were terminated.
-        pthread_join(tid_sendMsg, NULL);
-        pthread_join(tid_recvMsg, NULL);
-
-        printf("Disconnected to the server.\n");
+        while(1) {
+            recvMsg(connfd);
+        }
     }
 
     return 0;
