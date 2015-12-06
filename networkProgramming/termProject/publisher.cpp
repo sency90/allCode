@@ -1,4 +1,6 @@
 #include "commonHeader.h"
+//문제 < c-ii >
+//문제에서 요구한대로 topic.h라는 공통된 헤더파일을 pub와 sub가 포함하도록 함.
 #include "topic.h"
 
 char writeBuffer[BUFFER_SIZE];
@@ -10,6 +12,8 @@ struct clientInfoForPub {
     int tBoxNum;
 }thisPubInfo;
 
+//문제 < b-i >
+//publisher가 topic을 등록할 때 쓰는 함수이다.
 void sendRegiTopic(int connfd, char* tBoxNum) {
     sprintf(writeBuffer, "%d", PUB);
     writevn(connfd, writeBuffer, strlen(writeBuffer));
@@ -22,7 +26,10 @@ void createMsg(int connfd) {
     sprintf(writeBuffer, "%d", thisPubInfo.tBoxNum);
     writevn(connfd, writeBuffer, strlen(writeBuffer));
 
+    //문제 < c-ii >
+    //문제에서 요구한대로 pub와 sub가 서로 주고 받을 topic message에 대한 구조체 정보를 가지고 있다.
     struct TopicMsg tMsg;
+
     if(_si%4 == 0) {
         tMsg.msg[0] = '\0'; //empty message
         _si++;
@@ -75,6 +82,8 @@ int main(int argc, char** argv) {
     }
     else {
         printf("Connection complete!\n");
+        
+        //문제 < b-i >
         //topic box number를 broker에 등록한다.
         sendRegiTopic(connfd, tBoxNum);
 

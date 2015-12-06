@@ -1,4 +1,6 @@
 #include "commonHeader.h"
+//문제 < c-ii >
+//문제에서 요구한대로 topic.h라는 공통된 헤더파일을 pub와 sub가 포함하도록 함.
 #include "topic.h"
 #include <signal.h>
 
@@ -14,11 +16,15 @@ struct clientInfoForSub {
     int tBoxNum;
 }thisSubInfo;
 
+//문제 < c-ii >
+//문제에서 요구한대로 pub와 sub가 서로 주고 받을 topic message에 대한 구조체 정보를 가지고 있다.
 struct TopicMsg tMsg;
 
 void sendRegiTopic(int connfd, char* tBoxNum);
 void recvMsg(int connfd);
 
+//문제 < c-v >
+//reset을 위해서 호출되는 함수이다.
 void handler(int signal) {
     if(!strcmp(prevTimeInfo, tMsg.timeInfo)) {
         alarm(3);
@@ -35,6 +41,8 @@ void handler(int signal) {
     }
 }
 
+//문제 < b-iii >
+//subscriber가 topic을 등록할 때 쓰는 함수이다.
 void sendRegiTopic(int connfd, char* tBoxNum) {
     sprintf(writeBuffer, "%d", SUB);
     writevn(connfd, writeBuffer, strlen(writeBuffer));
@@ -42,7 +50,10 @@ void sendRegiTopic(int connfd, char* tBoxNum) {
 }
 
 void recvMsg(int connfd) {
+    //문제 < c-v >
+    //3초동안 메세지를 받지 못했을 때 reset하기 위해서 alarm을 3초로 설정하였다.
     alarm(3);
+    
     strcpy(prevTimeInfo, tMsg.timeInfo);
     globalConnfd = connfd; //global variable connfd에 local var connfd를 저장해둔다.
     if( (n = readvn(connfd, readBuffer, BUFFER_SIZE)) == 0 ) {
@@ -90,6 +101,8 @@ int main(int argc, char** argv) {
         exit(-1);
     } else {
         printf("Connection complete!\n");
+
+        //문제 < b-iii >
         //topic box number를 broker에 등록한다.
         sendRegiTopic(connfd, tBoxNum);
 
@@ -105,6 +118,9 @@ int main(int argc, char** argv) {
         }
         printf("Issued topic box number is %d\n\n", thisSubInfo.subfd);
 
+        //문제 < c-v >
+        //정해진 시간동안 토픽 메세지가 오지 않는 경우 reset하기 위해서
+        //SIGALRM 시그널을 설정해준다. (결론적으로 이 문제는 alarm을 써서 해결하였다.)
         signal(SIGALRM, handler);
 
         while(1) {

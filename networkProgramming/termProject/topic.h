@@ -28,8 +28,12 @@ struct clientInfo {
 	int tBoxNum;
 };
 
+//문제 < c-i >
+//구조체로 정의한 Topic Message 부분이다.
 struct TopicMsg {
-	char msg[MSG_SIZE];
+	char msg[MSG_SIZE]; //message
+	//문제 < c-iii >
+	//문제에서 요구한대로 각 메세지에는 마지막에 timestamp를 포함하도록 하였다.
 	char timeInfo[TIME_INDEX_SIZE]; //save timestamp as character
 };
 

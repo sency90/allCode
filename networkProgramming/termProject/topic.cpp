@@ -1,12 +1,5 @@
 #include "topic.h"
 
-/*
-void initTopicMsg(struct TopicMsg *tMsg) {
-	sprintf(tMsg->msg, "\0");
-	sprintf(tMsg->timeInfo, "\0");
-}
-*/
-
 void initTopicBox(struct TopicBox *tBox) {
 	tBox->isActivePub = false;
 	tBox->hasMsg = false;
@@ -16,8 +9,6 @@ void initTopicBox(struct TopicBox *tBox) {
 	}
 	(tBox->clientId).pubfd = -1;
 	(tBox->clientId).tBoxNum = -1;
-
-	//initTopicMsg(&(tBox->tMsg));
 }
 
 void err(const char *str) {

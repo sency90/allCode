@@ -1,11 +1,17 @@
+//문제 < a >
+//최대 3개의 publisher와 각 publisher당 3개의 subscriber가 접속할 수 있는 broker이다.
+
 #include "commonHeader.h"
 #include "topic.h"
 #include <sys/poll.h>
 
 struct pollfd pollfds[CLI_NUM];
 
-//참고로 tBox안에 clientInfo struct가 선언되어 있다.
+//문제 < c-iv >
+//TopicBox 구조체변수인 tBox가 topic message를 담을 저장공간이다.
+//각 topic message마다 저장하기 위해서 배열로 선언하였다.
 TopicBox tBox[TBOX_NUM + 1];
+
 int n_pub_all = 0;
 int n_sub[TBOX_NUM + 1] = {0};
 
@@ -84,6 +90,8 @@ bool regiTopic(int connfd, int* tBoxNum) {
                 n_pub_all++;
                 isPub = true;
             }
+            //문제 < b-ii >
+            //이미 해당 topic을 다른 publisher가 등록했다면, 등록할 수 없게 처리함.
             else {
                 hasErr = true;
                 err("this topic has already been registered by another publisher");
@@ -199,7 +207,7 @@ int main(int argc, char **argv) {
     }
 
     int tBoxNum;
-    bool hasMsg = false;
+    bool everIn = false;
     while(1) {
 
         if((nready = poll(pollfds, CLI_NUM, -1)) < 0) {
@@ -244,7 +252,7 @@ int main(int argc, char **argv) {
         /* 2 */
         //receive and send a msg
         for(i=1; i<=CLI_NUM; i++) {
-            hasMsg = false;
+            everIn = false;
             //first: receive a msg
             //printf("%d\n", maxi);
             switch(pollfds[i].revents) {
@@ -254,7 +262,7 @@ int main(int argc, char **argv) {
                 case POLLIN:
                     recvMsg(pollfds[i].fd, &tBoxNum);
                     pollfds[i].revents = 0;
-                    hasMsg = true;
+                    everIn = true;
                     break;
 
                 case POLLOUT:
@@ -267,16 +275,19 @@ int main(int argc, char **argv) {
                     break;
             }
 
-                if(tBox[tBoxNum].hasMsg && tBox[tBoxNum].isActivePub && hasMsg) {
-                    for(j=0; j<SUB_NUM; j++) {
-                        if(tBox[tBoxNum].clientId.subfd[j] != -1) {
-                            printf("[[BROKER]]: subfd[%d]에게 메세지를 보냄.\n", tBox[tBoxNum].clientId.subfd[j]);
-                            forwardMsg(tBox[tBoxNum].clientId.subfd[j], tBoxNum);
-                        }
+
+            //문제 < d-i >
+            //문제 < d-ii >
+            //publisher로 부터 받은 topic message에 메세지가 담겨있다면,
+            //해당 내용을 subscriber에게 전송한다.
+            if(tBox[tBoxNum].hasMsg && tBox[tBoxNum].isActivePub && everIn) {
+                for(j=0; j<SUB_NUM; j++) {
+                    if(tBox[tBoxNum].clientId.subfd[j] != -1) {
+                        printf("[[BROKER]]: subfd[%d]에게 메세지를 보냄.\n", tBox[tBoxNum].clientId.subfd[j]);
+                        forwardMsg(tBox[tBoxNum].clientId.subfd[j], tBoxNum);
                     }
                 }
-
-
+            }
 
 
             if(--nready <= 0) break;
