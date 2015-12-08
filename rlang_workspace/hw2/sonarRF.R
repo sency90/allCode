@@ -18,20 +18,17 @@ RF = randomForest(col61 ~ ., sonar.train, ntree=1000)
 #sonar.tree = tree(formula = col61 ~ ., sonar.train, split="deviance", mindev = 0, minsize = 2)
 
 #sonar.train의 예측 모델을 만들어본다.
-sonar.predict.train = predict(RF, sonar.train, type = 'response')
+sonar.predict.test = predict(RF, sonar.test, type = 'response')
 #sonar.predict.train = predict(sonar.tree, newdata = sonar.train, type='class')
-sonar.predict.train
+sonar.predict.test
 
 #만들어진 sonar.train의 예측 모델을 테이블로 나타내본다.
-table(sonar.train$col61, sonar.predict.train)
+table(sonar.test$col61, sonar.predict.test)
 
-cm.sonar.train = confusionMatrix(sonar.predict.train, sonar.train$col61, positive = "1")
-cm.sonar.train
+cm.sonar.test = confusionMatrix(sonar.predict.test, sonar.test$col61, positive = "1")
+cm.sonar.test
 
 #아래의 코드는 accuracy만 보여준다.
-cm.sonar.train$overall[1]
-
-sonar.predict.test = predict(RF, sonar.test, type = 'response')
-sonar.predict.test
-cm.sonar.test = confusionMatrix(sonar.predict.test, sonar.test$col61, positive = "1")
 cm.sonar.test$overall[1]
+
+

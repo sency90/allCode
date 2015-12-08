@@ -1,0 +1,7 @@
+library(arules)
+data("Adult")
+rules = apriori(Adult, parameter = list(support = 0.01, confidence = 0.6))
+rulesIncomeSmall = subset(rules, subset = rhs %in% "income=small" & lift > 1.2)
+inspect(sort(rulesIncomeSmall, by = "confidence")[1:3])
+rulesincomeSmall = subset(rules, subset = lhs %ain% c("workclass=Private", "relationship=Own-child") & lift > 1.2)
+inspect(sort(rulesIncomeSmall, by = "confidence")[1:3])

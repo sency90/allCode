@@ -1,3 +1,5 @@
+library(lattice)
+library(ggplot2)
 library(tree)
 library(caret)
 
@@ -12,6 +14,8 @@ sonar.train2$col61 = as.factor(sonar.train2$col61)
 sonar.train2$col61
 
 #sonar.train data를 바탕으로 tree형태의 모델을 만든다.
+#독립변수를 col61로 두고 종속변수(목표변수)를 col61을 제외한 전체(.)로 두겠다는 뜻이다.
+#deviance는 split방식을 deviance로 하겠다는 뜻이다. (deviance는 entropy방식을 의미한다.)
 sonar.tree2 = tree(formula = col61 ~ ., sonar.train2, split="deviance", mindev = 0, minsize = 2)
 
 #만들어진 sonar.tree를 그린다.
@@ -19,14 +23,13 @@ plot(sonar.tree2)
 text(sonar.tree2, pretty=NULL)
 
 #sonar.train2의 예측 모델을 만들어본다.
-sonar.predict.train2 = predict(sonar.tree2, newdata = sonar.train2, type='class')
+sonar.predict.train2 = predict(sonar.tree2, newdata = sonar.test2, type='class')
 sonar.predict.train2
 
-cm.sonar.train2 = confusionMatrix(sonar.predict.train2, sonar.train2$col61, positive = "1")
+cm.sonar.train2 = confusionMatrix(sonar.predict.train2, sonar.test2$col61, positive = "1")
 cm.sonar.train2
 
 #아래의 코드는 accuracy만 보여준다.
-#prunning을 하지 않았으므로 당연히 accuracy는 1이다.
 cm.sonar.train2$overall[1]
 
 #여기서 FUN은 사용할 function을 의미한다.
