@@ -1,0 +1,32 @@
+body {
+	background-image: url("background.gif");
+	margin-left: 10%;
+	margin-right: 10%;
+}
+
+.date {
+	font-family: "Gulim";
+	font-size: 15;
+	font-color: black;
+}
+
+#navigation {
+	background-color: #99e0e0;
+	float: left;
+	margin-top: 10px;
+	width: 150px;
+	padding: 5px;
+	border: 5px #009097 solid;
+}
+
+#allentries {
+	margin-left: 180px;
+}
+
+.entry {
+	
+}
+
+.testtest {
+	font-size: 50;
+}

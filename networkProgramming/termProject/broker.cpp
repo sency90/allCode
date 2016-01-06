@@ -229,7 +229,7 @@ int main(int argc, char **argv) {
                         pollfds[k].fd = connfd;
                         if(isPub) pollfds[k].events = POLLIN;
                         else pollfds[k].events = POLLOUT;
-                        //pollfds[k].revents = 0;
+                        pollfds[k].revents = 0;
                         break;
                     }
                 }
