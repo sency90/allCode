@@ -1,52 +1,85 @@
 #include <stdio.h>
-#include <stdlib.h>
+#include <string.h>
+#include <algorithm>
+#include <queue>
+using namespace std;
+
+int t, n, k;
+int i, j;
+int x, y, w;
+int cost[1001];
+bool isDept[1001];
+int fromNODEtoW[1001];
+queue<int> q[100001];
+//queue<int> &q;
+
+void clear( queue<int> &q )
+{
+    queue<int> empty;
+    swap( q, empty );
+}
+
+int calc( int dept ) {
+    int dest, tempCost;
+    bool everEntered = false;
+    
+    while(!q[dept].empty()) {
+        everEntered = true;
+        dest = q[dept].front();
+        q[dept].pop();
+        
+        if(-1 == fromNODEtoW[dest]) {
+            fromNODEtoW[dest] = calc(dest);
+        }
+        
+        tempCost = cost[dept] + fromNODEtoW[dest];
+        
+        if(fromNODEtoW[dept] < tempCost || -1 == fromNODEtoW[dept]) {
+            fromNODEtoW[dept] = tempCost;
+        }
+    }
+    
+    if(everEntered) {
+        clear(q[dept]);
+        return fromNODEtoW[dept];
+    }
+    else { //base case
+        clear(q[w]);
+        fromNODEtoW[w] = cost[w];
+        return fromNODEtoW[w];
+    }
+}
 
 int main() {
-
-    int i, j, k;
-    int T; scanf("%d", &T);
-    int N, K;
-    int x, y;
-    int *d, *order;
-    int w, cost;
-
-    for(i=0; i<T; i++) {
-        cost = 0;
-        scanf("%d", &N);
-        scanf("%d", &K);
-
-        d = (int*)malloc((N+1) * sizeof(int));
-        order = (int*)malloc(K * sizeof(int));
-        for(j=0; j<=N; j++) {
-            d[j] = -1;
+    scanf("%d", &t);
+    while(t--) {
+        
+        //memset(cost, 0, sizeof(cost));
+        //memset(isDept, true, sizeof(isDept));
+        //memset(fromNODEtoW, -1, sizeof(fromNODEtoW));
+        scanf("%d", &n);
+        memset(cost, 0, (n+1)*sizeof(cost[0]));
+        memset(isDept, true, (n+1)*sizeof(bool));
+        memset(fromNODEtoW, -1, (n+1)*sizeof(fromNODEtoW[0]));
+        
+        scanf("%d", &k);
+        
+        for(i=1; i<n+1; i++) {
+            scanf("%d", &cost[i]);
         }
-
-        for(j=1; j<=N; j++) {
-            scanf("%d", &d[j]);
-        }
-
-        for(j=1; j<=K; j++) {
+        for(i=1; i<k+1; i++) {
             scanf("%d %d", &x, &y);
-
-            if(order[y] == -1) order[y] = x;
-            else if(d[order[y]] < d[x]) order[y] = x;
+            isDept[y] = false;
+            q[x].push(y);
         }
-
+        for(i=1; i<n+1; i++) {
+            if(isDept[i]) {
+                q[0].push(i);
+            }
+        }
+        
         scanf("%d", &w);
-        cost += d[w];
-
-        while(true) {
-            w = order[w];
-            if(d[w] == -1) break;
-
-            cost += d[w];
-        }
-
-        printf("%d", cost);
-
-        free(d);
-        free(order);
+        printf("%d\n", calc(0));
     }
-
     return 0;
 }
