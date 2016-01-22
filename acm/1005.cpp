@@ -2,16 +2,16 @@
 #include <string.h>
 #include <algorithm>
 #include <queue>
+#include <limits.h>
 using namespace std;
 
 int t, n, k;
 int i, j;
-int x, y, w;
+int w;
 int cost[1001];
 bool isDept[1001];
-int fromNODEtoW[1001];
+int costFromCurToW[1001];
 queue<int> q[100001];
-//queue<int> &q;
 
 void clear( queue<int> &q )
 {
@@ -19,51 +19,60 @@ void clear( queue<int> &q )
     swap( q, empty );
 }
 
-int calc( int dept ) {
-    int dest, tempCost;
+int calc( int x ) {
+    int y = 0;
+    int tempCost, tempRet;
     bool everEntered = false;
-    
-    while(!q[dept].empty()) {
+
+    //base case
+    if( x == w ) {
+        //clear(q[x]);
+        return cost[w];
+    }
+
+    //recursive part
+    while(!q[x].empty()) {
         everEntered = true;
-        dest = q[dept].front();
-        q[dept].pop();
-        
-        if(-1 == fromNODEtoW[dest]) {
-            fromNODEtoW[dest] = calc(dest);
+
+        y = q[x].front(); q[x].pop();
+
+        if(costFromCurToW[y] < 0) {
+            tempRet = calc(y);
         }
-        
-        tempCost = cost[dept] + fromNODEtoW[dest];
-        
-        if(fromNODEtoW[dept] < tempCost || -1 == fromNODEtoW[dept]) {
-            fromNODEtoW[dept] = tempCost;
+        else {
+            tempRet = costFromCurToW[y];
+        }
+
+        if(tempRet < 0) {
+            tempCost = -1;
+        }
+        else {
+            tempCost = cost[x] + tempRet;
+        }
+
+        if(costFromCurToW[x] < tempCost) {
+            costFromCurToW[x] = tempCost;
         }
     }
-    
+
+    //clear(q[x]);
     if(everEntered) {
-        clear(q[dept]);
-        return fromNODEtoW[dept];
-    }
-    else { //base case
-        clear(q[w]);
-        fromNODEtoW[w] = cost[w];
-        return fromNODEtoW[w];
+        return costFromCurToW[x];
+    } else {
+        return -1;
     }
 }
 
 int main() {
+    int x, y;
     scanf("%d", &t);
-    while(t--) {
-        
-        //memset(cost, 0, sizeof(cost));
-        //memset(isDept, true, sizeof(isDept));
-        //memset(fromNODEtoW, -1, sizeof(fromNODEtoW));
+    for(j=0; j<t; j++) {
+        memset(cost, 0, sizeof(cost));
+        memset(isDept, true, sizeof(isDept));
+        memset(costFromCurToW, -1, sizeof(costFromCurToW));
         scanf("%d", &n);
-        memset(cost, 0, (n+1)*sizeof(cost[0]));
-        memset(isDept, true, (n+1)*sizeof(bool));
-        memset(fromNODEtoW, -1, (n+1)*sizeof(fromNODEtoW[0]));
-        
         scanf("%d", &k);
-        
+
         for(i=1; i<n+1; i++) {
             scanf("%d", &cost[i]);
         }
@@ -72,13 +81,15 @@ int main() {
             isDept[y] = false;
             q[x].push(y);
         }
+
+        scanf("%d", &w);
+        costFromCurToW[w] = cost[w];
+
         for(i=1; i<n+1; i++) {
             if(isDept[i]) {
                 q[0].push(i);
             }
         }
-        
-        scanf("%d", &w);
         printf("%d\n", calc(0));
     }
     return 0;
