@@ -28,10 +28,10 @@ int main() {
         scanf("%s %hhd %hhd %hhd", s.name, &s.lang, &s.eng, &s.math);
         v.push_back(s);
     }
-    sort(v.begin(), v.end(), nameCmp);
-    sort(v.begin(), v.end(), mathCmp);
-    sort(v.begin(), v.end(), engCmp);
-    sort(v.begin(), v.end(), langCmp);
+    stable_sort(v.begin(), v.end(), nameCmp);
+    stable_sort(v.begin(), v.end(), mathCmp);
+    stable_sort(v.begin(), v.end(), engCmp);
+    stable_sort(v.begin(), v.end(), langCmp);
     for(int i=0; i<n; i++) {
         printf("%s\n", v[i].name);
     }
