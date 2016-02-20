@@ -1,35 +1,35 @@
 #include <stdio.h>
-#include <vector>
+#include <algorithm>
 using namespace std;
-int k;
-vector<int> v;
-int calc(vector<int>& orig, int prevSize) {
-    //l.clear();
-    //r.clear();
-    vector<int> l, r;
-    v = orig;
-    int cnt=0;
-    int len = v.size();
-    int mid = k-prevSize;
-    for(int i=0; i<len; i++) {
-        if(mid == i) continue;
-        else if(v[i] < v[mid]) {
-            l.push_back(v[i]);
-            cnt++;
-        } else r.push_back(v[i]);
+int v[5000000];
+int rIdx[5000000], lIdx[5000000];
+int j, k, re;
+int qSort(int n, int x, int *idx) {
+    j = 0;
+    k = 0;
+    re = n-1;
+    for(int i=0; i<re; i++) {
+        if(v[idx[re]] < v[idx[i]]) { //v[i]를 오른쪽부분에 할당해야하는 경우
+            rIdx[j++] = idx[i];
+        } else {//v[i]를 왼쪽부분에 할당해야하는 경우
+            lIdx[k++] = idx[i];
+        }
     }
-    if(cnt+prevSize == k) return v[cnt];
-    else if(cnt+prevSize > k) return calc(l, prevSize);
-    else return calc(r, prevSize+l.size());
+    if(k == x) return v[idx[re]];
+    else if(k < x) {
+        x -= k;
+        return qSort(k, x, rIdx);
+    } else {
+        return qSort(j, x, lIdx);
+    }
 }
 int main() {
-    vector<int> v;
-    int n, in;
-    scanf("%d %d", &n, &k);
-    for(int i=0; i<n; i++) {
-        scanf("%d", &in);
-        v.push_back(in);
+    int N, K; scanf("%d %d", &N, &K);
+    for(int i=0; i<N; i++) {
+        scanf("%d", &v[i]);
+        rIdx[i] = N;
     }
-    printf("%d\n", calc(v, 0));
+    qSort(N, K, rIdx);
+    printf("%d",v[k-1]);
     return 0;
 }

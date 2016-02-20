@@ -8,7 +8,7 @@ int main() {
         d[i] = 1;
         max = 0;
         for(j=0; j<i; j++) {
-            if(a[j] > a[i]) {
+            if(a[j] < a[i]) {
                 if(max < d[j]) max = d[j];
             }
         }
