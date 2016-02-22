@@ -14,50 +14,36 @@ int calc( int x ) {
     int y = 0;
     int tempCost, tempRet;
     bool everEntered = false;
-    
+
     //base case
-    if( x == w ) {
-        //clear(q[x]);
-        return cost[w];
-    }
-    
+    if( x == w ) return cost[w];
+
     //recursive part
     while(!q[x].empty()) {
         everEntered = true;
-        
+
         y = q[x].front(); q[x].pop();
-        
-        if(costFromCurToW[y] < 0) {
-            tempRet = calc(y);
-        }
-        else {
-            tempRet = costFromCurToW[y];
-        }
-        
-        if(tempRet < 0) {
-            tempCost = -1;
-        }
-        else {
-            tempCost = cost[x] + tempRet;
-        }
-        
+
+        if(costFromCurToW[y] < 0) tempRet = calc(y);
+        else tempRet = costFromCurToW[y];
+
+        if(tempRet < 0) tempCost = -1;
+        else tempCost = cost[x] + tempRet;
+
         if(costFromCurToW[x] < tempCost) {
             costFromCurToW[x] = tempCost;
         }
     }
-    
-    if(everEntered) {
-        return costFromCurToW[x];
-    } else {
-        return -1;
-    }
+
+    if(everEntered) return costFromCurToW[x];
+    else return -1;
 }
 
 int main() {
     int x, y;
     int t, n, k;
     bool isStartNode[1002];
-    
+
     scanf("%d", &t);
     for(int j=0; j<t; j++) {
         scanf("%d", &n);
@@ -65,7 +51,7 @@ int main() {
         memset(cost, 0, (n+2)*sizeof(int));
         memset(isStartNode, true, (n+2)*sizeof(bool));
         memset(costFromCurToW, -1, (n+2)*sizeof(int));
-        
+
         for(int i=1; i<n+1; i++) {
             scanf("%d", &cost[i]);
         }
@@ -74,10 +60,10 @@ int main() {
             isStartNode[y] = false;
             q[x].push(y);
         }
-        
+
         scanf("%d", &w);
         costFromCurToW[w] = cost[w];
-        
+
         for(int i=1; i<n+1; i++) {
             if(isStartNode[i]) {
                 q[0].push(i);
