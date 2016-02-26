@@ -1,14 +1,18 @@
 #include <stdio.h>
 #include <queue>
 #include <string.h>
+#include <limits.h>
 using namespace std;
-int m, n, maxR = 0;
+int m;
 int dx[4] = {0, -1, 0, 1};
 int dy[4] = {1, 0, -1, 0};
-int v[1001][1001];
-bool chk[1001][1001];
+int v[101][101];
+bool chk[101][101];
+int g[101][101];
 queue<pair<int, int> > iq;
-void bfs(int x, int y, int r) {
+int mini = INT_MAX;
+void bfs(int x, int y, int gn) {
+    if(g[x][y] == 0) g[x][y] = gn;
     queue<pair<int, int> > q;
     int X, Y;
     if(!chk[x][y]) chk[x][y] = true;
@@ -16,15 +20,18 @@ void bfs(int x, int y, int r) {
         X = x+dx[i];
         Y = y+dy[i];
 
-        if(X<1 || X>n || Y<1 || Y>m) continue;
-        if(chk[X][Y]) continue;
-        if(v[X][Y] == -1) continue;
-        else if(v[X][Y] == 0) {
+        if(X<1 || X>m || Y<1 || Y>m) continue;
+        if(chk[X][Y]) {
+            if(v[X][Y]==0 || v[x][y]==0) continue;
+            if(g[x][y] == g[X][Y] || g[X][Y]==0) continue;
+            if(mini > v[x][y]+v[X][Y]) mini = v[x][y] + v[X][Y];
+            //continue;
+        } else if(v[X][Y] == 0) {
             chk[X][Y] = true;
-            v[X][Y] = r+1;
+            v[X][Y] = v[x][y]+1;
+            if(g[X][Y] == 0) g[X][Y] = g[x][y];
             iq.push(make_pair(X, Y));
-            maxR = (v[X][Y]>maxR? v[X][Y]:maxR);
-        } else if(v[X][Y] == r) {
+        } else if(v[X][Y] == v[x][y]) {
             chk[X][Y] = true;
             q.push(make_pair(X, Y));
         }
@@ -33,47 +40,34 @@ void bfs(int x, int y, int r) {
     pair<int, int> t;
     while(!q.empty()) {
         t = q.front(); q.pop();
-        bfs(t.first, t.second, r);
+        bfs(t.first, t.second, g[x][y]);
     }
 }
 int main() {
     memset(v, 0, sizeof(v));
     memset(chk, false, sizeof(chk));
-    scanf("%d %d", &m, &n);
-    for(int i=1; i<=n; i++) {
+    memset(g, 0, sizeof(g));
+    scanf("%d", &m);
+    for(int i=1; i<=m; i++) {
         for(int j=1; j<=m; j++) {
             scanf("%d", &v[i][j]);
             if(v[i][j] == 1) continue;
-            maxR = 1;
         }
     }
-    if(maxR == 0) {
-        printf("0");
-        return 0;
-    }
 
-    for(int i=1; i<=n; i++) {
+    for(int i=1; i<=m; i++) {
         for(int j=1; j<=m; j++) {
-            if(v[i][j] <= 0 || chk[i][j]) continue;
-            if(v[i][j] == 1) bfs(i, j, 1);
+            if(v[i][j] == 0 || chk[i][j]) continue;
+            if(v[i][j] == 1) bfs(i, j, i*100+j);
         }
     }
 
     pair<int, int> t;
     while(!iq.empty()) {
         t = iq.front(); iq.pop();
-        bfs(t.first, t.second, v[t.first][t.second]);
+        bfs(t.first, t.second, g[t.first][t.second]);
     }
 
-    for(int i=1; i<=n; i++) {
-        for(int j=1; j<=m; j++) {
-            if(v[i][j] == 0) {
-                maxR = 0; //maxR-1을 출력하므로 maxR=0이 되어야 한다.
-                break;
-            }
-        }
-    }
-
-    printf("%d", maxR-1);
+    printf("%d", mini-2);
     return 0;
 }
