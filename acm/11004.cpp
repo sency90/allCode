@@ -3,33 +3,32 @@
 using namespace std;
 int v[5000000];
 int rIdx[5000000], lIdx[5000000];
-int j, k, re;
-int qSort(int n, int x, int *idx) {
+int j, re, l;
+int qSort(int n, int k, int *idx) {
     j = 0;
-    k = 0;
+    l = 0;
     re = n-1;
     for(int i=0; i<re; i++) {
         if(v[idx[re]] < v[idx[i]]) { //v[i]를 오른쪽부분에 할당해야하는 경우
             rIdx[j++] = idx[i];
         } else {//v[i]를 왼쪽부분에 할당해야하는 경우
-            lIdx[k++] = idx[i];
+            lIdx[l++] = idx[i];
         }
     }
-    if(k == x) return v[idx[re]];
-    else if(k < x) {
-        x -= k;
-        return qSort(k, x, rIdx);
+    if(l == k) return v[idx[re]];
+    else if(l < k) {
+        k -= l;
+        return qSort(j, k-1, rIdx);
     } else {
-        return qSort(j, x, lIdx);
+        return qSort(l, k, lIdx);
     }
 }
 int main() {
-    int N, K; scanf("%d %d", &N, &K);
-    for(int i=0; i<N; i++) {
+    int n, k; scanf("%d %d", &n, &k);
+    for(int i=0; i<n; i++) {
         scanf("%d", &v[i]);
-        rIdx[i] = N;
+        rIdx[i] = i;
     }
-    qSort(N, K, rIdx);
-    printf("%d",v[k-1]);
+    printf("%d", qSort(n, k-1, rIdx));
     return 0;
 }

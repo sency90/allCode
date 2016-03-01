@@ -1,31 +1,28 @@
 #include <stdio.h>
 #include <string.h>
-int coin[101], cnt[101], d[10001], t, k;
-bool isIn[10001];
-int f(int x) {
-    int i=1;
-    for(; i<=k; i++) {
-        if(x == coin[i]) return d[x]+=1;
+int coin[100], cnt[100];
+int d[10001][100];
+int f(int m, int idx) {
+    if(idx == -1) {
+        if(m == 0) return 1;
+        else return 0;
     }
-    if(isIn[x]) return d[x];
+    if(d[m][idx] != -1) return d[m][idx];
 
-    int j;
-    for(i=1; i<=k; i++) {
-        for(j=2; j<=cnt[i]; j++) {
-            if(x < coin[i]*j) break;
-            d[x] += f(x-coin[i]*j);
-        }
+    int ret = 0;
+    for(int i=0; i<=cnt[idx]; i++) {
+        if(m < coin[idx]*i) break;
+        ret += f(m-coin[idx]*i, idx-1);
     }
-    isIn[x] = true;
-    return d[x];
+    return d[m][idx] = ret;
 }
 int main() {
-    memset(isIn, false, sizeof(isIn));
-    memset(d, 0, sizeof(d));
-    int t, k; scanf("%d %d", &t, &k);
-    for(int i=1; i<=k; i++) {
+    memset(d, -1, sizeof(d));
+    int m, cc;
+    scanf("%d %d", &m, &cc);
+    for(int i=0; i<cc; i++) {
         scanf("%d %d", &coin[i], &cnt[i]);
     }
-    printf("%d", f(t));
+    printf("%d", f(m, cc-1));
     return 0;
 }
