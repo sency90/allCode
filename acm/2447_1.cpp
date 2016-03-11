@@ -1,26 +1,38 @@
 #include <stdio.h>
-int n, k=1, cnt=0;
-int f(int x) {
-    if(0 == x) return printf(" ");
-    if(1 == x) return printf("*");
-    for(int i=0; i<3; i++) f(x-1);
-    printf("\n");
-    f(x-1);
-    //for(int i=0; i<n/3; i++) f(0);
-    f(0);
-    f(x-1);
-    printf("\n");
-    for(int i=0; i<3; i++) f(x-1);
-    printf("\n");
-    return 0;
+char ar[6561][6561];
+void printvoid(int x, int y, int n) {
+    if(n==1) {
+        ar[x][y] = ' ';
+        return;
+    }
+    int m = n/3;
+    for(int i=0; i<3; i++) {
+        for(int j=0; j<3; j++) {
+            printvoid(x+m*i, y+m*j, m);
+        }
+    }
+}
+void printstar(int x, int y, int n) {
+    if(n==1) {
+        ar[x][y] = '*';
+        return;
+    }
+    int m = n/3;
+    for(int i=0; i<3; i++) {
+        for(int j=0; j<3; j++) {
+            if(i==1 && j==1) printvoid(x+m*i, y+m*j, m);
+            else printstar(x+m*i, y+m*j, m);
+        }
+    }
 }
 int main() {
-    scanf("%d", &n);
-    while(true) {
-        cnt++;
-        if(n == k) break;
-        k *= 3;
+    int n; scanf("%d", &n);
+    printstar(0,0,n);
+    for(int i=0; i<n; i++) {
+        for(int j=0; j<n; j++) {
+            printf("%c", ar[i][j]);
+        }
+        puts("");
     }
-    f(cnt);
     return 0;
 }

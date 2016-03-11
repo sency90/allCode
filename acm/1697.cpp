@@ -1,32 +1,42 @@
 #include <stdio.h>
 #include <string.h>
-#include <algorithm>
-#include <limits.h>
+#include <queue>
 using namespace std;
+queue<int> q;
 int d[100001];
-bool everV[100001];
-int init;
-int f(int x) {
-    if(x == init) return d[x] = 0;
-    if(d[x] >= 0) return d[x];
-    if(everV[x]) return d[x];
-
-    everV[x] = true;
-    int t;
-    if(x+1 > 100000) t = f(x-1);
-    else if(x-1 < 0) t = f(x+1);
-    else t = min(f(x-1), f(x+1));
-
-    if(x%2 == 0) d[x] = min(t, f(x/2))+1;
-    else d[x] = t+1;
-    return d[x];
-}
+bool chk[100001];
 int main() {
-    int end;
-    memset(everV, false, sizeof(everV));
-    for(int i=0; i<=100000; i++) d[i] = INT_MAX/2;
-    //memset(d, -1, sizeof(d));
-    scanf("%d %d", &init, &end);
-    printf("%d\n", f(end));
+    int n, k, i;
+    memset(chk, false, sizeof(chk));
+    scanf("%d %d", &n, &k);
+
+    q.push(n);
+    chk[n] = true;
+    while(true) {
+        i = q.front(); q.pop();
+        if(i==k) break;
+        if(i-1 >= 0) {
+            if(!chk[i-1]) {
+                q.push(i-1);
+                chk[i-1] = true;
+                d[i-1] = d[i]+1;
+            }
+        }
+        if(i+1 <= 100000) {
+            if(!chk[i+1]) {
+                q.push(i+1);
+                chk[i+1] = true;
+                d[i+1] = d[i]+1;
+            }
+        }
+        if(i*2 <= 100000) {
+            if(!chk[i*2]) {
+                q.push(i*2);
+                chk[i*2] = true;
+                d[i*2] = d[i]+1;
+            }
+        }
+    }
+    printf("%d", d[k]);
     return 0;
 }
