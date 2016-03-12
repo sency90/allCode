@@ -17,11 +17,10 @@ int main() {
         for(int i=0; i<n-1; i++) {
             if(v[idx[i]][idx[i+1]]==0) {
                 tmp = INT_MAX/2;
-                break;
-            }
-            tmp+=v[idx[i]][idx[i+1]];
+            } else tmp+=v[idx[i]][idx[i+1]];
         }
-        tmp+=v[idx[n-1]][idx[0]];
+        if(v[idx[n-1]][idx[0]]==0) tmp = INT_MAX/2;
+        else tmp+=v[idx[n-1]][idx[0]];
         if(min > tmp) min = tmp;
     } while(next_permutation(idx, idx+n));
     printf("%d", min);

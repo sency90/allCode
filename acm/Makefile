@@ -10,4 +10,4 @@ cc:
 	$(CXX) $(SRC) -o ./bin/$(BIN) $(CPPFLAGS)
 
 c11:
-	$(CXX) $(SRC) -o ./bin/$(BIN) $(CPPFLAGS) -std=c++11
+	$(CXX) $(BIN).cc -o ./bin/$(BIN) $(CPPFLAGS) -std=c++11
