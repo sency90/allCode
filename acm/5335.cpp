@@ -9,6 +9,6 @@ int main() {
             if(c==' ') continue;
             switch(ccp)
         }
-    }sm smlZ
+    }
     return 0;
 }

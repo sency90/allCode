@@ -2,20 +2,22 @@
 #include <iostream>
 #include <map>
 #include <vector>
-#include <string>
 using namespace std;
 map<string, int> m;
+vector<string> v;
 int main() {
-    int n;
     string s;
+    int n;
     scanf("%d", &n);
     for(int i=0; i<n; i++) {
         cin >> s;
-        m[s] = i+100;
+        m[s] = i;
+        v[i] = s;
+        printf("test\n");
     }
-    string tmp;
-    cout << "input:";
-    cin >> tmp;
-    cout << m[tmp] << '\n';
+    for(int i=0; i<n; i++) {
+        cout << m[v[i]] << '\n';
+    }
+
     return 0;
 }
