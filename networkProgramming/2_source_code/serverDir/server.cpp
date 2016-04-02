@@ -4,9 +4,9 @@
 #define LISTEN_QUEUE_SIZE 5
 
 int main() {
-    
+
     struct sockaddr_in listenSocket;
-    
+
     //서버용 리슨 소켓(listenSocket)을 set 하시오
     listenSocket.sin_family = AF_INET; //TCP
     listenSocket.sin_addr.s_addr = htonl(INADDR_ANY); //Any incoming interface
