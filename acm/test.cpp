@@ -1,52 +1,56 @@
-#include <cstdio>
-#include <vector>
-#include <algorithm>
-using namespace std;
-typedef pair<int, int> pi;
-bool cmp(const pi &lhs, const pi &rhs) {
-    if(lhs.first == rhs.first) return lhs.second < rhs.second;
-    else return lhs.first < rhs.first;
-}
-vector<pi> v;
-int main() {
-    int t,n,m,x,y;
-    scanf("%d", &t);
-    while(t--) {
-        scanf("%d", &n);
-        for(int i=0; i<n; i++) {
-            scanf("%d %d", &x, &y);
-            v.push_back(make_pair(x,y));
-        }
-        sort(v.begin(), v.end(), cmp);
-        int px=-1, py=0, sidx=0, i, yy=0;
-        bool haveToReverse=false;
-        for(i=0; i<v.size(); i++) {
-            x=v[i].first;
-            y=v[i].second;
-            if(x > px) {
-                if(py > y) {
-                    sidx=i;
-                    yy = py;
-                    haveToReverse = true;
-                }
-            } else {
-                if(haveToReverse && y==yy) {
-                    haveToReverse = false;
-                    reverse(v.begin()+sidx, v.begin()+i+1);
-                }
-            }
-            px = x;
-            py = y;
-        }
-        if(haveToReverse) {
-            reverse(v.begin()+sidx, v.begin()+i);
-        }
-        
-        scanf("%d", &m);
-        for(int i=0; i<m; i++) {
-            scanf("%d", &sidx);
-            printf("%d %d\n", v[sidx-1].first, v[sidx-1].second);
-        }
+#include <stdio.h>
+int Check(int *a,int n)
+{
+    int t = a[0];
+    int i;
+    int Ecount=0;
+    int Scount=0;
+    int sum = 0;
+
+    for(i=0;i<3;i++)
+    {
+        if(a[i] == 60)
+            Ecount++;
+        sum += a[i];
     }
+    if(Ecount == 3)
+        return 0;
+    if(sum == 180)
+    {
+        for(i=1;i<3;i++)
+        {
+            if(t == a[i])
+                Scount++;
+        }
+        if(Scount == 1)
+            return 3;
+        else
+            return 1;
+    }
+    else
+        return 2;
+}
+
+
+int main()
+{
+    int a[3];
+    int i;
+    int result;
+    for(i=0;i<3;i++)
+    {
+        scanf("%d",&a[i]);
+    }
+
+    result = Check(a,3);
+    if(result == 0)
+        printf("Equilateral\n");
+    else if(result == 3)
+        printf("Isosceles\n");
+    else if(result == 1)
+        printf("Scalene\n");
+    else
+        printf("Error\n");
+
     return 0;
 }
