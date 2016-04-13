@@ -1,56 +1,18 @@
 #include <stdio.h>
-int Check(int *a,int n)
-{
-    int t = a[0];
-    int i;
-    int Ecount=0;
-    int Scount=0;
-    int sum = 0;
-
-    for(i=0;i<3;i++)
-    {
-        if(a[i] == 60)
-            Ecount++;
-        sum += a[i];
+long long d[91][2];
+long long f(int n, int x) {
+    if(d[n][x] > 0) return d[n][x];
+    if(n==1) {
+        if(x==1) return 1;
+        else return 0;
     }
-    if(Ecount == 3)
-        return 0;
-    if(sum == 180)
-    {
-        for(i=1;i<3;i++)
-        {
-            if(t == a[i])
-                Scount++;
-        }
-        if(Scount == 1)
-            return 3;
-        else
-            return 1;
-    }
-    else
-        return 2;
+    if(x==0) d[n][x] = f(n-1,1-x)+f(n-1,x);
+    else d[n][x] = f(n-1,1-x);
+    return d[n][x];
 }
-
-
-int main()
-{
-    int a[3];
-    int i;
-    int result;
-    for(i=0;i<3;i++)
-    {
-        scanf("%d",&a[i]);
-    }
-
-    result = Check(a,3);
-    if(result == 0)
-        printf("Equilateral\n");
-    else if(result == 3)
-        printf("Isosceles\n");
-    else if(result == 1)
-        printf("Scalene\n");
-    else
-        printf("Error\n");
-
+int main() {
+    int n;
+    scanf("%d", &n);
+    printf("%lld", f(n,0)+f(n,1));
     return 0;
 }

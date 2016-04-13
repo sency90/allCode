@@ -1,39 +1,18 @@
 #include <stdio.h>
-#include <string.h>
-
-int memo[12];
-
-int calc(int x) {
-    int sum = 0;
-    if(x == 0) return 1; //base case
-    else {
-        if(x-1 >= 0) {
-            if(0 == memo[x-1]) memo[x-1] = calc(x-1);
-            sum += memo[x-1];
-
-            if(x-2 >= 0) {
-                if(0 == memo[x-2]) memo[x-2] = calc(x-2);
-                sum += memo[x-2];
-
-                if(x-3 >= 0) {
-                    if(0 == memo[x-3]) memo[x-3] = calc(x-3);
-                    sum += memo[x-3];
-                }
-            }
-        }
-    }
-
-    if(0 == sum) sum = 1;
-    return sum;
+#include <cstring>
+using namespace std;
+int d[12];
+int f(int x) {
+    if(x<0) return 0;
+    if(x==0) return 1;
+    return d[x] = f(x-1) + f(x-2) + f(x-3);
 }
-
 int main() {
-    int t, n;
-    scanf("%d", &t);
-    while(t--) {
-        memset(memo, 0, sizeof(memo));
-        scanf("%d", &n);
-        printf("%d\n", calc(n));
+    int n, x;
+    scanf("%d", &n);
+    for(int i=0; i<n; i++) {
+        scanf("%d", &x);
+        printf("%d\n", f(x));
     }
     return 0;
 }
