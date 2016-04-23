@@ -1,50 +1,27 @@
-#include <cstdio>
-
-#define MAX_N 100
-#define MOD 1000000000
-
-typedef unsigned long long ULL;
-ULL d[MAX_N][10][4];
-
-void proc(int N) {
-    // set initial data (i==0)
-    for (int k = 0; k < 4; k++)
-        d[0][0][k] = 0; // can't start from zero
-    for (int j = 1; j < 10; j++) {
-        for (int k = 0; k < 4; k++)
-            d[0][j][k] = (k==0) ? 1 : 0;
+#include <stdio.h>
+#include <cstring>
+using namespace std;
+#define RND 1000000000
+unsigned long long d[101][10];
+unsigned long long f(int n, int x) {
+    //base case
+    if(n==1) {
+        if(x==0) return 0;
+        else return 1;
     }
-    d[0][9][2] = 1;
-
-    for (int i = 1; i < N; i++) {
-        for (int j = 0; j < 10; j++) {
-            if (j == 0) {
-                d[i][j][1] = (d[i - 1][j + 1][0] + d[i - 1][j + 1][1]) % MOD;
-                d[i][j][3] = (d[i - 1][j + 1][2] + d[i - 1][j + 1][3]) % MOD;
-            }
-            else if (j == 9) {
-                d[i][j][2] = (d[i - 1][j - 1][0] + d[i - 1][j - 1][2]) % MOD;
-                d[i][j][3] = (d[i - 1][j - 1][1] + d[i - 1][j - 1][3]) % MOD;
-            }
-            else {
-                for (int k = 0; k < 4; k++)
-                    d[i][j][k] = (d[i - 1][j - 1][k] + d[i - 1][j + 1][k]) % MOD;
-            }
-        }
-        // printf("%d -> mask= %llx %llx %llx\n", i, d[i][0][1], d[i][0][2], d[i][0][3]);
-    }
-
-    ULL sum = 0;
-    for (int j = 0; j < 10; j++) {
-        // printf("d[%d] = %llx\n", j, d[N - 1][j][3]);
-        sum += d[N - 1][j][3];
-    }
-    printf("%llu\n", sum%MOD);
+    if(d[n][x]!=-1) return d[n][x];
+    if(x==0) d[n][x] = f(n-1,x+1);
+    else if(x==9) d[n][x] = f(n-1,x-1);
+    else d[n][x] = (f(n-1,x-1) + f(n-1,x+1))%RND;
+    return d[n][x];
 }
-
-int main(void) {
-    int N;
-    scanf("%d", &N);
-    proc(N);
+int main() {
+    memset(d, -1, sizeof(d));
+    int n; scanf("%d", &n);
+    unsigned long long sum=0;
+    for(int i=0; i<10; i++) {
+        sum = (sum + f(n,i))%RND;
+    }
+    printf("%llu", sum);
     return 0;
 }

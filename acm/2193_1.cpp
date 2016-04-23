@@ -1,14 +1,18 @@
 #include <stdio.h>
-#include <string.h>
-unsigned long long cache[90];
-unsigned long long f(int x) {
-    if( x==0 || x==1 ) return cache[x] = 1; //base case
-    cache[x] = ((0 == cache[x-1])? f(x-1) : cache[x-1])  +  ((0 == cache[x-2])? f(x-2) : cache[x-2]);
-    return cache[x];
+long long d[91][2];
+long long f(int n, int x) {
+    if(d[n][x] > 0) return d[n][x];
+    if(n==1) {
+        if(x==1) return 1;
+        else return 0;
+    }
+    if(x==0) d[n][x] = f(n-1,1-x)+f(n-1,x);
+    else d[n][x] = f(n-1,1-x);
+    return d[n][x];
 }
 int main() {
-    memset(cache, 0, sizeof(cache));
-    int n; scanf("%d", &n);
-    printf("%llu\n", f(n-1));
+    int n;
+    scanf("%d", &n);
+    printf("%lld", f(n,0)+f(n,1));
     return 0;
 }
