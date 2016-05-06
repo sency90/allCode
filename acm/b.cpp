@@ -1,9 +1,18 @@
-#inlcude <stdio.h>
+#include <stdio.h>
+int a[100001];
 int main() {
-    int n;
-    scanf("%d", &n);
+    long long n, k;
+    scanf("%lld %lld", &n, &k);
     for(int i=0; i<n; i++) {
-        scanf("%d", &d);
+        scanf("%d", a+i);
     }
+
+    long long i;
+    for(i=0;;i++) {
+        if(k < (i*i-i+2)/2) break;
+    }
+    i--;
+    int j = k-(i*i-i+2)/2;
+    printf("%d", a[j]);
     return 0;
 }
