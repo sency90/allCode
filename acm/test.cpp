@@ -1,26 +1,22 @@
 #include <stdio.h>
-double d[1<<20], v[20][20], tmp;
-int x, n;
-double f(int x, int s) {
-    if(x==-1) return 1.0;
-    if(d[s]>0.0) return d[s];
-    for(int i=0; i<n; i++) {
-        if(s&(1<<i)) continue;
-        printf("BEFORE: v[%d][%d] * f(%d, %d) = ???\n", x,i,x-1,s|(1<<i));
-        tmp = v[x][i] * f(x-1, s|(1<<i));
-        printf("v[%d][%d] * f(%d, %d) = %.5lf\n", x,i,x-1,s|(1<<i),tmp);
-        if(tmp > d[s]) d[s] = tmp;
-    }
-    return d[s];
+#include <algorithm>
+#include <cstring>
+using namespace std;
+int d[301][2], v[301];
+int f(int x, int y) {
+    if(x==0) return 0;
+    if(x==1) return v[1];
+    if(d[x][y]>0) return d[x][y];
+    if(y==0) d[x][y] = max(f(x-2,0),f(x-2,1))+v[x];
+    else d[x][y] = f(x-1,0)+v[x];
+    return d[x][y];
 }
 int main() {
+    int n;
     scanf("%d", &n);
-    for(int i=0; i<n; i++) {
-        for(int j=0; j<n; j++) {
-            scanf("%lf", &v[i][j]);
-            v[i][j]/=100.0;
-        }
+    for(int i=1; i<=n; i++) {
+        scanf("%d", &v[i]);
     }
-    printf("%.6lf", f(n-1,0)*100.0);
+    printf("%d", max(f(n,0),f(n,1)));
     return 0;
 }
