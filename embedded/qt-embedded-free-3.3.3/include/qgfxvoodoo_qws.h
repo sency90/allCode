@@ -1,0 +1,1 @@
+../src/embedded/qgfxvoodoo_qws.h

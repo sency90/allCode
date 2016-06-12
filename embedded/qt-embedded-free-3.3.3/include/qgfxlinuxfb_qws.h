@@ -1,0 +1,1 @@
+../src/embedded/qgfxlinuxfb_qws.h

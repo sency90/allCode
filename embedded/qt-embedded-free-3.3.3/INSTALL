@@ -1,0 +1,42 @@
+			  INSTALLING Qt/Embedded
+
+
+This installation procedure is written for Linux. It may need to be
+modified for other platforms.
+ 
+Unpack the archive if you have not done so already:
+
+cd <anywhere>
+gunzip qt-embedded-3.3.3-commercial.tar.gz    # uncompress the archive
+tar xf qt-embedded-3.3.3-commercial.tar       # unpack it
+
+This document assumes that the archive is installed as ~/qt-3.3.3
+
+Compile the Qt/Embedded library and examples:
+
+cd ~/qt-3.3.3
+export QTDIR=~/qt-3.3.3
+export LD_LIBRARY_PATH=~/qt-3.3.3/lib:$LD_LIBRARY_PATH
+./configure
+make
+
+You will require a working Linux framebuffer to use Qt/Embedded.
+
+To run the demo:
+
+cd ~/qt-3.3.3/examples/launcher
+./start_demo
+
+See the HTML documentation in doc/html for detailed installation
+instructions.
+
+Note for cross-compilation:
+
+Certain tools such as uic run on the host machine and therefore have
+to be built natively. The uic tool requires a native Qt library. The
+easiest way to do this is to use the uic binary from Qt/X11. Simply copy
+path-to-qt-x11/bin/uic to path-to-qt-embedded/bin/uic. You can then
+provide an -embedded argument to configure to continue the
+cross-platform build process following the procedures detailed in the
+HTML documentation.  It is also possible to use the uic binary from a
+separate native build of Qt/Embedded.

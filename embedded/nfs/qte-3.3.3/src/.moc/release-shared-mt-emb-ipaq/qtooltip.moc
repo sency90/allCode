@@ -1,0 +1,184 @@
+/****************************************************************************
+** QTipLabel meta object code from reading C++ file 'qtooltip.cpp'
+**
+** Created: Fri Jun 3 22:10:13 2016
+**      by: The Qt MOC ($Id: qt/moc_yacc.cpp   3.3.3   edited Aug 5 16:40 $)
+**
+** WARNING! All changes made in this file will be lost!
+*****************************************************************************/
+
+#include <qmetaobject.h>
+#include <qapplication.h>
+
+#include <private/qucomextra_p.h>
+#if !defined(Q_MOC_OUTPUT_REVISION) || (Q_MOC_OUTPUT_REVISION != 26)
+#error "This file was generated using the moc from 3.3.3. It"
+#error "cannot be used with the include files from this version of Qt."
+#error "(The moc has changed too much.)"
+#endif
+
+const char *QTipLabel::className() const
+{
+    return "QTipLabel";
+}
+
+QMetaObject *QTipLabel::metaObj = 0;
+static QMetaObjectCleanUp cleanUp_QTipLabel( "QTipLabel", &QTipLabel::staticMetaObject );
+
+#ifndef QT_NO_TRANSLATION
+QString QTipLabel::tr( const char *s, const char *c )
+{
+    if ( qApp )
+	return qApp->translate( "QTipLabel", s, c, QApplication::DefaultCodec );
+    else
+	return QString::fromLatin1( s );
+}
+#ifndef QT_NO_TRANSLATION_UTF8
+QString QTipLabel::trUtf8( const char *s, const char *c )
+{
+    if ( qApp )
+	return qApp->translate( "QTipLabel", s, c, QApplication::UnicodeUTF8 );
+    else
+	return QString::fromUtf8( s );
+}
+#endif // QT_NO_TRANSLATION_UTF8
+
+#endif // QT_NO_TRANSLATION
+
+QMetaObject* QTipLabel::staticMetaObject()
+{
+    if ( metaObj )
+	return metaObj;
+    QMetaObject* parentObject = QLabel::staticMetaObject();
+    metaObj = QMetaObject::new_metaobject(
+	"QTipLabel", parentObject,
+	0, 0,
+	0, 0,
+#ifndef QT_NO_PROPERTIES
+	0, 0,
+	0, 0,
+#endif // QT_NO_PROPERTIES
+	0, 0 );
+    cleanUp_QTipLabel.setMetaObject( metaObj );
+    return metaObj;
+}
+
+void* QTipLabel::qt_cast( const char* clname )
+{
+    if ( !qstrcmp( clname, "QTipLabel" ) )
+	return this;
+    return QLabel::qt_cast( clname );
+}
+
+bool QTipLabel::qt_invoke( int _id, QUObject* _o )
+{
+    return QLabel::qt_invoke(_id,_o);
+}
+
+bool QTipLabel::qt_emit( int _id, QUObject* _o )
+{
+    return QLabel::qt_emit(_id,_o);
+}
+#ifndef QT_NO_PROPERTIES
+
+bool QTipLabel::qt_property( int id, int f, QVariant* v)
+{
+    return QLabel::qt_property( id, f, v);
+}
+
+bool QTipLabel::qt_static_property( QObject* , int , int , QVariant* ){ return FALSE; }
+#endif // QT_NO_PROPERTIES
+
+
+const char *QTipManager::className() const
+{
+    return "QTipManager";
+}
+
+QMetaObject *QTipManager::metaObj = 0;
+static QMetaObjectCleanUp cleanUp_QTipManager( "QTipManager", &QTipManager::staticMetaObject );
+
+#ifndef QT_NO_TRANSLATION
+QString QTipManager::tr( const char *s, const char *c )
+{
+    if ( qApp )
+	return qApp->translate( "QTipManager", s, c, QApplication::DefaultCodec );
+    else
+	return QString::fromLatin1( s );
+}
+#ifndef QT_NO_TRANSLATION_UTF8
+QString QTipManager::trUtf8( const char *s, const char *c )
+{
+    if ( qApp )
+	return qApp->translate( "QTipManager", s, c, QApplication::UnicodeUTF8 );
+    else
+	return QString::fromUtf8( s );
+}
+#endif // QT_NO_TRANSLATION_UTF8
+
+#endif // QT_NO_TRANSLATION
+
+QMetaObject* QTipManager::staticMetaObject()
+{
+    if ( metaObj )
+	return metaObj;
+    QMetaObject* parentObject = QObject::staticMetaObject();
+    static const QUMethod slot_0 = {"hideTip", 0, 0 };
+    static const QUMethod slot_1 = {"labelDestroyed", 0, 0 };
+    static const QUMethod slot_2 = {"clientWidgetDestroyed", 0, 0 };
+    static const QUMethod slot_3 = {"showTip", 0, 0 };
+    static const QUMethod slot_4 = {"allowAnimation", 0, 0 };
+    static const QMetaData slot_tbl[] = {
+	{ "hideTip()", &slot_0, QMetaData::Public },
+	{ "labelDestroyed()", &slot_1, QMetaData::Private },
+	{ "clientWidgetDestroyed()", &slot_2, QMetaData::Private },
+	{ "showTip()", &slot_3, QMetaData::Private },
+	{ "allowAnimation()", &slot_4, QMetaData::Private }
+    };
+    metaObj = QMetaObject::new_metaobject(
+	"QTipManager", parentObject,
+	slot_tbl, 5,
+	0, 0,
+#ifndef QT_NO_PROPERTIES
+	0, 0,
+	0, 0,
+#endif // QT_NO_PROPERTIES
+	0, 0 );
+    cleanUp_QTipManager.setMetaObject( metaObj );
+    return metaObj;
+}
+
+void* QTipManager::qt_cast( const char* clname )
+{
+    if ( !qstrcmp( clname, "QTipManager" ) )
+	return this;
+    return QObject::qt_cast( clname );
+}
+
+bool QTipManager::qt_invoke( int _id, QUObject* _o )
+{
+    switch ( _id - staticMetaObject()->slotOffset() ) {
+    case 0: hideTip(); break;
+    case 1: labelDestroyed(); break;
+    case 2: clientWidgetDestroyed(); break;
+    case 3: showTip(); break;
+    case 4: allowAnimation(); break;
+    default:
+	return QObject::qt_invoke( _id, _o );
+    }
+    return TRUE;
+}
+
+bool QTipManager::qt_emit( int _id, QUObject* _o )
+{
+    return QObject::qt_emit(_id,_o);
+}
+#ifndef QT_NO_PROPERTIES
+
+bool QTipManager::qt_property( int id, int f, QVariant* v)
+{
+    return QObject::qt_property( id, f, v);
+}
+
+bool QTipManager::qt_static_property( QObject* , int , int , QVariant* ){ return FALSE; }
+#endif // QT_NO_PROPERTIES

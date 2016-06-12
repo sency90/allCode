@@ -1,0 +1,365 @@
+/****************************************************************************
+** QFtpDTP meta object code from reading C++ file 'qftp.cpp'
+**
+** Created: Fri Jun 3 22:10:36 2016
+**      by: The Qt MOC ($Id: qt/moc_yacc.cpp   3.3.3   edited Aug 5 16:40 $)
+**
+** WARNING! All changes made in this file will be lost!
+*****************************************************************************/
+
+#include <qmetaobject.h>
+#include <qapplication.h>
+
+#include <private/qucomextra_p.h>
+#if !defined(Q_MOC_OUTPUT_REVISION) || (Q_MOC_OUTPUT_REVISION != 26)
+#error "This file was generated using the moc from 3.3.3. It"
+#error "cannot be used with the include files from this version of Qt."
+#error "(The moc has changed too much.)"
+#endif
+
+const char *QFtpDTP::className() const
+{
+    return "QFtpDTP";
+}
+
+QMetaObject *QFtpDTP::metaObj = 0;
+static QMetaObjectCleanUp cleanUp_QFtpDTP( "QFtpDTP", &QFtpDTP::staticMetaObject );
+
+#ifndef QT_NO_TRANSLATION
+QString QFtpDTP::tr( const char *s, const char *c )
+{
+    if ( qApp )
+	return qApp->translate( "QFtpDTP", s, c, QApplication::DefaultCodec );
+    else
+	return QString::fromLatin1( s );
+}
+#ifndef QT_NO_TRANSLATION_UTF8
+QString QFtpDTP::trUtf8( const char *s, const char *c )
+{
+    if ( qApp )
+	return qApp->translate( "QFtpDTP", s, c, QApplication::UnicodeUTF8 );
+    else
+	return QString::fromUtf8( s );
+}
+#endif // QT_NO_TRANSLATION_UTF8
+
+#endif // QT_NO_TRANSLATION
+
+QMetaObject* QFtpDTP::staticMetaObject()
+{
+    if ( metaObj )
+	return metaObj;
+    QMetaObject* parentObject = QObject::staticMetaObject();
+    static const QUMethod slot_0 = {"socketConnected", 0, 0 };
+    static const QUMethod slot_1 = {"socketReadyRead", 0, 0 };
+    static const QUParameter param_slot_2[] = {
+	{ 0, &static_QUType_int, 0, QUParameter::In }
+    };
+    static const QUMethod slot_2 = {"socketError", 1, param_slot_2 };
+    static const QUMethod slot_3 = {"socketConnectionClosed", 0, 0 };
+    static const QUParameter param_slot_4[] = {
+	{ 0, &static_QUType_int, 0, QUParameter::In }
+    };
+    static const QUMethod slot_4 = {"socketBytesWritten", 1, param_slot_4 };
+    static const QMetaData slot_tbl[] = {
+	{ "socketConnected()", &slot_0, QMetaData::Private },
+	{ "socketReadyRead()", &slot_1, QMetaData::Private },
+	{ "socketError(int)", &slot_2, QMetaData::Private },
+	{ "socketConnectionClosed()", &slot_3, QMetaData::Private },
+	{ "socketBytesWritten(int)", &slot_4, QMetaData::Private }
+    };
+    static const QUParameter param_signal_0[] = {
+	{ 0, &static_QUType_ptr, "QUrlInfo", QUParameter::In }
+    };
+    static const QUMethod signal_0 = {"listInfo", 1, param_signal_0 };
+    static const QUMethod signal_1 = {"readyRead", 0, 0 };
+    static const QUParameter param_signal_2[] = {
+	{ 0, &static_QUType_int, 0, QUParameter::In },
+	{ 0, &static_QUType_int, 0, QUParameter::In }
+    };
+    static const QUMethod signal_2 = {"dataTransferProgress", 2, param_signal_2 };
+    static const QUParameter param_signal_3[] = {
+	{ 0, &static_QUType_int, 0, QUParameter::In }
+    };
+    static const QUMethod signal_3 = {"connectState", 1, param_signal_3 };
+    static const QMetaData signal_tbl[] = {
+	{ "listInfo(const QUrlInfo&)", &signal_0, QMetaData::Public },
+	{ "readyRead()", &signal_1, QMetaData::Public },
+	{ "dataTransferProgress(int,int)", &signal_2, QMetaData::Public },
+	{ "connectState(int)", &signal_3, QMetaData::Public }
+    };
+    metaObj = QMetaObject::new_metaobject(
+	"QFtpDTP", parentObject,
+	slot_tbl, 5,
+	signal_tbl, 4,
+#ifndef QT_NO_PROPERTIES
+	0, 0,
+	0, 0,
+#endif // QT_NO_PROPERTIES
+	0, 0 );
+    cleanUp_QFtpDTP.setMetaObject( metaObj );
+    return metaObj;
+}
+
+void* QFtpDTP::qt_cast( const char* clname )
+{
+    if ( !qstrcmp( clname, "QFtpDTP" ) )
+	return this;
+    return QObject::qt_cast( clname );
+}
+
+#include <qobjectdefs.h>
+#include <qsignalslotimp.h>
+
+// SIGNAL listInfo
+void QFtpDTP::listInfo( const QUrlInfo& t0 )
+{
+    if ( signalsBlocked() )
+	return;
+    QConnectionList *clist = receivers( staticMetaObject()->signalOffset() + 0 );
+    if ( !clist )
+	return;
+    QUObject o[2];
+    static_QUType_ptr.set(o+1,&t0);
+    activate_signal( clist, o );
+}
+
+// SIGNAL readyRead
+void QFtpDTP::readyRead()
+{
+    activate_signal( staticMetaObject()->signalOffset() + 1 );
+}
+
+// SIGNAL dataTransferProgress
+void QFtpDTP::dataTransferProgress( int t0, int t1 )
+{
+    if ( signalsBlocked() )
+	return;
+    QConnectionList *clist = receivers( staticMetaObject()->signalOffset() + 2 );
+    if ( !clist )
+	return;
+    QUObject o[3];
+    static_QUType_int.set(o+1,t0);
+    static_QUType_int.set(o+2,t1);
+    activate_signal( clist, o );
+}
+
+// SIGNAL connectState
+void QFtpDTP::connectState( int t0 )
+{
+    activate_signal( staticMetaObject()->signalOffset() + 3, t0 );
+}
+
+bool QFtpDTP::qt_invoke( int _id, QUObject* _o )
+{
+    switch ( _id - staticMetaObject()->slotOffset() ) {
+    case 0: socketConnected(); break;
+    case 1: socketReadyRead(); break;
+    case 2: socketError((int)static_QUType_int.get(_o+1)); break;
+    case 3: socketConnectionClosed(); break;
+    case 4: socketBytesWritten((int)static_QUType_int.get(_o+1)); break;
+    default:
+	return QObject::qt_invoke( _id, _o );
+    }
+    return TRUE;
+}
+
+bool QFtpDTP::qt_emit( int _id, QUObject* _o )
+{
+    switch ( _id - staticMetaObject()->signalOffset() ) {
+    case 0: listInfo((const QUrlInfo&)*((const QUrlInfo*)static_QUType_ptr.get(_o+1))); break;
+    case 1: readyRead(); break;
+    case 2: dataTransferProgress((int)static_QUType_int.get(_o+1),(int)static_QUType_int.get(_o+2)); break;
+    case 3: connectState((int)static_QUType_int.get(_o+1)); break;
+    default:
+	return QObject::qt_emit(_id,_o);
+    }
+    return TRUE;
+}
+#ifndef QT_NO_PROPERTIES
+
+bool QFtpDTP::qt_property( int id, int f, QVariant* v)
+{
+    return QObject::qt_property( id, f, v);
+}
+
+bool QFtpDTP::qt_static_property( QObject* , int , int , QVariant* ){ return FALSE; }
+#endif // QT_NO_PROPERTIES
+
+
+const char *QFtpPI::className() const
+{
+    return "QFtpPI";
+}
+
+QMetaObject *QFtpPI::metaObj = 0;
+static QMetaObjectCleanUp cleanUp_QFtpPI( "QFtpPI", &QFtpPI::staticMetaObject );
+
+#ifndef QT_NO_TRANSLATION
+QString QFtpPI::tr( const char *s, const char *c )
+{
+    if ( qApp )
+	return qApp->translate( "QFtpPI", s, c, QApplication::DefaultCodec );
+    else
+	return QString::fromLatin1( s );
+}
+#ifndef QT_NO_TRANSLATION_UTF8
+QString QFtpPI::trUtf8( const char *s, const char *c )
+{
+    if ( qApp )
+	return qApp->translate( "QFtpPI", s, c, QApplication::UnicodeUTF8 );
+    else
+	return QString::fromUtf8( s );
+}
+#endif // QT_NO_TRANSLATION_UTF8
+
+#endif // QT_NO_TRANSLATION
+
+QMetaObject* QFtpPI::staticMetaObject()
+{
+    if ( metaObj )
+	return metaObj;
+    QMetaObject* parentObject = QObject::staticMetaObject();
+    static const QUMethod slot_0 = {"hostFound", 0, 0 };
+    static const QUMethod slot_1 = {"connected", 0, 0 };
+    static const QUMethod slot_2 = {"connectionClosed", 0, 0 };
+    static const QUMethod slot_3 = {"delayedCloseFinished", 0, 0 };
+    static const QUMethod slot_4 = {"readyRead", 0, 0 };
+    static const QUParameter param_slot_5[] = {
+	{ 0, &static_QUType_int, 0, QUParameter::In }
+    };
+    static const QUMethod slot_5 = {"error", 1, param_slot_5 };
+    static const QUParameter param_slot_6[] = {
+	{ 0, &static_QUType_int, 0, QUParameter::In }
+    };
+    static const QUMethod slot_6 = {"dtpConnectState", 1, param_slot_6 };
+    static const QMetaData slot_tbl[] = {
+	{ "hostFound()", &slot_0, QMetaData::Private },
+	{ "connected()", &slot_1, QMetaData::Private },
+	{ "connectionClosed()", &slot_2, QMetaData::Private },
+	{ "delayedCloseFinished()", &slot_3, QMetaData::Private },
+	{ "readyRead()", &slot_4, QMetaData::Private },
+	{ "error(int)", &slot_5, QMetaData::Private },
+	{ "dtpConnectState(int)", &slot_6, QMetaData::Private }
+    };
+    static const QUParameter param_signal_0[] = {
+	{ 0, &static_QUType_int, 0, QUParameter::In }
+    };
+    static const QUMethod signal_0 = {"connectState", 1, param_signal_0 };
+    static const QUParameter param_signal_1[] = {
+	{ 0, &static_QUType_QString, 0, QUParameter::In }
+    };
+    static const QUMethod signal_1 = {"finished", 1, param_signal_1 };
+    static const QUParameter param_signal_2[] = {
+	{ 0, &static_QUType_int, 0, QUParameter::In },
+	{ 0, &static_QUType_QString, 0, QUParameter::In }
+    };
+    static const QUMethod signal_2 = {"error", 2, param_signal_2 };
+    static const QUParameter param_signal_3[] = {
+	{ 0, &static_QUType_int, 0, QUParameter::In },
+	{ 0, &static_QUType_QString, 0, QUParameter::In }
+    };
+    static const QUMethod signal_3 = {"rawFtpReply", 2, param_signal_3 };
+    static const QMetaData signal_tbl[] = {
+	{ "connectState(int)", &signal_0, QMetaData::Public },
+	{ "finished(const QString&)", &signal_1, QMetaData::Public },
+	{ "error(int,const QString&)", &signal_2, QMetaData::Public },
+	{ "rawFtpReply(int,const QString&)", &signal_3, QMetaData::Public }
+    };
+    metaObj = QMetaObject::new_metaobject(
+	"QFtpPI", parentObject,
+	slot_tbl, 7,
+	signal_tbl, 4,
+#ifndef QT_NO_PROPERTIES
+	0, 0,
+	0, 0,
+#endif // QT_NO_PROPERTIES
+	0, 0 );
+    cleanUp_QFtpPI.setMetaObject( metaObj );
+    return metaObj;
+}
+
+void* QFtpPI::qt_cast( const char* clname )
+{
+    if ( !qstrcmp( clname, "QFtpPI" ) )
+	return this;
+    return QObject::qt_cast( clname );
+}
+
+// SIGNAL connectState
+void QFtpPI::connectState( int t0 )
+{
+    activate_signal( staticMetaObject()->signalOffset() + 0, t0 );
+}
+
+// SIGNAL finished
+void QFtpPI::finished( const QString& t0 )
+{
+    activate_signal( staticMetaObject()->signalOffset() + 1, t0 );
+}
+
+// SIGNAL error
+void QFtpPI::error( int t0, const QString& t1 )
+{
+    if ( signalsBlocked() )
+	return;
+    QConnectionList *clist = receivers( staticMetaObject()->signalOffset() + 2 );
+    if ( !clist )
+	return;
+    QUObject o[3];
+    static_QUType_int.set(o+1,t0);
+    static_QUType_QString.set(o+2,t1);
+    activate_signal( clist, o );
+}
+
+// SIGNAL rawFtpReply
+void QFtpPI::rawFtpReply( int t0, const QString& t1 )
+{
+    if ( signalsBlocked() )
+	return;
+    QConnectionList *clist = receivers( staticMetaObject()->signalOffset() + 3 );
+    if ( !clist )
+	return;
+    QUObject o[3];
+    static_QUType_int.set(o+1,t0);
+    static_QUType_QString.set(o+2,t1);
+    activate_signal( clist, o );
+}
+
+bool QFtpPI::qt_invoke( int _id, QUObject* _o )
+{
+    switch ( _id - staticMetaObject()->slotOffset() ) {
+    case 0: hostFound(); break;
+    case 1: connected(); break;
+    case 2: connectionClosed(); break;
+    case 3: delayedCloseFinished(); break;
+    case 4: readyRead(); break;
+    case 5: error((int)static_QUType_int.get(_o+1)); break;
+    case 6: dtpConnectState((int)static_QUType_int.get(_o+1)); break;
+    default:
+	return QObject::qt_invoke( _id, _o );
+    }
+    return TRUE;
+}
+
+bool QFtpPI::qt_emit( int _id, QUObject* _o )
+{
+    switch ( _id - staticMetaObject()->signalOffset() ) {
+    case 0: connectState((int)static_QUType_int.get(_o+1)); break;
+    case 1: finished((const QString&)static_QUType_QString.get(_o+1)); break;
+    case 2: error((int)static_QUType_int.get(_o+1),(const QString&)static_QUType_QString.get(_o+2)); break;
+    case 3: rawFtpReply((int)static_QUType_int.get(_o+1),(const QString&)static_QUType_QString.get(_o+2)); break;
+    default:
+	return QObject::qt_emit(_id,_o);
+    }
+    return TRUE;
+}
+#ifndef QT_NO_PROPERTIES
+
+bool QFtpPI::qt_property( int id, int f, QVariant* v)
+{
+    return QObject::qt_property( id, f, v);
+}
+
+bool QFtpPI::qt_static_property( QObject* , int , int , QVariant* ){ return FALSE; }
+#endif // QT_NO_PROPERTIES

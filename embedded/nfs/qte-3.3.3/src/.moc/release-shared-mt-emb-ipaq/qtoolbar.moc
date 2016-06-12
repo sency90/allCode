@@ -1,0 +1,175 @@
+/****************************************************************************
+** QToolBarSeparator meta object code from reading C++ file 'qtoolbar.cpp'
+**
+** Created: Fri Jun 3 22:10:11 2016
+**      by: The Qt MOC ($Id: qt/moc_yacc.cpp   3.3.3   edited Aug 5 16:40 $)
+**
+** WARNING! All changes made in this file will be lost!
+*****************************************************************************/
+
+#include <qmetaobject.h>
+#include <qapplication.h>
+
+#include <private/qucomextra_p.h>
+#if !defined(Q_MOC_OUTPUT_REVISION) || (Q_MOC_OUTPUT_REVISION != 26)
+#error "This file was generated using the moc from 3.3.3. It"
+#error "cannot be used with the include files from this version of Qt."
+#error "(The moc has changed too much.)"
+#endif
+
+const char *QToolBarSeparator::className() const
+{
+    return "QToolBarSeparator";
+}
+
+QMetaObject *QToolBarSeparator::metaObj = 0;
+static QMetaObjectCleanUp cleanUp_QToolBarSeparator( "QToolBarSeparator", &QToolBarSeparator::staticMetaObject );
+
+#ifndef QT_NO_TRANSLATION
+QString QToolBarSeparator::tr( const char *s, const char *c )
+{
+    if ( qApp )
+	return qApp->translate( "QToolBarSeparator", s, c, QApplication::DefaultCodec );
+    else
+	return QString::fromLatin1( s );
+}
+#ifndef QT_NO_TRANSLATION_UTF8
+QString QToolBarSeparator::trUtf8( const char *s, const char *c )
+{
+    if ( qApp )
+	return qApp->translate( "QToolBarSeparator", s, c, QApplication::UnicodeUTF8 );
+    else
+	return QString::fromUtf8( s );
+}
+#endif // QT_NO_TRANSLATION_UTF8
+
+#endif // QT_NO_TRANSLATION
+
+QMetaObject* QToolBarSeparator::staticMetaObject()
+{
+    if ( metaObj )
+	return metaObj;
+    QMetaObject* parentObject = QWidget::staticMetaObject();
+    static const QUParameter param_slot_0[] = {
+	{ 0, &static_QUType_ptr, "Orientation", QUParameter::In }
+    };
+    static const QUMethod slot_0 = {"setOrientation", 1, param_slot_0 };
+    static const QMetaData slot_tbl[] = {
+	{ "setOrientation(Orientation)", &slot_0, QMetaData::Public }
+    };
+    metaObj = QMetaObject::new_metaobject(
+	"QToolBarSeparator", parentObject,
+	slot_tbl, 1,
+	0, 0,
+#ifndef QT_NO_PROPERTIES
+	0, 0,
+	0, 0,
+#endif // QT_NO_PROPERTIES
+	0, 0 );
+    cleanUp_QToolBarSeparator.setMetaObject( metaObj );
+    return metaObj;
+}
+
+void* QToolBarSeparator::qt_cast( const char* clname )
+{
+    if ( !qstrcmp( clname, "QToolBarSeparator" ) )
+	return this;
+    return QWidget::qt_cast( clname );
+}
+
+bool QToolBarSeparator::qt_invoke( int _id, QUObject* _o )
+{
+    switch ( _id - staticMetaObject()->slotOffset() ) {
+    case 0: setOrientation((Orientation)(*((Orientation*)static_QUType_ptr.get(_o+1)))); break;
+    default:
+	return QWidget::qt_invoke( _id, _o );
+    }
+    return TRUE;
+}
+
+bool QToolBarSeparator::qt_emit( int _id, QUObject* _o )
+{
+    return QWidget::qt_emit(_id,_o);
+}
+#ifndef QT_NO_PROPERTIES
+
+bool QToolBarSeparator::qt_property( int id, int f, QVariant* v)
+{
+    return QWidget::qt_property( id, f, v);
+}
+
+bool QToolBarSeparator::qt_static_property( QObject* , int , int , QVariant* ){ return FALSE; }
+#endif // QT_NO_PROPERTIES
+
+
+const char *QToolBarExtensionWidget::className() const
+{
+    return "QToolBarExtensionWidget";
+}
+
+QMetaObject *QToolBarExtensionWidget::metaObj = 0;
+static QMetaObjectCleanUp cleanUp_QToolBarExtensionWidget( "QToolBarExtensionWidget", &QToolBarExtensionWidget::staticMetaObject );
+
+#ifndef QT_NO_TRANSLATION
+QString QToolBarExtensionWidget::tr( const char *s, const char *c )
+{
+    if ( qApp )
+	return qApp->translate( "QToolBarExtensionWidget", s, c, QApplication::DefaultCodec );
+    else
+	return QString::fromLatin1( s );
+}
+#ifndef QT_NO_TRANSLATION_UTF8
+QString QToolBarExtensionWidget::trUtf8( const char *s, const char *c )
+{
+    if ( qApp )
+	return qApp->translate( "QToolBarExtensionWidget", s, c, QApplication::UnicodeUTF8 );
+    else
+	return QString::fromUtf8( s );
+}
+#endif // QT_NO_TRANSLATION_UTF8
+
+#endif // QT_NO_TRANSLATION
+
+QMetaObject* QToolBarExtensionWidget::staticMetaObject()
+{
+    if ( metaObj )
+	return metaObj;
+    QMetaObject* parentObject = QWidget::staticMetaObject();
+    metaObj = QMetaObject::new_metaobject(
+	"QToolBarExtensionWidget", parentObject,
+	0, 0,
+	0, 0,
+#ifndef QT_NO_PROPERTIES
+	0, 0,
+	0, 0,
+#endif // QT_NO_PROPERTIES
+	0, 0 );
+    cleanUp_QToolBarExtensionWidget.setMetaObject( metaObj );
+    return metaObj;
+}
+
+void* QToolBarExtensionWidget::qt_cast( const char* clname )
+{
+    if ( !qstrcmp( clname, "QToolBarExtensionWidget" ) )
+	return this;
+    return QWidget::qt_cast( clname );
+}
+
+bool QToolBarExtensionWidget::qt_invoke( int _id, QUObject* _o )
+{
+    return QWidget::qt_invoke(_id,_o);
+}
+
+bool QToolBarExtensionWidget::qt_emit( int _id, QUObject* _o )
+{
+    return QWidget::qt_emit(_id,_o);
+}
+#ifndef QT_NO_PROPERTIES
+
+bool QToolBarExtensionWidget::qt_property( int id, int f, QVariant* v)
+{
+    return QWidget::qt_property( id, f, v);
+}
+
+bool QToolBarExtensionWidget::qt_static_property( QObject* , int , int , QVariant* ){ return FALSE; }
+#endif // QT_NO_PROPERTIES

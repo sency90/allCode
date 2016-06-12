@@ -1,0 +1,1 @@
+../src/embedded/qgfxdriverplugin_qws.h

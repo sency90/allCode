@@ -1,0 +1,1 @@
+../src/embedded/qmousedriverplugin_qws.h

@@ -1,0 +1,701 @@
+/****************************************************************************
+** QWellArray meta object code from reading C++ file 'qcolordialog.cpp'
+**
+** Created: Fri Jun 3 22:10:24 2016
+**      by: The Qt MOC ($Id: qt/moc_yacc.cpp   3.3.3   edited Aug 5 16:40 $)
+**
+** WARNING! All changes made in this file will be lost!
+*****************************************************************************/
+
+#include <qmetaobject.h>
+#include <qapplication.h>
+
+#include <private/qucomextra_p.h>
+#if !defined(Q_MOC_OUTPUT_REVISION) || (Q_MOC_OUTPUT_REVISION != 26)
+#error "This file was generated using the moc from 3.3.3. It"
+#error "cannot be used with the include files from this version of Qt."
+#error "(The moc has changed too much.)"
+#endif
+
+#include <qvariant.h>
+const char *QWellArray::className() const
+{
+    return "QWellArray";
+}
+
+QMetaObject *QWellArray::metaObj = 0;
+static QMetaObjectCleanUp cleanUp_QWellArray( "QWellArray", &QWellArray::staticMetaObject );
+
+#ifndef QT_NO_TRANSLATION
+QString QWellArray::tr( const char *s, const char *c )
+{
+    if ( qApp )
+	return qApp->translate( "QWellArray", s, c, QApplication::DefaultCodec );
+    else
+	return QString::fromLatin1( s );
+}
+#ifndef QT_NO_TRANSLATION_UTF8
+QString QWellArray::trUtf8( const char *s, const char *c )
+{
+    if ( qApp )
+	return qApp->translate( "QWellArray", s, c, QApplication::UnicodeUTF8 );
+    else
+	return QString::fromUtf8( s );
+}
+#endif // QT_NO_TRANSLATION_UTF8
+
+#endif // QT_NO_TRANSLATION
+
+QMetaObject* QWellArray::staticMetaObject()
+{
+    if ( metaObj )
+	return metaObj;
+    QMetaObject* parentObject = QGridView::staticMetaObject();
+    static const QUParameter param_signal_0[] = {
+	{ "row", &static_QUType_int, 0, QUParameter::In },
+	{ "col", &static_QUType_int, 0, QUParameter::In }
+    };
+    static const QUMethod signal_0 = {"selected", 2, param_signal_0 };
+    static const QMetaData signal_tbl[] = {
+	{ "selected(int,int)", &signal_0, QMetaData::Public }
+    };
+#ifndef QT_NO_PROPERTIES
+    static const QMetaProperty props_tbl[2] = {
+ 	{ "int","selectedColumn", 0x10000001, &QWellArray::metaObj, 0, -1 },
+	{ "int","selectedRow", 0x10000001, &QWellArray::metaObj, 0, -1 }
+    };
+#endif // QT_NO_PROPERTIES
+    metaObj = QMetaObject::new_metaobject(
+	"QWellArray", parentObject,
+	0, 0,
+	signal_tbl, 1,
+#ifndef QT_NO_PROPERTIES
+	props_tbl, 2,
+	0, 0,
+#endif // QT_NO_PROPERTIES
+	0, 0 );
+    cleanUp_QWellArray.setMetaObject( metaObj );
+    return metaObj;
+}
+
+void* QWellArray::qt_cast( const char* clname )
+{
+    if ( !qstrcmp( clname, "QWellArray" ) )
+	return this;
+    return QGridView::qt_cast( clname );
+}
+
+#include <qobjectdefs.h>
+#include <qsignalslotimp.h>
+
+// SIGNAL selected
+void QWellArray::selected( int t0, int t1 )
+{
+    if ( signalsBlocked() )
+	return;
+    QConnectionList *clist = receivers( staticMetaObject()->signalOffset() + 0 );
+    if ( !clist )
+	return;
+    QUObject o[3];
+    static_QUType_int.set(o+1,t0);
+    static_QUType_int.set(o+2,t1);
+    activate_signal( clist, o );
+}
+
+bool QWellArray::qt_invoke( int _id, QUObject* _o )
+{
+    return QGridView::qt_invoke(_id,_o);
+}
+
+bool QWellArray::qt_emit( int _id, QUObject* _o )
+{
+    switch ( _id - staticMetaObject()->signalOffset() ) {
+    case 0: selected((int)static_QUType_int.get(_o+1),(int)static_QUType_int.get(_o+2)); break;
+    default:
+	return QGridView::qt_emit(_id,_o);
+    }
+    return TRUE;
+}
+#ifndef QT_NO_PROPERTIES
+
+bool QWellArray::qt_property( int id, int f, QVariant* v)
+{
+    switch ( id - staticMetaObject()->propertyOffset() ) {
+    case 0: switch( f ) {
+	case 1: *v = QVariant( this->selectedColumn() ); break;
+	case 3: case 4: case 5: break;
+	default: return FALSE;
+    } break;
+    case 1: switch( f ) {
+	case 1: *v = QVariant( this->selectedRow() ); break;
+	case 3: case 4: case 5: break;
+	default: return FALSE;
+    } break;
+    default:
+	return QGridView::qt_property( id, f, v );
+    }
+    return TRUE;
+}
+
+bool QWellArray::qt_static_property( QObject* , int , int , QVariant* ){ return FALSE; }
+#endif // QT_NO_PROPERTIES
+
+
+const char *QColorPicker::className() const
+{
+    return "QColorPicker";
+}
+
+QMetaObject *QColorPicker::metaObj = 0;
+static QMetaObjectCleanUp cleanUp_QColorPicker( "QColorPicker", &QColorPicker::staticMetaObject );
+
+#ifndef QT_NO_TRANSLATION
+QString QColorPicker::tr( const char *s, const char *c )
+{
+    if ( qApp )
+	return qApp->translate( "QColorPicker", s, c, QApplication::DefaultCodec );
+    else
+	return QString::fromLatin1( s );
+}
+#ifndef QT_NO_TRANSLATION_UTF8
+QString QColorPicker::trUtf8( const char *s, const char *c )
+{
+    if ( qApp )
+	return qApp->translate( "QColorPicker", s, c, QApplication::UnicodeUTF8 );
+    else
+	return QString::fromUtf8( s );
+}
+#endif // QT_NO_TRANSLATION_UTF8
+
+#endif // QT_NO_TRANSLATION
+
+QMetaObject* QColorPicker::staticMetaObject()
+{
+    if ( metaObj )
+	return metaObj;
+    QMetaObject* parentObject = QFrame::staticMetaObject();
+    static const QUParameter param_slot_0[] = {
+	{ "h", &static_QUType_int, 0, QUParameter::In },
+	{ "s", &static_QUType_int, 0, QUParameter::In }
+    };
+    static const QUMethod slot_0 = {"setCol", 2, param_slot_0 };
+    static const QMetaData slot_tbl[] = {
+	{ "setCol(int,int)", &slot_0, QMetaData::Public }
+    };
+    static const QUParameter param_signal_0[] = {
+	{ "h", &static_QUType_int, 0, QUParameter::In },
+	{ "s", &static_QUType_int, 0, QUParameter::In }
+    };
+    static const QUMethod signal_0 = {"newCol", 2, param_signal_0 };
+    static const QMetaData signal_tbl[] = {
+	{ "newCol(int,int)", &signal_0, QMetaData::Public }
+    };
+    metaObj = QMetaObject::new_metaobject(
+	"QColorPicker", parentObject,
+	slot_tbl, 1,
+	signal_tbl, 1,
+#ifndef QT_NO_PROPERTIES
+	0, 0,
+	0, 0,
+#endif // QT_NO_PROPERTIES
+	0, 0 );
+    cleanUp_QColorPicker.setMetaObject( metaObj );
+    return metaObj;
+}
+
+void* QColorPicker::qt_cast( const char* clname )
+{
+    if ( !qstrcmp( clname, "QColorPicker" ) )
+	return this;
+    return QFrame::qt_cast( clname );
+}
+
+// SIGNAL newCol
+void QColorPicker::newCol( int t0, int t1 )
+{
+    if ( signalsBlocked() )
+	return;
+    QConnectionList *clist = receivers( staticMetaObject()->signalOffset() + 0 );
+    if ( !clist )
+	return;
+    QUObject o[3];
+    static_QUType_int.set(o+1,t0);
+    static_QUType_int.set(o+2,t1);
+    activate_signal( clist, o );
+}
+
+bool QColorPicker::qt_invoke( int _id, QUObject* _o )
+{
+    switch ( _id - staticMetaObject()->slotOffset() ) {
+    case 0: setCol((int)static_QUType_int.get(_o+1),(int)static_QUType_int.get(_o+2)); break;
+    default:
+	return QFrame::qt_invoke( _id, _o );
+    }
+    return TRUE;
+}
+
+bool QColorPicker::qt_emit( int _id, QUObject* _o )
+{
+    switch ( _id - staticMetaObject()->signalOffset() ) {
+    case 0: newCol((int)static_QUType_int.get(_o+1),(int)static_QUType_int.get(_o+2)); break;
+    default:
+	return QFrame::qt_emit(_id,_o);
+    }
+    return TRUE;
+}
+#ifndef QT_NO_PROPERTIES
+
+bool QColorPicker::qt_property( int id, int f, QVariant* v)
+{
+    return QFrame::qt_property( id, f, v);
+}
+
+bool QColorPicker::qt_static_property( QObject* , int , int , QVariant* ){ return FALSE; }
+#endif // QT_NO_PROPERTIES
+
+
+const char *QColorLuminancePicker::className() const
+{
+    return "QColorLuminancePicker";
+}
+
+QMetaObject *QColorLuminancePicker::metaObj = 0;
+static QMetaObjectCleanUp cleanUp_QColorLuminancePicker( "QColorLuminancePicker", &QColorLuminancePicker::staticMetaObject );
+
+#ifndef QT_NO_TRANSLATION
+QString QColorLuminancePicker::tr( const char *s, const char *c )
+{
+    if ( qApp )
+	return qApp->translate( "QColorLuminancePicker", s, c, QApplication::DefaultCodec );
+    else
+	return QString::fromLatin1( s );
+}
+#ifndef QT_NO_TRANSLATION_UTF8
+QString QColorLuminancePicker::trUtf8( const char *s, const char *c )
+{
+    if ( qApp )
+	return qApp->translate( "QColorLuminancePicker", s, c, QApplication::UnicodeUTF8 );
+    else
+	return QString::fromUtf8( s );
+}
+#endif // QT_NO_TRANSLATION_UTF8
+
+#endif // QT_NO_TRANSLATION
+
+QMetaObject* QColorLuminancePicker::staticMetaObject()
+{
+    if ( metaObj )
+	return metaObj;
+    QMetaObject* parentObject = QWidget::staticMetaObject();
+    static const QUParameter param_slot_0[] = {
+	{ "h", &static_QUType_int, 0, QUParameter::In },
+	{ "s", &static_QUType_int, 0, QUParameter::In },
+	{ "v", &static_QUType_int, 0, QUParameter::In }
+    };
+    static const QUMethod slot_0 = {"setCol", 3, param_slot_0 };
+    static const QUParameter param_slot_1[] = {
+	{ "h", &static_QUType_int, 0, QUParameter::In },
+	{ "s", &static_QUType_int, 0, QUParameter::In }
+    };
+    static const QUMethod slot_1 = {"setCol", 2, param_slot_1 };
+    static const QMetaData slot_tbl[] = {
+	{ "setCol(int,int,int)", &slot_0, QMetaData::Public },
+	{ "setCol(int,int)", &slot_1, QMetaData::Public }
+    };
+    static const QUParameter param_signal_0[] = {
+	{ "h", &static_QUType_int, 0, QUParameter::In },
+	{ "s", &static_QUType_int, 0, QUParameter::In },
+	{ "v", &static_QUType_int, 0, QUParameter::In }
+    };
+    static const QUMethod signal_0 = {"newHsv", 3, param_signal_0 };
+    static const QMetaData signal_tbl[] = {
+	{ "newHsv(int,int,int)", &signal_0, QMetaData::Public }
+    };
+    metaObj = QMetaObject::new_metaobject(
+	"QColorLuminancePicker", parentObject,
+	slot_tbl, 2,
+	signal_tbl, 1,
+#ifndef QT_NO_PROPERTIES
+	0, 0,
+	0, 0,
+#endif // QT_NO_PROPERTIES
+	0, 0 );
+    cleanUp_QColorLuminancePicker.setMetaObject( metaObj );
+    return metaObj;
+}
+
+void* QColorLuminancePicker::qt_cast( const char* clname )
+{
+    if ( !qstrcmp( clname, "QColorLuminancePicker" ) )
+	return this;
+    return QWidget::qt_cast( clname );
+}
+
+// SIGNAL newHsv
+void QColorLuminancePicker::newHsv( int t0, int t1, int t2 )
+{
+    if ( signalsBlocked() )
+	return;
+    QConnectionList *clist = receivers( staticMetaObject()->signalOffset() + 0 );
+    if ( !clist )
+	return;
+    QUObject o[4];
+    static_QUType_int.set(o+1,t0);
+    static_QUType_int.set(o+2,t1);
+    static_QUType_int.set(o+3,t2);
+    activate_signal( clist, o );
+}
+
+bool QColorLuminancePicker::qt_invoke( int _id, QUObject* _o )
+{
+    switch ( _id - staticMetaObject()->slotOffset() ) {
+    case 0: setCol((int)static_QUType_int.get(_o+1),(int)static_QUType_int.get(_o+2),(int)static_QUType_int.get(_o+3)); break;
+    case 1: setCol((int)static_QUType_int.get(_o+1),(int)static_QUType_int.get(_o+2)); break;
+    default:
+	return QWidget::qt_invoke( _id, _o );
+    }
+    return TRUE;
+}
+
+bool QColorLuminancePicker::qt_emit( int _id, QUObject* _o )
+{
+    switch ( _id - staticMetaObject()->signalOffset() ) {
+    case 0: newHsv((int)static_QUType_int.get(_o+1),(int)static_QUType_int.get(_o+2),(int)static_QUType_int.get(_o+3)); break;
+    default:
+	return QWidget::qt_emit(_id,_o);
+    }
+    return TRUE;
+}
+#ifndef QT_NO_PROPERTIES
+
+bool QColorLuminancePicker::qt_property( int id, int f, QVariant* v)
+{
+    return QWidget::qt_property( id, f, v);
+}
+
+bool QColorLuminancePicker::qt_static_property( QObject* , int , int , QVariant* ){ return FALSE; }
+#endif // QT_NO_PROPERTIES
+
+
+const char *QColorShower::className() const
+{
+    return "QColorShower";
+}
+
+QMetaObject *QColorShower::metaObj = 0;
+static QMetaObjectCleanUp cleanUp_QColorShower( "QColorShower", &QColorShower::staticMetaObject );
+
+#ifndef QT_NO_TRANSLATION
+QString QColorShower::tr( const char *s, const char *c )
+{
+    if ( qApp )
+	return qApp->translate( "QColorShower", s, c, QApplication::DefaultCodec );
+    else
+	return QString::fromLatin1( s );
+}
+#ifndef QT_NO_TRANSLATION_UTF8
+QString QColorShower::trUtf8( const char *s, const char *c )
+{
+    if ( qApp )
+	return qApp->translate( "QColorShower", s, c, QApplication::UnicodeUTF8 );
+    else
+	return QString::fromUtf8( s );
+}
+#endif // QT_NO_TRANSLATION_UTF8
+
+#endif // QT_NO_TRANSLATION
+
+QMetaObject* QColorShower::staticMetaObject()
+{
+    if ( metaObj )
+	return metaObj;
+    QMetaObject* parentObject = QWidget::staticMetaObject();
+    static const QUParameter param_slot_0[] = {
+	{ "rgb", &static_QUType_ptr, "QRgb", QUParameter::In }
+    };
+    static const QUMethod slot_0 = {"setRgb", 1, param_slot_0 };
+    static const QUMethod slot_1 = {"rgbEd", 0, 0 };
+    static const QUMethod slot_2 = {"hsvEd", 0, 0 };
+    static const QMetaData slot_tbl[] = {
+	{ "setRgb(QRgb)", &slot_0, QMetaData::Public },
+	{ "rgbEd()", &slot_1, QMetaData::Private },
+	{ "hsvEd()", &slot_2, QMetaData::Private }
+    };
+    static const QUParameter param_signal_0[] = {
+	{ "rgb", &static_QUType_ptr, "QRgb", QUParameter::In }
+    };
+    static const QUMethod signal_0 = {"newCol", 1, param_signal_0 };
+    static const QMetaData signal_tbl[] = {
+	{ "newCol(QRgb)", &signal_0, QMetaData::Public }
+    };
+    metaObj = QMetaObject::new_metaobject(
+	"QColorShower", parentObject,
+	slot_tbl, 3,
+	signal_tbl, 1,
+#ifndef QT_NO_PROPERTIES
+	0, 0,
+	0, 0,
+#endif // QT_NO_PROPERTIES
+	0, 0 );
+    cleanUp_QColorShower.setMetaObject( metaObj );
+    return metaObj;
+}
+
+void* QColorShower::qt_cast( const char* clname )
+{
+    if ( !qstrcmp( clname, "QColorShower" ) )
+	return this;
+    return QWidget::qt_cast( clname );
+}
+
+// SIGNAL newCol
+void QColorShower::newCol( QRgb t0 )
+{
+    if ( signalsBlocked() )
+	return;
+    QConnectionList *clist = receivers( staticMetaObject()->signalOffset() + 0 );
+    if ( !clist )
+	return;
+    QUObject o[2];
+    static_QUType_ptr.set(o+1,&t0);
+    activate_signal( clist, o );
+}
+
+bool QColorShower::qt_invoke( int _id, QUObject* _o )
+{
+    switch ( _id - staticMetaObject()->slotOffset() ) {
+    case 0: setRgb((QRgb)(*((QRgb*)static_QUType_ptr.get(_o+1)))); break;
+    case 1: rgbEd(); break;
+    case 2: hsvEd(); break;
+    default:
+	return QWidget::qt_invoke( _id, _o );
+    }
+    return TRUE;
+}
+
+bool QColorShower::qt_emit( int _id, QUObject* _o )
+{
+    switch ( _id - staticMetaObject()->signalOffset() ) {
+    case 0: newCol((QRgb)(*((QRgb*)static_QUType_ptr.get(_o+1)))); break;
+    default:
+	return QWidget::qt_emit(_id,_o);
+    }
+    return TRUE;
+}
+#ifndef QT_NO_PROPERTIES
+
+bool QColorShower::qt_property( int id, int f, QVariant* v)
+{
+    return QWidget::qt_property( id, f, v);
+}
+
+bool QColorShower::qt_static_property( QObject* , int , int , QVariant* ){ return FALSE; }
+#endif // QT_NO_PROPERTIES
+
+
+const char *QColorShowLabel::className() const
+{
+    return "QColorShowLabel";
+}
+
+QMetaObject *QColorShowLabel::metaObj = 0;
+static QMetaObjectCleanUp cleanUp_QColorShowLabel( "QColorShowLabel", &QColorShowLabel::staticMetaObject );
+
+#ifndef QT_NO_TRANSLATION
+QString QColorShowLabel::tr( const char *s, const char *c )
+{
+    if ( qApp )
+	return qApp->translate( "QColorShowLabel", s, c, QApplication::DefaultCodec );
+    else
+	return QString::fromLatin1( s );
+}
+#ifndef QT_NO_TRANSLATION_UTF8
+QString QColorShowLabel::trUtf8( const char *s, const char *c )
+{
+    if ( qApp )
+	return qApp->translate( "QColorShowLabel", s, c, QApplication::UnicodeUTF8 );
+    else
+	return QString::fromUtf8( s );
+}
+#endif // QT_NO_TRANSLATION_UTF8
+
+#endif // QT_NO_TRANSLATION
+
+QMetaObject* QColorShowLabel::staticMetaObject()
+{
+    if ( metaObj )
+	return metaObj;
+    QMetaObject* parentObject = QFrame::staticMetaObject();
+    static const QUParameter param_signal_0[] = {
+	{ 0, &static_QUType_ptr, "QRgb", QUParameter::In }
+    };
+    static const QUMethod signal_0 = {"colorDropped", 1, param_signal_0 };
+    static const QMetaData signal_tbl[] = {
+	{ "colorDropped(QRgb)", &signal_0, QMetaData::Public }
+    };
+    metaObj = QMetaObject::new_metaobject(
+	"QColorShowLabel", parentObject,
+	0, 0,
+	signal_tbl, 1,
+#ifndef QT_NO_PROPERTIES
+	0, 0,
+	0, 0,
+#endif // QT_NO_PROPERTIES
+	0, 0 );
+    cleanUp_QColorShowLabel.setMetaObject( metaObj );
+    return metaObj;
+}
+
+void* QColorShowLabel::qt_cast( const char* clname )
+{
+    if ( !qstrcmp( clname, "QColorShowLabel" ) )
+	return this;
+    return QFrame::qt_cast( clname );
+}
+
+// SIGNAL colorDropped
+void QColorShowLabel::colorDropped( QRgb t0 )
+{
+    if ( signalsBlocked() )
+	return;
+    QConnectionList *clist = receivers( staticMetaObject()->signalOffset() + 0 );
+    if ( !clist )
+	return;
+    QUObject o[2];
+    static_QUType_ptr.set(o+1,&t0);
+    activate_signal( clist, o );
+}
+
+bool QColorShowLabel::qt_invoke( int _id, QUObject* _o )
+{
+    return QFrame::qt_invoke(_id,_o);
+}
+
+bool QColorShowLabel::qt_emit( int _id, QUObject* _o )
+{
+    switch ( _id - staticMetaObject()->signalOffset() ) {
+    case 0: colorDropped((QRgb)(*((QRgb*)static_QUType_ptr.get(_o+1)))); break;
+    default:
+	return QFrame::qt_emit(_id,_o);
+    }
+    return TRUE;
+}
+#ifndef QT_NO_PROPERTIES
+
+bool QColorShowLabel::qt_property( int id, int f, QVariant* v)
+{
+    return QFrame::qt_property( id, f, v);
+}
+
+bool QColorShowLabel::qt_static_property( QObject* , int , int , QVariant* ){ return FALSE; }
+#endif // QT_NO_PROPERTIES
+
+
+const char *QColorDialogPrivate::className() const
+{
+    return "QColorDialogPrivate";
+}
+
+QMetaObject *QColorDialogPrivate::metaObj = 0;
+static QMetaObjectCleanUp cleanUp_QColorDialogPrivate( "QColorDialogPrivate", &QColorDialogPrivate::staticMetaObject );
+
+#ifndef QT_NO_TRANSLATION
+QString QColorDialogPrivate::tr( const char *s, const char *c )
+{
+    if ( qApp )
+	return qApp->translate( "QColorDialogPrivate", s, c, QApplication::DefaultCodec );
+    else
+	return QString::fromLatin1( s );
+}
+#ifndef QT_NO_TRANSLATION_UTF8
+QString QColorDialogPrivate::trUtf8( const char *s, const char *c )
+{
+    if ( qApp )
+	return qApp->translate( "QColorDialogPrivate", s, c, QApplication::UnicodeUTF8 );
+    else
+	return QString::fromUtf8( s );
+}
+#endif // QT_NO_TRANSLATION_UTF8
+
+#endif // QT_NO_TRANSLATION
+
+QMetaObject* QColorDialogPrivate::staticMetaObject()
+{
+    if ( metaObj )
+	return metaObj;
+    QMetaObject* parentObject = QObject::staticMetaObject();
+    static const QUMethod slot_0 = {"addCustom", 0, 0 };
+    static const QUParameter param_slot_1[] = {
+	{ "h", &static_QUType_int, 0, QUParameter::In },
+	{ "s", &static_QUType_int, 0, QUParameter::In },
+	{ "v", &static_QUType_int, 0, QUParameter::In }
+    };
+    static const QUMethod slot_1 = {"newHsv", 3, param_slot_1 };
+    static const QUParameter param_slot_2[] = {
+	{ "rgb", &static_QUType_ptr, "QRgb", QUParameter::In }
+    };
+    static const QUMethod slot_2 = {"newColorTypedIn", 1, param_slot_2 };
+    static const QUParameter param_slot_3[] = {
+	{ 0, &static_QUType_int, 0, QUParameter::In },
+	{ 0, &static_QUType_int, 0, QUParameter::In }
+    };
+    static const QUMethod slot_3 = {"newCustom", 2, param_slot_3 };
+    static const QUParameter param_slot_4[] = {
+	{ 0, &static_QUType_int, 0, QUParameter::In },
+	{ 0, &static_QUType_int, 0, QUParameter::In }
+    };
+    static const QUMethod slot_4 = {"newStandard", 2, param_slot_4 };
+    static const QMetaData slot_tbl[] = {
+	{ "addCustom()", &slot_0, QMetaData::Public },
+	{ "newHsv(int,int,int)", &slot_1, QMetaData::Public },
+	{ "newColorTypedIn(QRgb)", &slot_2, QMetaData::Public },
+	{ "newCustom(int,int)", &slot_3, QMetaData::Public },
+	{ "newStandard(int,int)", &slot_4, QMetaData::Public }
+    };
+    metaObj = QMetaObject::new_metaobject(
+	"QColorDialogPrivate", parentObject,
+	slot_tbl, 5,
+	0, 0,
+#ifndef QT_NO_PROPERTIES
+	0, 0,
+	0, 0,
+#endif // QT_NO_PROPERTIES
+	0, 0 );
+    cleanUp_QColorDialogPrivate.setMetaObject( metaObj );
+    return metaObj;
+}
+
+void* QColorDialogPrivate::qt_cast( const char* clname )
+{
+    if ( !qstrcmp( clname, "QColorDialogPrivate" ) )
+	return this;
+    return QObject::qt_cast( clname );
+}
+
+bool QColorDialogPrivate::qt_invoke( int _id, QUObject* _o )
+{
+    switch ( _id - staticMetaObject()->slotOffset() ) {
+    case 0: addCustom(); break;
+    case 1: newHsv((int)static_QUType_int.get(_o+1),(int)static_QUType_int.get(_o+2),(int)static_QUType_int.get(_o+3)); break;
+    case 2: newColorTypedIn((QRgb)(*((QRgb*)static_QUType_ptr.get(_o+1)))); break;
+    case 3: newCustom((int)static_QUType_int.get(_o+1),(int)static_QUType_int.get(_o+2)); break;
+    case 4: newStandard((int)static_QUType_int.get(_o+1),(int)static_QUType_int.get(_o+2)); break;
+    default:
+	return QObject::qt_invoke( _id, _o );
+    }
+    return TRUE;
+}
+
+bool QColorDialogPrivate::qt_emit( int _id, QUObject* _o )
+{
+    return QObject::qt_emit(_id,_o);
+}
+#ifndef QT_NO_PROPERTIES
+
+bool QColorDialogPrivate::qt_property( int id, int f, QVariant* v)
+{
+    return QObject::qt_property( id, f, v);
+}
+
+bool QColorDialogPrivate::qt_static_property( QObject* , int , int , QVariant* ){ return FALSE; }
+#endif // QT_NO_PROPERTIES

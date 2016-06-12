@@ -1,0 +1,1 @@
+../src/embedded/qmouseyopy_qws.h

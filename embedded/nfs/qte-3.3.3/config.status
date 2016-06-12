@@ -1,0 +1,6 @@
+#!/bin/sh
+if [ "$#" -gt 0 ]; then
+  echo yes | /mnt/nfs/qte-3.3.3/configure -embedded ipaq -shared -depths 16 -thread -no-cups -qt-mouse-linuxtp "$@"
+else
+  echo yes | /mnt/nfs/qte-3.3.3/configure -embedded ipaq -shared -depths 16 -thread -no-cups -qt-mouse-linuxtp
+fi
