@@ -1,1 +1,0 @@
-../src/sql/qsqlquery.h

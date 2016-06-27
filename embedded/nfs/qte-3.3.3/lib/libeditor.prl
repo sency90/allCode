@@ -1,8 +1,0 @@
-QMAKE_PRL_BUILD_DIR = /mnt/nfs/qte-3.3.3/tools/designer/editor
-QMAKE_PRO_INPUT = editor.pro
-QMAKE_PRL_TARGET = libeditor.a
-QMAKE_PRL_CFLAGS = -D_REENTRANT
-QMAKE_PRL_CXXFLAGS = -D_REENTRANT
-QMAKE_PRL_CONFIG = qt link_prl minimal-config small-config medium-config large-config full-config styles tools kernel widgets dialogs iconview workspace network canvas table xml sql release thread embedded png no-gif zlib bigcodecs ft dylib create_prl link_prl qt warn_on staticlib moc
-QMAKE_PRL_VERSION = 1.0.0
-QMAKE_PRL_LIBS = -L/mnt/nfs/qte-3.3.3/lib -lqte-mt -ldl -lpthread 

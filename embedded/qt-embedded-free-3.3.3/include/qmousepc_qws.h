@@ -1,1 +1,0 @@
-../src/embedded/qmousepc_qws.h

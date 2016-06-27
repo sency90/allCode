@@ -1,1 +1,0 @@
-../src/kernel/qwscommand_qws.h

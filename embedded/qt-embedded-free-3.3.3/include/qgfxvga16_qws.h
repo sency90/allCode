@@ -1,1 +1,0 @@
-../src/embedded/qgfxvga16_qws.h

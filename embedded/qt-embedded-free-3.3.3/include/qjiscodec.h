@@ -1,1 +1,0 @@
-../src/codecs/qjiscodec.h

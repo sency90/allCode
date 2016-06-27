@@ -1,1 +1,0 @@
-../src/codecs/qgbkcodec.h

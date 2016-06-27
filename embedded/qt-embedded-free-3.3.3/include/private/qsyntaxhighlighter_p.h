@@ -1,1 +1,0 @@
-../../src/widgets/qsyntaxhighlighter_p.h

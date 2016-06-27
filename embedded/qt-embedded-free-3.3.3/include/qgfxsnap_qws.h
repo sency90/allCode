@@ -1,1 +1,0 @@
-../src/embedded/qgfxsnap_qws.h

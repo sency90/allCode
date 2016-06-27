@@ -1,1 +1,0 @@
-../src/codecs/qgb18030codec.h

@@ -1,1 +1,0 @@
-../src/kernel/qdirectpainter_qws.h

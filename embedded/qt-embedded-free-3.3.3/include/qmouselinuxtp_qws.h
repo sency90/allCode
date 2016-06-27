@@ -1,1 +1,0 @@
-../src/embedded/qmouselinuxtp_qws.h

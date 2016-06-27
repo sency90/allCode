@@ -1,1 +1,0 @@
-../src/kernel/qcopchannel_qws.h

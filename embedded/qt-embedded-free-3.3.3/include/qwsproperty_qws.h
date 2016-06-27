@@ -1,1 +1,0 @@
-../src/kernel/qwsproperty_qws.h

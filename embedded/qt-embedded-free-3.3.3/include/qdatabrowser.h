@@ -1,1 +1,0 @@
-../src/sql/qdatabrowser.h

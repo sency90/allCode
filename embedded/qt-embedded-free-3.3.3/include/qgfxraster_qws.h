@@ -1,1 +1,0 @@
-../src/kernel/qgfxraster_qws.h

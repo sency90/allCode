@@ -1,1 +1,0 @@
-../src/styles/qcdestyle.h
