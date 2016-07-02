@@ -3,10 +3,10 @@
 #include <queue>
 #include <algorithm>
 using namespace std;
-vector<int> v[50001];
+vector<int> v[100001];
 queue<int> q;
-int d[50001], p[50001][17];
-bool chk[50001];
+int d[100001], p[100001][17];
+bool chk[100001];
 int main() {
     int n, m, x, y;
     scanf("%d", &n);

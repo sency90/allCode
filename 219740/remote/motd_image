@@ -1,0 +1,44 @@
+KLEI     1 {
+	"dststeam":{
+		"image_url":"https://d21wmy1ql1e52r.cloudfront.net/motd7.tex",
+		"image_version":"7",
+		"link_title":"Klei Store",
+		"link_url":"bit.ly/dst-test-motd"
+	},
+	"swsteam":{
+		"image_url":"https://d21wmy1ql1e52r.cloudfront.net/motd7.tex",
+		"image_version":"7",
+		"link_title":"Klei Store",
+		"link_url":"http://bit.ly/store-sw-steam"
+	},	
+	"rogsteam":{
+		"image_url":"https://d21wmy1ql1e52r.cloudfront.net/motd7.tex",
+		"image_version":"7",
+		"link_title":"Klei Store",
+		"link_url":"http://bit.ly/store-rog-steam"
+	},
+	"steam":{
+		"image_url":"https://d21wmy1ql1e52r.cloudfront.net/motd7.tex",
+		"image_version":"7",
+		"link_title":"Klei Store",
+		"link_url":"http://bit.ly/store-ds-steam"
+	},
+	"swstandalone":{
+		"image_url":"https://d21wmy1ql1e52r.cloudfront.net/motd7.tex",
+		"image_version":"7",
+		"link_title":"Klei Store",
+		"link_url":"http://bit.ly/store-sw-standalone"
+	},
+	"rogstandalone":{
+		"image_url":"https://d21wmy1ql1e52r.cloudfront.net/motd7.tex",
+		"image_version":"7",
+		"link_title":"Klei Store",
+		"link_url":"http://bit.ly/store-rog-standalone"
+	},
+	"standalone":{
+		"image_url":"https://d21wmy1ql1e52r.cloudfront.net/motd7.tex",
+		"image_version":"7",
+		"link_title":"Klei Store",
+		"link_url":"http://bit.ly/store-ds-standalone"
+	}
+}
