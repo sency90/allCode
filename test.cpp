@@ -1,33 +1,50 @@
-#include<stdio.h>
-#include<string.h>
-#include<stdlib.h>
-#include <algorithm>
+#include <stdio.h>
+#include <iostream>
+#include <vector>
+#include <cstring>
 using namespace std;
-int a[1001];
-int d[1001];
-int  mx=1;
-int f(int n){
-	if(n==1) return 1;
-	if(d[n]>0) return d[n];
+#define MOD 1000000007LL
 
-    int tmp=0;
-	for(int i = n-1; i >= 1; i-- ){
-		if(a[i] < a[n]) {
-            tmp = max(tmp, f(i));
-		} else f(i);
+typedef vector<vector<long long> > M;
+int n, k;
+M v, base;
+M operator*(const M &l, const M &r){
+	M ret(n, vector<long long> (n));
+	for(int i=0;i<n;i++){
+		for(int j=0;j<n;j++){
+			for(int k=0;k<n;k++){
+				ret[i][j] = (ret[i][j] + l[i][k] * r[k][j])%MOD;
+			}
+		}
 	}
-	d[n] = tmp+1;
-	mx = max(mx, d[n]);
-	return d[n];
+	return ret;
 }
 
-int main() {
-	int n;
-	scanf("%d", &n);
-	for(int i = 1; i <= n; i++){
-		scanf("%d", &a[i]);
+M spow(const M &r, int m){
+	M ret;
+	ret.resize(n, vector<long long> (n));
+	if(m==0) return base;
+	if(m%2==1) return spow(r, m-1) * r;
+	ret = spow(r, m/2);
+	return ret * ret;
+}
+int main(){
+	scanf("%d %d", &n, &k);
+	v.resize(n, vector<long long> (n));
+	base.resize(n, vector<long long> (n, 0));
+	for(int i=0;i<n;i++){
+		for(int j=0;j<n;j++){
+			scanf("%lld", &v[i][j]);
+		}
 	}
-	f(n);
-	printf("%d", mx);
-	return 0;
+	for(int i=0;i<n;i++) base[i][i] = 1LL;
+	v = spow(v, k);
+	long long ans = 0;
+	for(int i=0;i<n;i++){
+		for(int j=0;j<n;j++){
+			ans += v[i][j];
+			if(ans > MOD) ans = ans % MOD;
+		}
+	}
+	printf("%lld", ans);
 }
