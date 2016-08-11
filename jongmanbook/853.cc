@@ -1,17 +1,19 @@
+//JMBook 849 page graph -> dfs tree / edge-distribution
 #include <cstdio>
 #include <vector>
 #include <iostream>
 using namespace std;
 vector<pair<int, int> > tree, ford, back, cross;
 vector<vector<int> > v;
-vector<bool> chk, fin;
-int cnt=0;
+vector<bool> fin;
+vector<int> discovered;
+int counter=0;
 void dfs(int x) {
-    chk[x] = true;
+    discovered[x] = ++counter;
     for(int i=0; i<v[x].size(); i++) {
         int y = v[x][i];
-        if(chk[y]) {
-            if(y > x) ford.push_back(make_pair(x,y));
+        if(discovered[y]) {
+            if(discovered[y] > discovered[x]) ford.push_back(make_pair(x,y));
             else if(fin[y]) cross.push_back(make_pair(x,y));
             else back.push_back(make_pair(x,y));
             continue;
@@ -25,7 +27,7 @@ void dfs(int x) {
 int main() {
     int n=7;
     v.resize(n, vector<int>());
-    chk.resize(n, false);
+    discovered.resize(n, 0);
     fin.resize(n, false);
     v[0].push_back(1);
     v[0].push_back(4);

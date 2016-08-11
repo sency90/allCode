@@ -1,19 +1,21 @@
 #include <stdio.h>
-#include <iostream>
 #include <vector>
+#include <iostream>
+#include <algorithm>
 using namespace std;
-vector<int> v;
-int x=100;
 int main() {
-    for(int i=0; i<10; i++) {
-        v.push_back(i+1);
+    int n, d;
+    vector<int> v;
+    cin >> n;
+    for(int i=0; i<n; i++) {
+        cin >> d;
+        v.push_back(d);
     }
-    cout << v.size();
-    puts("");
-    v.clear();
-    cout << v.size();
-    for(int i=0; i<10; i++) {
-        cout << v[i] << " ";
-    }
+    vector<int> tmp = v;
+    vector<int> tmp2 = v;
+    sort(tmp2.begin(), tmp2.end());
+    sort(tmp.begin(), tmp.end());
+    if(tmp == tmp2) puts("the same");
+    else puts("diff");
     return 0;
 }
