@@ -8,18 +8,27 @@ ull ans = 0ULL;
 set<ull> chk;
 queue<pair<ull, int> > q;
 int dx[]={0,0,1,-1}, dy[]={1,-1,0,0};
+void print(ull bit) {
+    stack<ull> st;
+    ull tmp = bit;
+    for(int i=0; i<16; i++) {
+        st.push(tmp&15ULL);
+        tmp>>=4;
+    }
+    while(!st.empty()) {
+        printf("%llu ", st.top());
+        st.pop();
+    }
+        printf("    ");
+}
 void exchange(ull &s, int idxa, int idxb) {
     int dif = (idxa-idxb)*4;
-    ull idx_a = (15ULL << (4*idxa));
-    ull idx_b = (15ULL << (4*idxb));
+    ull idx_a=(15ULL << (4*idxa)), idx_b = (15ULL << (4*idxb));
     ull a=s&idx_a, b=s&idx_b;
 
     s&=((~idx_a) & (~idx_b));
-    if(dif>0) {
-        a >>= dif; b <<= dif;
-    } else {
-        a <<= -dif; b >>= -dif;
-    }
+    if(dif>0) { a >>= dif; b <<= dif; }
+    else { a <<= -dif; b >>= -dif; }
     s |= (a|b);
 }
 int bfs(ull start, int nine_idx) {
