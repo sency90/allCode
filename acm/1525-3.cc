@@ -2,25 +2,25 @@
 #include <queue>
 #include <set>
 #include <stack>
+#include <bitset>
 using namespace std;
 typedef unsigned long long ull;
 ull ans = 0ULL;
 set<ull> chk;
 queue<pair<ull, int> > q;
 int dx[]={0,0,1,-1}, dy[]={1,-1,0,0};
-void exchange(ull &s, int idxa, int idxb) {
+void exchange(ull &state, int idxa, int idxb) {
+    bitset<64> s(state);
+    bitset<64> idx_a = 15ULL << (4*idxa);
+    bitset<64> idx_b = 15ULL << (4*idxb);
+    bitset<64> a=s&idx_a, b=s&idx_b;
     int dif = (idxa-idxb)*4;
-    ull idx_a = (15ULL << (4*idxa));
-    ull idx_b = (15ULL << (4*idxb));
-    ull a=s&idx_a, b=s&idx_b;
 
-    s&=((~idx_a) & (~idx_b));
-    if(dif>0) {
-        a >>= dif; b <<= dif;
-    } else {
-        a <<= -dif; b >>= -dif;
-    }
+    s &= idx_a.flip() & idx_b.flip();
+    if(dif>0) { a >>= dif; b <<= dif; }
+    else { a <<= -dif; b >>= -dif; }
     s |= (a|b);
+    state = s.to_ullong();
 }
 int bfs(ull start, int nine_idx) {
     int cnt=0;

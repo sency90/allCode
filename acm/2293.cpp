@@ -4,9 +4,9 @@
 int main() {
     int n, k;
     int coin[100];
-    int m[10001];
+    int d[10001];
     memset(coin, 0, sizeof(coin));
-    memset(m, 0, sizeof(m));
+    memset(d, 0, sizeof(d));
 
     scanf("%d %d", &n, &k);
     for(int i=0; i<n; i++) {
@@ -14,15 +14,15 @@ int main() {
     }
 
     for(int i=0; i<k+1; i+=coin[0]) {
-        ++m[i];
+        ++d[i];
     }
 
     for(int i=1; i<n; i++) {
         for(int j=coin[i]; j<k+1; j++) {
-            m[j] += m[j-coin[i]];
+            d[j] += d[j-coin[i]];
         }
     }
 
-    printf("%d\n", m[k]);
+    printf("%d\n", d[k]);
     return 0;
 }

@@ -18,6 +18,10 @@ char f(int x) {
     return d[x] = min + 1;
 }
 int main() {
+#ifdef PLZRUN
+    freopen("input", "r", stdin);
+    freopen("output.txt", "w", stdout);
+#endif
     memset(d, 0, sizeof(d));
     int n; scanf("%d", &n);
     printf("%hhd", f(n));
