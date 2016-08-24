@@ -22,11 +22,8 @@ int dfs(int x, int mn) {
         if(chk[v[x][i]]) continue; //이 부분은 굳이 안써도 되는 부분이다.
         if(r[x][v[x][i]] <= 0) continue;
         int f = dfs(v[x][i], min(mn, r[x][v[x][i]]));
-
-        if(f<=0) continue;
-        r[x][v[x][i]] -= f;
-        r[v[x][i]][x] += f;
-        return f;
+        r[x][v[x][i]] -= f; r[v[x][i]][x] += f;
+        if(f>0) return f;
     }
     return 0;
 }
@@ -40,7 +37,7 @@ int main() {
         if(!r[ss][ee]) v[ss].push_back(ee);
         if(!r[ee][ss]) v[ee].push_back(ss);
         r[ss][ee] += f;
-        r[ee][ss] += f;
+        //r[ee][ss] += f;
     }
 
     int ans=0;

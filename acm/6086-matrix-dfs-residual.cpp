@@ -4,24 +4,22 @@
 #include <cctype>
 using namespace std;
 bool chk[60];
-int c[60][60];
-int chg(char c) {
-    if(islower(c)) return c-'a'+26;
-    else return c-'A';
+int r[60][60];
+int chg(char r) {
+    if(islower(r)) return r-'a'+26;
+    else return r-'A';
 }
 int src, sink;
-int dfs(int x, int mnc) {
+int dfs(int x, int mnf) {
     if(chk[x]) return 0;
     chk[x]=true;
-    if(x==sink) {
-        return mnc;
-    }
+    if(x==sink) return mnf;
     for(int i=1; i<=53; i++) {
-        if(c[x][i] > 0) {
-            int f = dfs(i, min(mnc, c[x][i]));
+        if(r[x][i] > 0) {
+            int f = dfs(i, min(mnf, r[x][i]));
             if(f) {
-                c[x][i] -= f; //x->i로 f만큼의 flow를 흘려보냈다는 뜻. 따라서 잔여용량은 c[x][i]-f가 된다.
-                c[i][x] += f; //i->x로 f만큼의 flow를 회수할 수 있다는 뜻. 따라서 잔여용량은 c[x][i]+f가 된다.
+                r[x][i] -= f; //x->i로 f만큼의 flow를 흘려보냈다는 뜻. 따라서 잔여용량은 r[x][i]-f가 된다.
+                r[i][x] += f; //i->x로 f만큼의 flow를 회수할 수 있다는 뜻. 따라서 잔여용량은 r[x][i]+f가 된다.
                 return f;
             }
         }
@@ -46,11 +44,9 @@ int main() {
     for(int i=0; i<n; i++) {
         scanf("%s %s %d",s,e,&f);
         int ss = chg(s[0]), ee = chg(e[0]);
-        c[ss][ee] += f;
-        c[ee][ss] += f;
+        r[ss][ee] += f;
     }
-    src = chg('A');
-    sink = chg('Z');
+    src = chg('A'); sink = chg('Z');
     printf("%d", flow());
     return 0;
 }

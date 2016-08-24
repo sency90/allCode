@@ -1,10 +1,9 @@
 #include <cstdio>
-#include <map>
+#include <cstring>
 using namespace std;
-map<int,bool> chk;
 int main() {
-    for(int i=0; i<300000; i++) {
-        chk[i] = true;
-    }
+    int n[2];
+    memset(n, 0xc0, sizeof(n));
+    printf("%d", n[0]);
     return 0;
 }
