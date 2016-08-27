@@ -19,7 +19,7 @@ c11d:
 	$(CXX) $(BIN).cc -o ./bin/$(BIN) $(CPPFLAGS) -std=c++11 -DPLZRUN
 
 c14:
-	$(CXX) $(BIN).c -o ./bin/$(BIN) $(CPPFLAGS) -std=c++14
+	$(CXX) $(BIN).cxx -o ./bin/$(BIN) $(CPPFLAGS) -std=c++14
 
 c14d:
-	$(CXX) $(BIN).c -o ./bin/$(BIN) $(CPPFLAGS) -std=c++14 -DPLZRUN
+	$(CXX) $(BIN).cxx -o ./bin/$(BIN) $(CPPFLAGS) -std=c++14 -DPLZRUN
