@@ -54,7 +54,7 @@ int main() {
         cin >> N;
         for(int i=1; i<=n; i++) {
             cin >> H;
-            ans+=shifts(H, N, i%2);
+            ans+=shifts(H, N, i&1);
             N = H;
         }
         cout << ans << "\n";

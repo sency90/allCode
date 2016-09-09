@@ -1,6 +1,12 @@
-#include <stdio.h>
+#include <cstdio>
+#include <iostream>
+using namespace std;
+int v[100];
 int main() {
-    for(int i=0; i<10; i++) {
-        printf("%d %d %d %d\n", 8>>i, i>>8, 8<<i, i<<8);
+    int n;
+    scanf("%d", &n);
+    for(int i=0; i<n; i++) {
+        scanf("%d", &v[i]);
     }
+    return 0;
 }

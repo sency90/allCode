@@ -1,9 +1,9 @@
 #include <cstdio>
 using namespace std;
 int main() {
-    freopen("input", "w", stdout);
-    for(int i=1; i<=100000; i++) {
-        printf("%d\n", i);
-    }
+    freopen("input.txt", "w", stdout);
+    puts("10000");
+    for(int i=1; i<=10000; i++) printf("-1 ");
+    puts("");
     return 0;
 }
