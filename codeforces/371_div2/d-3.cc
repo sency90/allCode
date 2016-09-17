@@ -30,16 +30,13 @@ int testy(int l, int r) {
     else return -1;
 }
 rect sol(int x1, int y1, int x2, int y2) {
-    for(int i=17; i>=0; i--) {
+    for(int i=16; i>=0; i--) {
         int s = 1<<i;
-        if(x1+s<x2) {
-            if(ask(x1+s,y1,x2,y2)) x1+=s;
-            if(ask(x1,y1,x2-s,y2)) x2-=s;
-        }
-        if(y1+s<y2) {
-            if(ask(x1,y1+s,x2,y2)) y1+=s;
-            if(ask(x1,y1,x2,y2-s)) y2-=s;
-        }
+        //이거 순서가 엄청 중요하다!!
+        if(x1+s<x2 && ask(x1+s,y1,x2,y2)) x1+=s;
+        if(x2-s>x1 && ask(x1,y1,x2-s,y2)) x2-=s;
+        if(y1+s<y2 && ask(x1,y1+s,x2,y2)) y1+=s;
+        if(y2-s>y1 && ask(x1,y1,x2,y2-s)) y2-=s;
     }
     return rect(x1,y1,x2,y2);
 }
@@ -59,4 +56,3 @@ int main() {
     fflush(stdout);
     return 0;
 }
-
