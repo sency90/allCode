@@ -5,36 +5,37 @@
 #include <algorithm>
 using namespace std;
 vector<int> getsfx(const string &s) {
-    int n = s.size();
-    vector<int> sfx(n), g(n+1), ng(n+1);
-    int cnt[27], idx[27];
-    g[n]=0;
-    for(int i=0; i<n; i++) {
-        sfx[i]=i; g[i]=s[i]-'a'+1;
+    const int n = s.size();
+    vector<int> sfx(n), ord(n+1,0), nord(n+1), cnt(max(n+1,256)), aux(n+1);
+    int p = 1;
+    for(int i=0; i<n; i++){
+        sfx[i] = i;
+        ord[i] = s[i];
     }
-    for(int t=1; t<n; t<<=1) {
-        memset(cnt, 0, sizeof(cnt));
-        for(int i=0; i<n; i++) cnt[g[min(i+t,n)]]++;
-        for(int i=1; i<=26; i++) cnt[i]+=cnt[i-1];
-        for(int i=n-1; i>=0; i--) idx[--cnt[g[min(i+t,n)]]]=i;
+    ord[n]=0;
+    int pnt = 1;
+    while(1){
+        cnt.clear(); cnt.resize(max(n+1,256));
+        for(int i=0; i<n; i++) cnt[ord[min(i+p, n)]]++;
+        for(int i=1; i<=n || i<=255; i++) cnt[i] += cnt[i-1];
+        for(int i=n-1; i>=0; i--) aux[--cnt[ord[min(i+p, n)]]] = i;
 
-        memset(cnt, 0, sizeof(cnt));
-        for(int i=0; i<n; i++) cnt[g[i]]++;
-        for(int i=1; i<=26; i++) cnt[i]+=cnt[i-1];
-        for(int i=n-1; i>=0; i--) sfx[--cnt[g[idx[i]]]]=idx[i];
+        cnt.clear(); cnt.resize(max(n+1,256));
+        for(int i=0; i<n; i++) cnt[ord[i]]++;
+        for(int i=1; i<=n || i<=255; i++) cnt[i] += cnt[i-1];
+        for(int i=n-1; i>=0; i--) sfx[--cnt[ord[aux[i]]]] = aux[i];
 
-        auto cmp=[&](int i, int j) {
-            if(g[i]!=g[j]) return g[i]<g[j];
-            else return g[i+t]<g[j+t];
-        };
-
-        ng[sfx[0]]=1;
-        ng[n]=0;
-        for(int i=1; i<n; i++) {
-            if(cmp(sfx[i-1],sfx[i])) ng[sfx[i]]=ng[sfx[i-1]]+1;
-            else ng[sfx[i]]=ng[sfx[i-1]];
+        if(pnt == n) break;
+        pnt = 1;
+        nord[sfx[0]] = 1;
+        for(int i=1; i<n; i++){
+            if(ord[sfx[i-1]] != ord[sfx[i]] || ord[sfx[i-1] + p] != ord[sfx[i] + p]){
+                pnt++;
+            }
+            nord[sfx[i]] = pnt;
         }
-        g=ng;
+        ord = nord;
+        p *= 2;
     }
     return sfx;
 }
@@ -51,15 +52,16 @@ int main() {
         cin >> k >> s;
         sfx = getsfx(s);
         int n=s.size();
-        for(int i=1; i<n; i++) {
-            int p=sfx[i], q=sfx[i-1];
-            if(s[p]==s[q]) n-min(p,q);
-            for(int i=max(p,q), cnt=0; i<n; i++, cnt++) {
-                if(s[p]!=s[q]) {
-                    mx = max(mx,cnt);
-                    break;
-                }
+        auto lcp = [&](int i, int j)->int{
+            int cnt=0;
+            for(; i<n&&j<n; i++,j++) {
+                if(s[i]==s[j]) cnt++;
+                else break;
             }
+            return cnt;
+        };
+        for(int i=0; i+k<=n; i++) {
+            mx = max(mx, lcp(sfx[i],sfx[i+k-1]));
         }
         printf("%d\n", mx);
     }
