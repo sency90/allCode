@@ -1,16 +1,20 @@
 #include <stdio.h>
-const int MOD=1000000007;
-int n, m, p, ans=0;
+const long long mod=1e9+7LL;
+long long d[102][101];
 int main() {
-    long long x = 1LL;
+    int n,m,p;
     scanf("%d%d%d",&n,&m,&p);
-    for(long long i=1; i<=n; i++) {
-        x*=i;
+    d[0][0]=1LL;
+    for(int i=0; i<=n; i++) {
+        for(int j=0; j<p; j++) {
+            d[i+1][j+1]+=d[i][j]*(n-i);
+            d[i+1][j+1]%=mod;
+            if(j>m) {
+                d[i][j+1]+=d[i][j]*(i-m);
+                d[i][j+1]%=mod;
+            }
+        }
     }
-    long long y = n-m+1;
-    for(int i=0; i<=p; i++) {
-        x*=y;
-    }
-    printf("%lld", x);
+    printf("%lld\n",d[n][p]);
     return 0;
 }

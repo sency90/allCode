@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <cstring>
 using namespace std;
-int v[50], d[500001][50];
+int v[51], d[500001][51];
 const int inf = 0x3f3f3f3f;
 const int inf2 = inf+1;
 int ABS(int x) { return x<0?-x:x; }

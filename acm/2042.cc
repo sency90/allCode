@@ -1,46 +1,43 @@
 #include <cstdio>
 #include <vector>
-#include <algorithm>
 using namespace std;
-struct Fenwick{
+struct Seg{
+    int s,e;
     vector<long long> tree;
-    Fenwick(int n) : tree(n+1,0LL) {}
-
-    void add(int pos, long long val) {
-        for(int i=pos; i<=tree.size(); i+=(i&-i)) {
-            tree[i] += val;
-        }
+    Seg(int n):s(1) {
+        for(e=0; (1<<e)<n; e++);
+        tree.clear(); tree.resize((1<<(e+1)), 0);
+        e=1<<e;
     }
-
-    long long sum(int pos) {
-        if(pos==0) return 0LL;
-        long long ret=0LL;
-        for(int i=pos; i!=0; i&=(i-1)) {
-            ret += tree[i];
-        }
-        return ret;
+    long long update(int r, int s, int e, int idx, long long x) {
+        if(idx<s||e<idx) return tree[r];
+        if(s==e) return tree[r]=x;
+        int mid = (s+e)>>1;
+        return tree[r] = update(r<<1,s,mid,idx,x)+update((r<<1)+1,mid+1,e,idx,x);
+    }
+    long long query(int r, int s, int e, int qs, int qe) {
+        if(qe<s||e<qs) return 0LL;
+        if(qs<=s&&e<=qe) return tree[r];
+        int mid=(s+e)>>1;
+        return query(r<<1,s,mid,qs,qe)+query((r<<1)+1,mid+1,e,qs,qe);
     }
 };
-vector<long long> v;
 int main() {
-    int n,m,k,a,b,c;
+    int n,m,k,d;
     scanf("%d%d%d",&n,&m,&k);
-    Fenwick fw(n);
-    v.resize(n+1);
+    Seg seg(n);
+
+    //[1,n]임을 주의
     for(int i=1; i<=n; i++) {
-        scanf("%lld", &v[i]);
-        fw.add(i,v[i]);
+        scanf("%d", &d);
+        seg.update(1,seg.s,seg.e,i,d);
     }
-    int t=m+k;
-    for(int i=0; i<t; i++) {
-        scanf("%d%d%d",&a,&b,&c);
-        if(a==1) {
-            fw.add(b,c-v[b]);
-            v[b]=c;
-        } else {
-            if(b>c) swap(b,c);
-            printf("%lld\n", fw.sum(c)-fw.sum(b-1));
-        }
+    int a,b,lim=m+k;
+    long long c;
+    for(int i=0; i<lim; i++) {
+        scanf("%d%d%lld",&a,&b,&c);
+        if(a==1) seg.update(1,seg.s,seg.e,b,c);
+        else printf("%lld\n",seg.query(1,seg.s,seg.e,b,c));
     }
     return 0;
 }
