@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <cstdlib>
 #include <vector>
 #include <algorithm>
 #include <map>
@@ -7,7 +8,6 @@ vector<pair<int, int> > v;
 long long d[100001][2];
 int id_x[100001], id_y[100001];
 map<int, int> cx, cy;
-int ABS(int x) { return x<0?-x:x; }
 int main() {
     int n,t=0,cntx=0,cnty=0,x,y,xid,yid;
     long long l,ans=0LL;
@@ -28,7 +28,7 @@ int main() {
     };
     sort(v.begin(), v.end(), cmp);
     for(int i=0; i<n; i++) {
-        long long dist=ABS(id_y[v[i].second]-id_x[v[i].first])+l,tmp;
+        long long dist=abs(id_y[v[i].second]-id_x[v[i].first])+l,tmp;
         tmp=max(d[v[i].first][t],d[v[i].second][t^1]+dist);
         d[v[i].second][t^1]=max(d[v[i].second][t^1],d[v[i].first][t]+dist);
         d[v[i].first][t]=tmp;

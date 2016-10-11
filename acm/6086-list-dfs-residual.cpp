@@ -37,7 +37,6 @@ int main() {
         if(!r[ss][ee]) v[ss].push_back(ee);
         if(!r[ee][ss]) v[ee].push_back(ss);
         r[ss][ee] += f;
-        //r[ee][ss] += f;
     }
 
     int ans=0;

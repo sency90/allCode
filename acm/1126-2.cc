@@ -1,12 +1,11 @@
 #include <cstdio>
 #include <algorithm>
 #include <cstring>
+#include <cstdlib>
 using namespace std;
 int d[50][500001], v[50];
-int ABS(int x) { return x<0?-x:x; }
 const int ninf = 0xc0c0c0c0;
 int f(int x, int dif) {
-    if(dif>500000) return ninf;
     if(x==-1) {
         if(dif==0) return 0;
         else return ninf;
@@ -14,8 +13,8 @@ int f(int x, int dif) {
     int &ret = d[x][dif];
     if(ret!=ninf) return ret;
     ret = max(ret,f(x-1,dif));
-    ret = max(ret,f(x-1,ABS(dif-v[x]))+v[x]);
-    return ret = max(ret,f(x-1,ABS(dif+v[x]))+v[x]);
+    ret = max(ret,f(x-1,abs(dif-v[x]))+v[x]);
+    return ret = max(ret,f(x-1,abs(dif+v[x]))+v[x]);
 }
 int main() {
     int n;

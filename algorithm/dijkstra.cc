@@ -16,14 +16,16 @@ struct Edge{
 vector<vector<Edge> > ed;
 vector<long long> dist;
 vector<bool> chk;
+vector<int> p;
 
-//dijkstra(start, end, number of verties, adj matrix);
 long long dijkstra(int s, int e, int n, vector<vector<Edge> >& v) {
     priority_queue<Edge> mnh;
-    chk.clear(); chk.resize(n, false);
-    dist.clear(); dist.resize(n, inf);
+    chk.clear(); chk.resize(n+1, false);
+    dist.clear(); dist.resize(n+1, inf);
+    p.clear(); p.resize(n+1);
     dist[s]=0LL;
     mnh.push(Edge(s,dist[s]));
+    p[s]=s; //path
 
     Edge ed;
     for(int z=0; z<n; z++) {
@@ -40,9 +42,14 @@ long long dijkstra(int s, int e, int n, vector<vector<Edge> >& v) {
             if(dist[y] > D) {
                 dist[y] = D;
                 mnh.push(Edge(y,dist[y]));
+                p[y]=x; //path
             }
         }
     }
+
+    printf("%d", e); //path
+    for(int i=p[e]; i!=s; i=p[i]) printf("%d ", i); //path
+    printf("%d\n", s); //path
     return dist[e];
 }
 
