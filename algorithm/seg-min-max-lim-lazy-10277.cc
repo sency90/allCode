@@ -16,11 +16,6 @@ struct Seg{
         e=(1<<e);
     }
     int ABS(int x) { return x<0?-x:x; }
-    int judge(int x, int y) {
-        if(x<0 && y<0) return -1;
-        else if(x<0) return y;
-        else return x;
-    }
     void push_down(int r, int s, int e) {
         if(lazy[r]) {
             if(s!=e) {

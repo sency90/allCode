@@ -22,6 +22,8 @@ struct Seg{
                 lazy[r*2]^=lazy[r];
                 lazy[r*2+1]^=lazy[r];
             }
+            //이 segment tree는 full binary tree이기 때문에
+            //xor 연산의 특성상 단말노드가 아니면 tree[r]을 업데이트 해줄 필요가 없었다.
             lazy[r]=0;
         }
     }
