@@ -48,12 +48,12 @@ vector<int> getsfx(const string &s) {
     lcp.clear(); lcp.resize(n);
     prevsfx[sfx[0]]=-1;
     for(int i=1; i<n; i++) prevsfx[sfx[i]]=sfx[i-1];
-    for(int i=0, common=0; i<n; i++) {
+    for(int i=0, c=0; i<n; i++) {
         if(prevsfx[i]==-1) plcp[i]=0;
         else {
-            while(s[i+common] == s[prevsfx[i] + common]) common++;
-            plcp[i]=common;
-            common = max(common-1,0);
+            while(s[i+c] == s[prevsfx[i] + c]) c++;
+            plcp[i]=c;
+            c = max(c-1,0);
         }
     }
     for(int i=0; i<n; i++) lcp[i]=plcp[sfx[i]];
