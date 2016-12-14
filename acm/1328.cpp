@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <cstring>
-#define RND 1000000007
+#define MOD 1000000007
 using namespace std;
 int n, l, r, d[101][101][101];
 int f(int x, int p, int q) {
@@ -10,7 +10,7 @@ int f(int x, int p, int q) {
         else return 0;
     }
     if(p<1 || q<1 || p+q>x+1) return 0;
-    return d[x][p][q] = ((long long)(x-2)*f(x-1,p,q) + f(x-1,p-1,q) + f(x-1,p,q-1))%RND;
+    return d[x][p][q] = ((long long)(x-2)*f(x-1,p,q) + f(x-1,p-1,q) + f(x-1,p,q-1))%MOD;
 }
 int main() {
     memset(d, 0, sizeof(d));

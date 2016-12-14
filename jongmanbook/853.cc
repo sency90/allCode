@@ -1,34 +1,34 @@
-//JMBook 849 page graph -> dfs tree / edge-distribution
 #include <cstdio>
 #include <vector>
-#include <iostream>
+#include <algorithm>
 using namespace std;
-vector<pair<int, int> > tree, ford, back, cross;
-vector<vector<int> > v;
+typedef pair<int,int> pii;
+vector<vector<int>> v;
+vector<pii> tree,ford,back,cross;
+vector<int> chk;
 vector<bool> fin;
-vector<int> discovered;
-int counter=0;
+int cnt=0;
 void dfs(int x) {
-    discovered[x] = ++counter;
-    for(int i=0; i<v[x].size(); i++) {
-        int y = v[x][i];
-        if(discovered[y]) {
-            if(discovered[y] > discovered[x]) ford.push_back(make_pair(x,y));
-            else if(fin[y]) cross.push_back(make_pair(x,y));
-            else back.push_back(make_pair(x,y));
-            continue;
-        } else {
-            tree.push_back(make_pair(x,y));
+    chk[x]=++cnt;
+    for(int y: v[x]) {
+        if(!chk[y]) {
+            tree.push_back({x,y});
             dfs(y);
+        } else {
+            if(chk[y]>chk[x]) ford.push_back({x,y});
+            else {
+                if(fin[y]) cross.push_back({x,y});
+                else back.push_back({x,y});
+            }
         }
     }
-    fin[x] = true;
+    fin[x]=true;
 }
 int main() {
     int n=7;
     v.resize(n, vector<int>());
-    discovered.resize(n, 0);
-    fin.resize(n, false);
+    chk.resize(n,0);
+    fin.resize(n,0);
     v[0].push_back(1);
     v[0].push_back(4);
     v[0].push_back(5);
@@ -41,17 +41,24 @@ int main() {
     v[2].push_back(0);
     dfs(0);
 
-    cout << "TREE EDGE: ";
-    for(auto &p : tree) cout << "(" << p.first << ", " << p.second << ") ";
-    puts("");
-    cout << "ford EDGE: ";
-    for(auto &p : ford) cout << "(" << p.first << ", " << p.second << ") ";
-    puts("");
-    cout << "BACK EDGE: ";
-    for(auto &p : back) cout << "(" << p.first << ", " << p.second << ") ";
-    puts("");
-    cout << "CROSS EDGE: ";
-    for(auto &p : cross) cout << "(" << p.first << ", " << p.second << ") ";
-    puts("");
+    puts("Tree Edge");
+    for(auto &p: tree) {
+        printf("%d -> %d\n",p.first,p.second);
+    }
+
+    puts("Forward Edge");
+    for(auto &p: ford) {
+        printf("%d -> %d\n",p.first,p.second);
+    }
+
+    puts("Backward Edge");
+    for(auto &p: back) {
+        printf("%d -> %d\n",p.first,p.second);
+    }
+
+    puts("Cross Edge");
+    for(auto &p: cross) {
+        printf("%d -> %d\n",p.first,p.second);
+    }
     return 0;
 }

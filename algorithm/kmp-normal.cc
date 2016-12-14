@@ -23,6 +23,8 @@ vector<int> getPartialTable(const string &N) {
 vector<int> kmp(const string &H, const string &N) {
     vector<int> ret;
     vector<int> pi = getPartialTable(N);
+    for(auto &p: pi) printf("%d ", p);
+    puts("");
     int n=H.size(), m=N.size();
     int begin=0, matched=0;
     while(begin+m <= n) {

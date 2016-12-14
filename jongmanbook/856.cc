@@ -4,53 +4,46 @@
 #include <iostream>
 #include <algorithm>
 using namespace std;
+const int inf = 0x3f3f3f3f;
 vector<vector<int> > v;
-vector<bool> isCutVertex;
-vector<int> discovered;
-int counter=0;
-int dfs2(int x) {
-    discovered[x] = ++counter;
-    int children=0, mn=discovered[x];
-    for(int i=0; i<v[x].size(); i++) {
-        children++;
-        int y = v[x][i];
-        if(discovered[y]) {
-            mn = min(mn, discovered[y]);
-            continue;
+vector<int> discov,cv;
+int cnt=0;
+int dfs(int x) {
+    discov[x]=++cnt;
+    int ret = inf;
+    for(int y: v[x]) {
+        if(discov[y]) ret = min(ret,discov[y]);
+        else {
+            int subtree=dfs(y);
+            //>= 이 부등호가 정말 중요하다. =빼먹으면 안됨. (bridge와 cut-vertex의 차이)
+            if(discov[x]!=1 && subtree >= discov[x]) cv.push_back(x);
+            ret = min(ret,subtree);
         }
-        int subtree = dfs2(y);
-        if(discovered[x]!=1 && subtree >= discovered[x]) isCutVertex[x] = true;
-        mn = min(mn, subtree);
     }
-    if(discovered[x] == 1) { //if x is the root
-        isCutVertex[x] = (children >= 2);
-        return discovered[x];
-    } else return mn;
+    if(discov[x]==1) if(v[x].size()>=2) cv.push_back(x);
+
+    return min(ret,discov[x]);
+}
+void e(int x, int y) {
+    v[x].push_back(y); v[y].push_back(x);
 }
 int main() {
     int n=7;
     v.resize(n, vector<int>());
-    discovered.resize(n, 0);
-    isCutVertex.resize(n, false);
+    discov.resize(n, 0);
 
     //undirected graph
-    v[0].push_back(1); v[1].push_back(0);
-    v[0].push_back(4); v[4].push_back(0);
-    v[0].push_back(5); v[5].push_back(0);
-    v[0].push_back(6); v[6].push_back(0);
-    v[5].push_back(3); v[3].push_back(5);
-    v[5].push_back(6); v[6].push_back(5);
-    v[6].push_back(3); v[3].push_back(6);
-    v[4].push_back(2); v[2].push_back(4);
-    v[1].push_back(2); v[2].push_back(1);
-    v[2].push_back(0); v[0].push_back(2);
+    e(0,1);
+    e(1,2);
 
     //check cut vertex
-    dfs2(0);
+    dfs(0);
 
-    for(int i=0; i<n; i++) {
-        if(isCutVertex[i]) cout << i << " ";
+    puts("Cut Vertexes:");
+    for(int p: cv) {
+        printf("%d\n", p);
     }
-    puts("");
+
     return 0;
 }
+

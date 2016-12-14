@@ -1,12 +1,14 @@
-//
-//  main.swift
-//  swift_test
-//
-//  Created by Lian Yang on 11/11/2016.
-//  Copyright © 2016 Lian Yang. All rights reserved.
-//
 
-import Foundation
+let nickname: String? = nil
+let fullname: String = "John Appleseed"
+let informalgreeting = "Hi \(nickname ?? fullname)"
 
-print("Hello, World!")
+var optionalString: String? = "Hello"
+print(optionalString==nil)
 
+var optionalName: String? = nil
+var greeting = "Hello!"
+if let name = optionalName {
+    greeting = "Hello, \(name)"
+}
+print(greeting)

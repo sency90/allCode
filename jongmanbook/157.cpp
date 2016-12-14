@@ -12,7 +12,7 @@ int coupling() {
         }
     }
     if(first<0) return 1;
-    
+
     int ret = 0;
     for(int i=first+1; i<n; i++ ){
         if(!taken[i]&&fr[first][i]) {
@@ -34,7 +34,7 @@ int main() {
             cin >> x >> y;
             fr[x][y]=fr[y][x]=true;
         }
-        
+
         memset(taken, false, sizeof(taken));
         int ret = 0;
         ret += coupling();
