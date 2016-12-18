@@ -10,21 +10,16 @@
 #include <string>
 #include <vector>
 #include <cctype>
-#define CHARNUM 53
 using namespace std;
 vector<int> lcp;
-int chg(char x) {
-    if(isupper(x)) return x-'A'+27;
-    else return x-'a'+1;
-}
 vector<int> getsfx(const string &s) {
     const int n = s.size();
     lcp.clear(); lcp.resize(n);
-    int lim = max(n+1, CHARNUM);
+    int lim = max(n+1, 256);
     vector<int> sfx(n), g(n+1,0), ng(n+1,0), cnt, idx(n+1,0);
     for(int i=0; i<n; i++) {
         sfx[i]=i;
-        g[i]=chg(s[i]);
+        g[i]=s[i];
     }
     g[n]=0; //이 부분을 안쓰면 ZZZZZZZZZZZZZZZZZZ... 입력에 대해 error발생
     for(int t=1; t<n; t<<=1) {
