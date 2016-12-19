@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <cstring>
+#include <string>
 using namespace std;
 typedef long long ll;
 ll mod = 1e9+7LL;
@@ -13,11 +14,20 @@ ll f(int x, int l, int r) {
 }
 int main() {
     freopen("in.txt", "r", stdin);
-    freopen("out.txt", "w", stdout);
-    int n,l,r;
+    int n,l,r,idx=0;
+    char title[10];
     while(~scanf("%d%d%d",&n,&l,&r)) {
+        idx++;
+        sprintf(title, "%d.in", idx);
+        FILE *inf = fopen(title, "w");
+        fprintf(inf, "%d %d %d",n,l,r);
+        fclose(inf);
+
+        sprintf(title, "%d.out", idx);
+        FILE *outf = fopen(title, "w");
         memset(d,0,sizeof(d));
-        printf("%lld\n",f(n,l,r));
+        fprintf(outf, "%lld", f(n,l,r));
+        fclose(outf);
     }
     return 0;
 }
