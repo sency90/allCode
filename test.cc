@@ -1,28 +1,24 @@
-#include <stdio.h>
-#include <algorithm>
-using namespace std;
-
-int N;
-struct P {
-    int no, age;
-    char name[101];
-};
-struct P arr[100005];
-
-bool sort1(const struct P &i, const struct P &j){
-    if(i.age == j.age) return i.no<j.no;
-    else return i.age < j.age;
+#include<stdio.h>
+#include<stdlib.h>
+int compare(const void* a, const void* b);
+int main(){
+	int num;
+	scanf("%d",&num);
+	int i;
+	int Arr[11];
+	int j;
+	for(j=0;j<num;j++){
+		for(i=0;i<10;i++){
+			scanf("%d",&Arr[i]);
+		}
+		qsort(Arr,10,sizeof(int),compare);
+        printf("%d\n", Arr[2]);
+	}
+	return 0;
 }
 
-int main(){
-    scanf("%d",&N);
-    for(int i=0; i<N; i++) {
-        scanf("%d %s",&arr[i].age, arr[i].name);
-        arr[i].no = i;
-    }
-    sort(arr,arr+N,sort1);
-    for(int i=0; i<N; i++) {
-        printf("%d %s\n",arr[i].age,arr[i].name);
-    }
+int compare(const void* a, const void* b){
+    if( *(int*)a > *(int*)b ) return -1;
+    if( *(int*)a < *(int*)b ) return 1;
     return 0;
 }

@@ -11,7 +11,7 @@ struct Day{
 };
 struct Fenwick{
     int s,e;
-    vector<ull> tree, tadd;
+    vector<ull> tree;
     Fenwick(){} Fenwick(int n):s(1),e(n),tree(n+1,0ULL){}
     void clear() { tree.clear(); tree.resize(e+1,0ULL); }
     void rupdate(int left, int right, ull by) {
