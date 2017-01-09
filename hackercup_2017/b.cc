@@ -5,8 +5,8 @@
 using namespace std;
 vector<int> v, need;
 int main() {
-    freopen("./input.txt", "r", stdin);
-    freopen("./output.txt", "w", stdout);
+    //freopen("./b_input.txt", "r", stdin);
+    //freopen("./b_output.txt", "w", stdout);
     int tc; scanf("%d",&tc);
     for(int i=1; i<=50; i++) {
         if(need.begin() == need.end()) need.emplace_back(50);

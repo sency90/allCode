@@ -1,0 +1,8 @@
+4
+{"AaAbBaAcCaAa"}
+1
+{"AbAb"}
+1
+{"aBaB"}
+2
+{"AaB", "b"}

@@ -1,9 +1,14 @@
 #include <cstdio>
-#include <climits>
+#include <vector>
 using namespace std;
+vector<vector<int>> A;
 int main() {
-    int a=12;
-    printf("%x %o\n%d\n",a,a,a);
-    long long b=1e11;
-    printf("%x %o\n%lld\n",-b,-b,-b);
+    A.resize(5, vector<int>(10));
+    printf("%lu, %lu", A.size(), A[0].size());
+    for(int i=0; i<5; i++) {
+        for(int j=0; j<10; j++) {
+            printf("%d", A[i][j]);
+        }
+        puts("");
+    }
 }

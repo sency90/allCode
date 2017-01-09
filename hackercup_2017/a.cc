@@ -6,8 +6,8 @@ const double pi2 = 2.0*pi;
 double revision(double x) { return double(int(x*1e6))/1e6; }
 double chg(double x, double t) { return (x<0.0)? pi2-t:t; }
 int main() {
-    //freopen("./input.txt", "r", stdin);
-    //freopen("./output2.txt", "w", stdout);
+    freopen("./a_input.txt", "r", stdin);
+    freopen("./a_output.txt", "w", stdout);
     int tc; scanf("%d", &tc);
     for(int z=1; z<=tc; z++) {
         double x,y,r=50.0,p;

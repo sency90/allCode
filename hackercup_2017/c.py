@@ -51,7 +51,7 @@ for t in range(tc):
     ans = 0.0
 
     x,y,z=(0,0,0)
-    pat1 = re.compile("(\d+)[d](\d+)([+\-]\d+)")
+    pat1 = re.compile("(\d+)[d](\d+)([+|-]\d+)")
     pat2 = re.compile("(\d+)[d](\d+)")
     for word in input().split(" "):
         z=0
