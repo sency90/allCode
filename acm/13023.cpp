@@ -11,7 +11,7 @@ void dfs(int x, int depth) {
         hasAns = true;
         return;
     }
-    
+
     for(int i=0; i<v[x].size(); i++) {
         if(chk[v[x][i]]) continue;
         chk[v[x][i]] = true;
