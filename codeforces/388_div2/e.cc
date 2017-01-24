@@ -1,50 +1,39 @@
 #include <cstdio>
-#include <vector>
+#include <cstring>
+#include <algorithm>
 using namespace std;
-int a[100001];
-struct Fenwick{
-    int s,e;
-    vector<double> tree;
-    Fenwick(int n):s(1),e(n),tree(n+1,0.0){}
-    void init() {
-        tree.clear();
-        tree.resize(e+1,0.0);
+int v[100001],n;
+double seg[100001],ans;
+void add(int at, int by) { for(int i=at; i<=n; i+=i&-i) seg[i]+=by; }
+double sum(int at) {
+    double ret=0.0;
+    for(int i=at; i>=1; i-=i&-i) ret+=seg[i];
+    return ret;
+}
+int main() {
+    scanf("%d", &n);
+    for(int i=1; i<=n; i++) {
+        int x; scanf("%d", &x);
+        v[x]=i;
     }
-    void add(int at, double by) {
-        for(int i=at; i<=e; i+=i&-i) tree[i]+=by;
+
+    for(int i=n; i>=1; i--) {
+        ans += sum(v[i]);
+        add(v[i],1);
     }
-    double sum(int at) {
-        double ret = 0.0;
-        for(int i=at; i>=1; i-=i&-i) ret+=tree[i];
-        return ret;
+
+    memset(seg,0,sizeof(seg));
+    for(int i=1; i<=n; i++) {
+        ans += sum(v[i])*(n-v[i]+1)/n/(n+1);
+        add(v[i],v[i]);
     }
-};
-int main(){
-    int n,x;
-	scanf("%d", &n);
-    Fenwick fen(n);
-	for(int i=1; i<=n; i++) {
-		scanf("%d", &x);
-		a[x]=i;
-	}
 
-    double ans=0.0;
-	for(int i=1; i<=n; i++) {
-		ans += fen.sum(a[i])*(n-a[i]+1)/n/(n+1);
-		fen.add(a[i],a[i]);
-	}
+    memset(seg,0,sizeof(seg));
+    for(int i=n; i>=1; i--) {
+        ans -= sum(v[i])*(n-v[i]+1)/n/(n+1);
+        add(v[i],v[i]);
+    }
 
-    fen.init();
-	for(int i=n; i>=1; i--) {
-		ans -= fen.sum(a[i])*(n-a[i]+1)/n/(n+1);
-		fen.add(a[i],a[i]);
-	}
-
-    fen.init();
-	for(int i=n; i>=1; i--) {
-		ans += fen.sum(a[i]);
-		fen.add(a[i],1.0);
-	}
-
-	printf("%.10f",ans);
+    printf("%.9lf", ans);
+    return 0;
 }

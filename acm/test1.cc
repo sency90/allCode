@@ -1,6 +1,11 @@
-long long f(long long x) {
-    if(x==0) return 0LL;
-    int i=0;
-    for(;(1LL<<i)<x; i++);
-    return 1LL<<i;
+#include <bitset>
+#include <cstdio>
+using namespace std;
+int main() {
+    bitset<20> bit(1);
+    for(int i=0; i<5; i++) {
+        if(bit[i]) printf("1");
+        else printf("0");
+    }
+    return 0;
 }

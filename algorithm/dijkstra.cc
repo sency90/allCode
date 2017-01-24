@@ -57,7 +57,7 @@ int main() {
     int n,m,s,e;
     scanf("%d%d",&n,&m); //n: number of verties, m: number of edges
     scanf("%d%d",&s,&e); //s: start, e: end
-    ed.clear(); ed.resize(n, vector<Edge>());
+    ed.clear(); ed.resize(n+1, vector<Edge>());
     long long u,v,w;
     for(int i=0; i<m; i++) {
         scanf("%lld%lld%lld",&u,&v,&w);

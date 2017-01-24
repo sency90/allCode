@@ -10,7 +10,7 @@ bool bipartite(int x) {
     chk[x]=true;
     for(auto &y: v[x]) {
         //if(chk[bMatch[y]]) continue; //안써도 된다. chk[y]로 쓰지 않도록 주의할 것.
-        if(!bMatch[y]||bipartite(bMatch[y])) {
+        if(bMatch[y]==-1||bipartite(bMatch[y])) {
             aMatch[x]=y;
             bMatch[y]=x;
             return true;
@@ -29,8 +29,8 @@ int main() {
         }
     }
 
-    memset(aMatch,0,sizeof(aMatch));
-    memset(bMatch,0,sizeof(bMatch));
+    memset(aMatch,-1,sizeof(aMatch));
+    memset(bMatch,-1,sizeof(bMatch));
     int ans=0;
     for(int i=1; i<=n; i++) {
         memset(chk, false, sizeof(chk));

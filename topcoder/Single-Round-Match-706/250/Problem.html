@@ -1,0 +1,29 @@
+<html><body bgcolor="#042029" text="#cccccc"><table><tr><td colspan="2"><h3>Problem Statement</h3></td></tr><tr><td>&#160;&#160;&#160;&#160;</td><td><p>
+Bear Limak has three boxes arranged in a row.
+The first box currently contains <b>a</b> candies, the second one contains <b>b</b> candies, and the third one contains <b>c</b> candies.
+</p>
+<br></br>
+<p>
+Limak thinks that the three boxes would look nice if they had the following two properties:
+<ul>
+<li>Each box should contain at least one candy.</li>
+<li>The numbers of candies should form a strictly increasing sequence. In other words, the first box should contain fewer candies than the second box, and the second box should contain fewer candies than the third one.</li>
+</ul>
+</p>
+<br></br>
+<p>
+Limak can only modify the current content of the boxes in one way: he can eat some of the candies.
+</p>
+<br></br>
+<p>
+You are given the ints <b>a</b>, <b>b</b>, and <b>c</b>.
+Compute and return the smallest possible number of candies Limak should eat in order to make his three boxes look nice.
+If he has no way to make his boxes look nice, return -1 instead.
+</p></td></tr><tr><td colspan="2"><h3>Definition</h3></td></tr><tr><td>&#160;&#160;&#160;&#160;</td><td><table><tr><td>Class:</td><td>ThreeIncreasing</td></tr><tr><td>Method:</td><td>minEaten</td></tr><tr><td>Parameters:</td><td>int, int, int</td></tr><tr><td>Returns:</td><td>int</td></tr><tr><td>Method signature:</td><td>int minEaten(int a, int b, int c)</td></tr><tr><td colspan="2">(be sure your method is public)</td></tr></table></td></tr><tr><td colspan="2"><h3>Limits</h3></td></tr><tr><td>&#160;&#160;&#160;&#160;</td><td><table><tr><td>Time limit (s):</td><td>2.000</td></tr><tr><td>Memory limit (MB):</td><td>256</td></tr><tr><td>Stack limit (MB):</td><td>256</td></tr></table></td></tr><tr><td colspan="2"><h3>Constraints</h3></td></tr><tr><td align="center" valign="top">-</td><td><b>a</b>, <b>b</b> and <b>c</b> will each be between 1 and 3000, inclusive.</td></tr><tr><td colspan="2"><h3>Examples</h3></td></tr><tr><td align="center" nowrap="true">0)</td><td></td></tr><tr><td>&#160;&#160;&#160;&#160;</td><td><table><tr><td><table><tr><td><pre>15</pre></td></tr><tr><td><pre>40</pre></td></tr><tr><td><pre>22</pre></td></tr></table></td></tr><tr><td><pre>Returns: 19</pre></td></tr><tr><td><table><tr><td colspan="2">Limak can eat 19 candies from the second box.
+Numbers of candies will form a strictly increasing sequence {15, 21, 22}.
+Limak can't achieve a strictly increasing sequence after eating fewer than 19 candies, so the answer is 19.</td></tr></table></td></tr></table></td></tr><tr><td align="center" nowrap="true">1)</td><td></td></tr><tr><td>&#160;&#160;&#160;&#160;</td><td><table><tr><td><table><tr><td><pre>5</pre></td></tr><tr><td><pre>6</pre></td></tr><tr><td><pre>6</pre></td></tr></table></td></tr><tr><td><pre>Returns: 2</pre></td></tr><tr><td><table><tr><td colspan="2">Note that in a strictly increasing sequence every number should be strictly lower than the next number (ties are not allowed).
+Here, Limak can eat 1 candy from the first box and 1 candy from the second box, which results in a sequence {4, 5, 6}.
+The answer is 2 because Limak eats 2 candies.</td></tr></table></td></tr></table></td></tr><tr><td align="center" nowrap="true">2)</td><td></td></tr><tr><td>&#160;&#160;&#160;&#160;</td><td><table><tr><td><table><tr><td><pre>6</pre></td></tr><tr><td><pre>1</pre></td></tr><tr><td><pre>3000</pre></td></tr></table></td></tr><tr><td><pre>Returns: -1</pre></td></tr><tr><td><table><tr><td colspan="2">Here, the second box contains only 1 candy.
+The first box should contain a smaller number of candies so Limak would have to eat all candies there.
+A box can't become empty though, so the answer is -1.</td></tr></table></td></tr></table></td></tr><tr><td align="center" nowrap="true">3)</td><td></td></tr><tr><td>&#160;&#160;&#160;&#160;</td><td><table><tr><td><table><tr><td><pre>6</pre></td></tr><tr><td><pre>4</pre></td></tr><tr><td><pre>2</pre></td></tr></table></td></tr><tr><td><pre>Returns: -1</pre></td></tr><tr><td><table><tr><td colspan="2">As in the previous example, Limak cannot produce a strictly increasing sequence of candy counts without emptying one of the boxes.</td></tr></table></td></tr></table></td></tr><tr><td align="center" nowrap="true">4)</td><td></td></tr><tr><td>&#160;&#160;&#160;&#160;</td><td><table><tr><td><table><tr><td><pre>4</pre></td></tr><tr><td><pre>2</pre></td></tr><tr><td><pre>6</pre></td></tr></table></td></tr><tr><td><pre>Returns: 3</pre></td></tr><tr><td><table><tr><td colspan="2">Limak can eat 3 candies from the first box.</td></tr></table></td></tr></table></td></tr><tr><td align="center" nowrap="true">5)</td><td></td></tr><tr><td>&#160;&#160;&#160;&#160;</td><td><table><tr><td><table><tr><td><pre>1</pre></td></tr><tr><td><pre>1234</pre></td></tr><tr><td><pre>3000</pre></td></tr></table></td></tr><tr><td><pre>Returns: 0</pre></td></tr><tr><td><table><tr><td colspan="2">Limak doesn't have to eat any candies.
+Boxes aren't empty and the sequence {1, 1234, 3000} is strictly increasing.</td></tr></table></td></tr></table></td></tr><tr><td align="center" nowrap="true">6)</td><td></td></tr><tr><td>&#160;&#160;&#160;&#160;</td><td><table><tr><td><table><tr><td><pre>2789</pre></td></tr><tr><td><pre>2400</pre></td></tr><tr><td><pre>1693</pre></td></tr></table></td></tr><tr><td><pre>Returns: 1806</pre></td></tr><tr><td><table><tr><td colspan="2"></td></tr></table></td></tr></table></td></tr></table><p>This problem statement is the exclusive and proprietary property of TopCoder, Inc.  Any unauthorized use or reproduction of this information without the prior written consent of TopCoder, Inc. is strictly prohibited.  (c)2003, TopCoder, Inc.  All rights reserved.  </p></body></html>
