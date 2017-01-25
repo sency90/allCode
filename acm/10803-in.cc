@@ -10,7 +10,7 @@ int f(int n, int m) {
     else ret = inf;
     if(n%m==0) return ret = n/m;
 
-    if(n>3*m) ret = f(n%m+2*m,m)+n/m-2;
+    if(n>2*m) ret = f(n-m,m)+1;
     else {
         for(int i=1; i<=n-1; i++) {
             ret = min(ret, f(i,m)+f(n-i,m));
@@ -23,8 +23,12 @@ int f(int n, int m) {
 }
 int main() {
     int n,m;
-    scanf("%d%d",&n,&m);
-    if(n<m) swap(n,m);
-    printf("%d\n", f(n,m));
+    freopen("input.txt", "r", stdin);
+    freopen("output2.txt", "w", stdout);
+    while(~scanf("%d%d",&n,&m)) {
+        if(n<m) swap(n,m);
+        printf("%d %d ", n,m);
+        printf("%d\n", f(n,m));
+    }
     return 0;
 }

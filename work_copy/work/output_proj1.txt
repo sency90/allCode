@@ -1,7 +1,0 @@
-aabaa 5
-abaab 5
-baaba 5
-aabac 6
-ababa 6
-babac 5
-bbabb 0

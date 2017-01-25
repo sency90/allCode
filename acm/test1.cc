@@ -1,5 +1,6 @@
 #include <bitset>
 #include <cstdio>
+#include <stdio.h>
 using namespace std;
 int main() {
     bitset<20> bit(1);

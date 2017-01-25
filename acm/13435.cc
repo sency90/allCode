@@ -1,16 +1,14 @@
 #include <cstdio>
 using namespace std;
+typedef long long ll;
+ll gcd(ll b, ll s) { return (s==0)?b:gcd(s,b%s); }
+ll f(ll x) { return x>>1; }
 int main() {
-    int n,m; scanf("%d%d",&n,&m);
-    if(n==m) return 0&printf("%d", n);
-    if(m&1) {
-        long long b=(m+1)/2, s=m/2, ans;
-        if(n&1) ans = s*(n/2)+b*(n/2+1);
-        else ans = (s+b)*(n/2);
-        printf("%lld", ans);
-    } else {
-        int d = m/2;
-        printf("%lld", (long long)d*n);
-    }
+    long long n, m;
+    scanf("%lld%lld",&n,&m);
+    ll g = gcd(n-1,m-1);
+    ll N=(n-1)/g, M=(m-1)/g;
+    ll add = (g-1)*N*M;
+    printf("%lld\n", f(N+2)*f(M+2)+f(N+1)*f(M+1) + add);
     return 0;
 }
