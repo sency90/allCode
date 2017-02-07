@@ -19,10 +19,7 @@ int main() {
         int sz=q.size();
         for(int z=0; z<sz; z++) {
             int x=q.front().first, y=q.front().second; q.pop();
-            if(x==n-1&&y==m-1) {
-                printf("%d", ans);
-                return 0;
-            }
+            if(x==n-1&&y==m-1) return 0&printf("%d", ans);
             for(int i=0; i<4; i++) {
                 int nx=x+dx[i], ny=y+dy[i];
                 if(nx<0||ny<0||nx>=n||ny>=m) continue;

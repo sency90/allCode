@@ -23,7 +23,8 @@ int main() {
     }
     Edge ed;
     mnh.push(Edge(1,0));
-    int ans=0; for(int i=0; i<n; i++) {
+    int ans=0;
+    for(int i=0; i<n; i++) {
         while(!mnh.empty()) {
             ed = mnh.top(); mnh.pop();
             if(!chk[ed.t]) break;
