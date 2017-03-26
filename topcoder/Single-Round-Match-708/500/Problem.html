@@ -1,0 +1,52 @@
+<html><body bgcolor="#042029" text="#cccccc"><table><tr><td colspan="2"><h3>Problem Statement</h3></td></tr><tr><td>&#160;&#160;&#160;&#160;</td><td><p>The score of a string is its length multiplied by the number of different characters in the string.
+For example, the score of "abbcdxc" is 7 * 5 = 35.
+This is because the length of this string is 7 and there are five different characters: a, b, c, d, x.</p>
+<br></br>
+<p>Bear Limak wants to find a sequence of strings satisfying the following conditions: </p>
+<ul>
+<li>There number of strings is between 1 and 50, inclusive.</li>
+<li>The length of each string is between 1 and 50, inclusive.</li>
+<li>The sum of scores of the strings is exactly <b>K</b>.</li>
+<li>Each character in each string is a lowercase English letter ('a' - 'z').</li>
+</ul>
+
+<p>You are given the int <b>K</b>.
+Compute and return any sequence of strings with the above properties.
+If there are multiple solutions, you may return any one of them.</p></td></tr><tr><td colspan="2"><h3>Definition</h3></td></tr><tr><td>&#160;&#160;&#160;&#160;</td><td><table><tr><td>Class:</td><td>BuildingStrings</td></tr><tr><td>Method:</td><td>findAny</td></tr><tr><td>Parameters:</td><td>int</td></tr><tr><td>Returns:</td><td>vector &lt;string&gt;</td></tr><tr><td>Method signature:</td><td>vector &lt;string&gt; findAny(int K)</td></tr><tr><td colspan="2">(be sure your method is public)</td></tr></table></td></tr><tr><td colspan="2"><h3>Limits</h3></td></tr><tr><td>&#160;&#160;&#160;&#160;</td><td><table><tr><td>Time limit (s):</td><td>2.000</td></tr><tr><td>Memory limit (MB):</td><td>256</td></tr><tr><td>Stack limit (MB):</td><td>256</td></tr></table></td></tr><tr><td colspan="2"><h3>Notes</h3></td></tr><tr><td align="center" valign="top">-</td><td>The answer exists for every value of <b>K</b> allowed by the constraints.</td></tr><tr><td colspan="2"><h3>Constraints</h3></td></tr><tr><td align="center" valign="top">-</td><td><b>K</b> will be between 1 and 50,000, inclusive.</td></tr><tr><td colspan="2"><h3>Examples</h3></td></tr><tr><td align="center" nowrap="true">0)</td><td></td></tr><tr><td>&#160;&#160;&#160;&#160;</td><td><table><tr><td><table><tr><td><pre>49</pre></td></tr></table></td></tr><tr><td><pre>Returns: {&quot;little&quot;, &quot;limak&quot; }</pre></td></tr><tr><td><table><tr><td colspan="2">The length of "little" is 6 and the number of different characters in "little" is 4.
+The length of "limak" is 5 and the number of different characters in "limak" is 5.
+Thus, the total score of the output shown above is 6*4 + 5*5 = 24 + 25 = 49.</td></tr></table></td></tr></table></td></tr><tr><td align="center" nowrap="true">1)</td><td></td></tr><tr><td>&#160;&#160;&#160;&#160;</td><td><table><tr><td><table><tr><td><pre>15</pre></td></tr></table></td></tr><tr><td><pre>Returns: {&quot;azz&quot;, &quot;xyz&quot; }</pre></td></tr><tr><td><table><tr><td colspan="2">3 * 2 + 3 * 3 = 15</td></tr></table></td></tr></table></td></tr><tr><td align="center" nowrap="true">2)</td><td></td></tr><tr><td>&#160;&#160;&#160;&#160;</td><td><table><tr><td><table><tr><td><pre>704</pre></td></tr></table></td></tr><tr><td><pre>Returns: {&quot;aaaaaaaaaa&quot;, &quot;abcdefghijklmnopqrstuvwxyz&quot;, &quot;aabbcc&quot; }</pre></td></tr><tr><td><table><tr><td colspan="2">10 * 1 + 26 * 26 + 6 * 3 = 10 + 676 + 18 = 704</td></tr></table></td></tr></table></td></tr><tr><td align="center" nowrap="true">3)</td><td></td></tr><tr><td>&#160;&#160;&#160;&#160;</td><td><table><tr><td><table><tr><td><pre>37521</pre></td></tr></table></td></tr><tr><td><pre>Returns: 
+{&quot;aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyy&quot;,
+ &quot;aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyy&quot;,
+ &quot;aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyy&quot;,
+ &quot;aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyy&quot;,
+ &quot;aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyy&quot;,
+ &quot;aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyy&quot;,
+ &quot;aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyy&quot;,
+ &quot;aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyy&quot;,
+ &quot;aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyy&quot;,
+ &quot;aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyy&quot;,
+ &quot;aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyy&quot;,
+ &quot;aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyy&quot;,
+ &quot;aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyy&quot;,
+ &quot;aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyy&quot;,
+ &quot;aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyy&quot;,
+ &quot;aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyy&quot;,
+ &quot;aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyy&quot;,
+ &quot;aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyy&quot;,
+ &quot;aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyy&quot;,
+ &quot;aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyy&quot;,
+ &quot;aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyy&quot;,
+ &quot;aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyy&quot;,
+ &quot;aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyy&quot;,
+ &quot;aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyy&quot;,
+ &quot;aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyy&quot;,
+ &quot;aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyy&quot;,
+ &quot;aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyy&quot;,
+ &quot;aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyy&quot;,
+ &quot;aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyy&quot;,
+ &quot;aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyy&quot;,
+ &quot;abcd&quot;,
+ &quot;aa&quot;,
+ &quot;a&quot;,
+ &quot;a&quot;,
+ &quot;a&quot; }</pre></td></tr><tr><td><table><tr><td colspan="2"></td></tr></table></td></tr></table></td></tr><tr><td align="center" nowrap="true">4)</td><td></td></tr><tr><td>&#160;&#160;&#160;&#160;</td><td><table><tr><td><table><tr><td><pre>1</pre></td></tr></table></td></tr><tr><td><pre>Returns: {&quot;a&quot; }</pre></td></tr><tr><td><table><tr><td colspan="2"></td></tr></table></td></tr></table></td></tr></table><p>This problem statement is the exclusive and proprietary property of TopCoder, Inc.  Any unauthorized use or reproduction of this information without the prior written consent of TopCoder, Inc. is strictly prohibited.  (c)2003, TopCoder, Inc.  All rights reserved.  </p></body></html>
