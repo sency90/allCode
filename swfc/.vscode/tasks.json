@@ -1,0 +1,19 @@
+{
+   "version": "0.1.0",
+   "command": "bash",
+   "isShellCommand": true,
+   "args": ["-c"],
+   "tasks": [
+       {
+           "taskName": "saveNcompile",
+           "suppressTaskName": true,
+           "isBuildCommand": true,
+           "args": ["gcc main.c -o ./bin/main -O2 -Wall"]
+       }, {
+           "taskName": "execute",
+           "suppressTaskName": true,
+           "isTestCommand": true,
+           "args": ["./bin/main"]
+       }
+   ]
+}

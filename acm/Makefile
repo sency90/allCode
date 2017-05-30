@@ -12,6 +12,10 @@ default:
 	@echo "$(shell pwd)/bin/$(STEM)$(NC)"
 	@$(BIN)
 
+c:
+	@echo "$(LGREEN)gcc $(s) -o $(BIN) $(CXXFLAGS)$(NC)"
+	@gcc $(s) -o $(BIN) $(CXXFLAGS)
+
 cc:
 	@echo "$(LGREEN)$(CXX) $(s) -o $(BIN) $(CXXFLAGS)$(NC)"
 	@$(CXX) $(s) -o $(BIN) $(CXXFLAGS)
