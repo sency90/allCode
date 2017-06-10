@@ -13,6 +13,7 @@ bool judge(int x) {
     return false;
 }
 int main() {
+    freopen("input.txt","r",stdin);
     ios::sync_with_stdio(false); cin.tie(0);
     cin >>n>>k>>s;
     for(int i=0; i<n; i++) {
