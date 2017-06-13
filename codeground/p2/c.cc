@@ -76,7 +76,7 @@ int main() {
         int mx=0;
         Seg seg(n);
         seg.init(1,seg.s,seg.e);
-        for(int i=0; i<n; i++) mx=max(mx,seg.update(1,seg.s,seg.e,ytox[i]).mx);
+        for(int i=0; i<n; i++) mx=max(mx, seg.update(1,seg.s,seg.e,ytox[i]).mx);
         printf("Case #%d\n%d\n",z,mx);
     }
     return 0;
