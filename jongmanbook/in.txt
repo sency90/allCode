@@ -1,0 +1,12 @@
+2
+3 3
+ACK 0 1
+ACK 1 2
+DIS 2 0
+8 6
+DIS 0 1
+ACK 1 2
+ACK 1 4
+DIS 4 3
+DIS 5 6
+ACK 5 7
