@@ -11,8 +11,8 @@ int main() {
     ios::sync_with_stdio(false);
     srand(time(0));
     for(int i=1; i<=50; i++) {
-        if(i<10) fname='0'+to_string(i)+sfx;
-        else fname=to_string(i)+sfx;
+        if(i<10) fname=string("data")+'0'+to_string(i)+sfx;
+        else fname=string("data")+to_string(i)+sfx;
         ofstream out(fname);
         out.tie(0);
 
@@ -25,9 +25,13 @@ int main() {
         if(n>=1 && n<=100000) printf("%d\n", n);
         assert(n>=1 && n<=100000);
 
+        out << n << "\n";
+
         for(int j=0; j<n; j++) {
             int x=2+rand()%999;
             int k=rand()%1000000001LL;
+            assert(x>=2 && x<=1000);
+            assert(k>=1 && k<=int(1e9));
             out <<  x << " " << k << "\n";
         }
         out.close();
