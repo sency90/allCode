@@ -9,13 +9,17 @@ void e(int x, int y) { v[x].push_back(y); v[y].push_back(x); }
 int discov[101], C=0;
 int dfs(int x) {
     int ret = discov[x]=++C, treeEdge=0;
+    bool light = false;
     for(int y: v[x]) {
         if(discov[y]) ret = min(ret, discov[y]);
         else {
             treeEdge++;
             int subtree = dfs(y);
             ret = min(ret, subtree);
-            if(discov[x]!=1 && subtree>=discov[x]) cv.push_back(x);
+            if(!light && discov[x]!=1 && subtree>=discov[x]) {
+                light=true;
+                cv.push_back(x);
+            }
         }
     }
     if(discov[x]==1 && treeEdge>=2) cv.push_back(x);
@@ -29,7 +33,9 @@ int main() {
 
     e(6,3); e(4,2); e(1,2); e(2,0);
 
-    dfs(1);
+    //e(0,1); e(1,2); e(2,4); e(1,3); e(3,5); e(5,1); e(4,1);
+
+    dfs(0);
     printf("cut vertex: ");
     for(int i: cv) printf("%d ", i);
     puts("");
