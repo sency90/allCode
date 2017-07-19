@@ -1,7 +1,8 @@
 #include <cstdio>
 using namespace std;
 int main() {
-    int n; scanf("%d", &n);
-    printf("%d!!", n);
+	char c = -1;
+   	if (c == 0xff) printf("aaa%#x", c - 2);
+   	else printf("bbbb%#x", c);
     return 0;
 }

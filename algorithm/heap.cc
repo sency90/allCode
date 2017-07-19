@@ -7,7 +7,7 @@ inline void swap(int &x, int &y) {
 void heapify(int n, int cur) {
     int mxidx=cur, l=2*cur+1, r=2*cur+2;
     if(l<n && v[l]>v[mxidx]) mxidx=l;
-    else if(r<n && v[r]<v[mxidx]) mxidx=r;
+    if(r<n && v[r]<v[mxidx]) mxidx=r;
 
     if(mxidx!=cur) {
         swap(v[mxidx],v[cur]);
