@@ -1,0 +1,24 @@
+6 4
+engine
+brakes
+tires
+ashtray
+vinyl roof
+trip computer
+Chevrolet
+20000.00 3
+engine
+tires
+brakes
+Cadillac
+10000.00 1
+ashtray
+Hyundai
+20000.00 3
+engine
+tires
+ashtray
+Lada
+6000.00 1
+tires
+0 0
