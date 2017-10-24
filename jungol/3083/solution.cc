@@ -1,88 +1,193 @@
+#pragma optimize "-O2"
 #define HOUSE_SIZE 20000
 #define BLANK_SIZE 64
 #define MAX_HOUSE 10
 #define MAX_COUNT (HOUSE_SIZE*2*50)
-#include <cstdio>
-#include <cassert>
-using namespace std;
 
 extern int gethouseSize();
-extern int readhouse(int *blank, int address, int size);
-extern int move(int from, int to, int size);
+extern int readhouse(int *blank,int address,int size);
+extern int move(int from,int to,int size);
 
-int sz,msz;
-int h[HOUSE_SIZE];
+int sz,msz,zp,last;
+int h[HOUSE_SIZE+1], th[HOUSE_SIZE+1];
+int buf[BLANK_SIZE+1];
+int cnt[HOUSE_SIZE+1][MAX_HOUSE],mx;
+int tar[10],tarIdx[10],rtar[10];
+bool chk[10];
+int v[10],idx[10];
 
-inline int min(int x, int y) { return x<y?x:y; }
+inline int min(int x,int y) { return x<y?x:y; }
+inline int max(int x,int y) { return x>y?x:y; }
 inline void m_init() {
-	sz=gethouseSize();
-	printf("real size: %d\n", sz);
-	readhouse(h,0,sz);
+    last=0;
+    mx=0;
+    sz=gethouseSize(); readhouse(h,0,sz);
+
+    tarIdx[0]=0;
+    register int i,j;
+    for(i=0; i<=sz+1; i++) {
+        th[i]=0;
+        for(j=0; j<10; j++) {
+            cnt[i][j]=0;
+        }
+    }
+    for(i=0; i<10; i++) {
+        chk[i]=false;
+        tarIdx[i]=tar[i]=v[i]=idx[i]=0;
+    }
 }
 
-int buf[BLANK_SIZE];
-inline void mv(int from, int to, int size) {
-	move(from,to,size);
-	for(int i=0; i<size; i++) {
-		buf[i]=h[i+from];
-		h[i+from]=0;
-	}
-	for(int i=0; i<size; i++) {
-		h[i+to]=buf[i];
-	}
+inline int mv(int from,int to,int size) {
+    move(from,to,size);
+    for(int i=0; i<size; i++) {
+        buf[i] = h[from];
+        h[from] = 0;
+        from++;
+    }
+    for(int i=0; i<size; i++) h[to++] = buf[i];
+    return size;
 }
 
-inline int alignZero() {
-	for(int i=0,zp=sz,len=0; i<zp;) {
-		if(h[i]==0) {
-			for(len=0; i+len<zp && len<BLANK_SIZE && h[i+len]==0; len++);
-			if(i+len==zp) break;
-			int mn = min(zp-(i+len),len);
-			//if(mn==0) break;
-			zp-=mn;
-			mv(zp,i,mn);
-		} else i++;
-	}
+inline void dfs(int x) {
+    if(x==10) {
+        for(int i=1; i<10; i++) idx[i]=idx[i-1]+cnt[sz][v[i]];
+        int sum=0;
+        for(int i=1; i<10; i++) sum+=cnt[idx[i]][v[i]]-cnt[idx[i-1]][v[i]];
+        if(mx < sum) {
+            mx=sum;
+            for(int i=1; i<10; i++) {
+                tar[i]=v[i];
+                rtar[tar[i]]=i;
+            }
+            for(int i=1; i<10; i++) tarIdx[i]=idx[i];
+        }
+        return;
+    }
 
-	int zp=0;
-	for(int i=sz-1; i>=0 && h[i]==0; i--) zp=i;
-	msz = min(sz-zp,BLANK_SIZE);
-
-	printf("sz:%d, zp:%d\n",sz,zp);
-	for(int z=0; z<zp; z++) assert(h[z]!=0);
-	//        if(!h[z]) printf("h[%d]:%d\n", z,h[z]);
-	//    }
-	return zp;
-	}
-
-inline void swap(int from, int to, int size, int zp) {
-	mv(from,zp,size);
-	mv(to,from,size);
-	mv(zp,to,size);
+    for(int i=1; i<10; i++) {
+        if(chk[i]) continue;
+        chk[i]=true;
+        v[x]=i;
+        dfs(x+1);
+        chk[i]=false;
+    }
 }
 
-inline void alignAll(int zp) {
-	for(int hno=1,i=0,j=0,ilen=0,jlen=0; hno<MAX_HOUSE; hno++) {
-		for(ilen=0; h[i+ilen]==hno; ilen++);
-		i+=ilen;
+inline void findTarget() {
+    for(int i=0; i<sz; i++) {
+        for(int j=0; j<10; j++) {
+            cnt[i+1][j] = cnt[i][j] + (h[i]==j);
+        }
+    }
 
-		while(j<zp) {
-			for(ilen=0; i+ilen<sz; ilen++) if(h[i+ilen]==hno) break;
-			for(j=i+ilen, jlen=0; j+jlen<zp && jlen<msz; jlen++) if(h[j+jlen]!=hno) break;
+    dfs(1);
+    zp=0;
+    for(int i=1; i<10; i++) {
+        for(int k=tarIdx[i-1]; k<tarIdx[i]; k++) {
+            th[k] = tar[i];
+        }
+        zp=max(tarIdx[i],zp);
+    }
 
-			int d = min(ilen,jlen);
-			swap(i,j,d,zp);
+    return;
+}
 
-			i+=d; j+=d;
-		}
-	}
+inline bool haveDone() {
+    for(int i=last; i<sz; i++) if(th[i]!=h[i]) {
+        last=i;
+        return false;
+    }
+    return true;
+}
+
+
+int lastIdx[10];
+inline void alignAll() {
+    for(int i=0; i<10; i++) lastIdx[i]=tarIdx[i];
+
+    while(true) {
+        int totalD=0;
+        for(int hno=1; hno<MAX_HOUSE; hno++) {
+            int mi = rtar[hno];
+            if(tarIdx[mi-1]==tarIdx[mi]) continue;
+
+            bool flag=true;
+            for(int i=lastIdx[mi-1]; i<tarIdx[mi];) {
+                if(h[i]==0) {
+                    flag=false;
+                    int ilen=0;
+                    for(; ilen<BLANK_SIZE && i+ilen<tarIdx[mi] && h[i+ilen]==0; ilen++);
+
+                    if(ilen==0) break;
+                    for(int j=0; j<tarIdx[mi-1];) {
+                        if(h[j]==hno) {
+                            int jlen=0;
+                            for(; jlen<BLANK_SIZE && j+jlen<tarIdx[mi-1] && h[j+jlen]==hno; jlen++);
+
+                            int d = min(ilen,jlen);
+                            mv(j,i,d);
+                            i+=d; j+=d;
+                            ilen-=d;
+                            totalD+=d;
+                            //lastIdx[mi-1]+=d;
+                            if(ilen==0) break;
+                        } else j++;
+                    }
+
+                    if(ilen==0) break;
+                    for(int j=lastIdx[mi]; j<sz;) {
+                        if(h[j]==hno) {
+                            int jlen=0;
+                            for(; jlen<BLANK_SIZE && j+jlen<sz && h[j+jlen]==hno; jlen++);
+
+                            int d = min(ilen,jlen);
+                            mv(j,i,d);
+                            i+=d; j+=d;
+                            ilen-=d;
+                            totalD+=d;
+                            //lastIdx[mi-1]+=d;
+                            if(ilen==0) break;
+                        } else j++;
+                    }
+                } else {
+                    if(flag && h[i]==hno) lastIdx[mi-1]++;
+                    else flag=false;
+                    i++;
+                }
+            }
+        }
+        if(haveDone()) break;
+        else if(totalD==0) {
+            int mj,mjlen=0;
+            for(int hno=1; hno<MAX_HOUSE; hno++) {
+                int mi = rtar[hno];
+                if(tarIdx[mi-1]==tarIdx[mi]) continue;
+
+                for(int j=lastIdx[mi-1]; j<tarIdx[mi];) {
+                    if(h[j]!=hno) {
+                        int jlen=0;
+                        for(; jlen<BLANK_SIZE && j+jlen<tarIdx[mi] && h[j+jlen]!=hno && jlen<sz-zp; jlen++);
+
+                        if(jlen==0) break;
+                        else {
+                            if(mjlen<jlen) {
+                                mjlen=jlen;
+                                mj=j;
+                            }
+                            break;
+                        }
+                    } else j++;
+                }
+            }
+            mv(mj,zp,mjlen);
+        }
+BRK:
+        totalD=0;
+    }
 }
 
 void cleanup() {
-	m_init();
-	int zp = alignZero();
-	alignAll(zp);
-	return;
+    m_init();
+    findTarget();
+    alignAll();
 }
-
-
