@@ -88,7 +88,6 @@ inline void findTarget() {
 }
 
 inline void mmove(int from, int to, int size) {
-    //printf("from:%d, to:%d, size:%d\n",from,to,size);
     for(int i=0; i<size; i++) {
         buf[i]=h[from];
         h[from++]=0;
@@ -97,64 +96,6 @@ inline void mmove(int from, int to, int size) {
     move(from-1,to-1,size);
 }
 
-inline bool moves() {
-    while(true) {
-        for(int z=1; z<=numcnt; z++) {
-            int hno = target[z];
-            int lo=targetIdx[z-1]+1, hi=targetIdx[z];
-            int i=lo,j,ilen,jlen;
-
-            printf("target[%d]:%d, lo:%d, hi:%d\n",z,target[z],lo,hi);
-            while(i<=hi) {
-                for(; i<=hi && h[i]!=0; i++);
-                for(ilen=0; i+ilen<=hi && ilen<BLANK_SIZE && h[i+ilen]==0; ilen++);
-                if(ilen==0) {
-                    printf("i:%d ilen:%d\n",i,ilen);
-                    continue;
-                }
-
-                j=lowStart[z];
-                while(j<=lo) {
-                    for(; j<=lo && h[j]!=hno; j++);
-                    for(jlen=0; j+jlen<=lo && jlen<BLANK_SIZE && h[j+jlen]==hno; jlen++);
-                    if(jlen!=0) {
-                        int mnlen=min(ilen,jlen);
-                        mmove(j,i,mnlen);
-                        lowStart[z]+=mnlen;
-                        i+=mnlen; j+=mnlen;
-                        ilen-=mnlen;
-                    }
-                    if(ilen==0) break;
-                }
-                if(ilen==0) continue;
-
-                j=highStart[z];
-                while(j<=sz) {
-                    for(; j<=sz && h[j]!=hno; j++);
-                    for(jlen=0; j+jlen<=sz && jlen<BLANK_SIZE && h[j+jlen]==hno; jlen++);
-                    if(jlen!=0) {
-                        int mnlen=min(ilen,jlen);
-                        mmove(j,i,mnlen);
-                        highStart[z]+=mnlen;
-                        i+=mnlen; j+=mnlen;
-                        ilen-=mnlen;
-                    }
-                    if(ilen==0) break;
-                }
-            }
-        }
-        bool hasZero=false;
-        for(int i=1; i<zp; i++) {
-            if(h[i]==0) {
-                hasZero=true;
-                break;
-            }
-        }
-        if(!hasZero) break;
-    }
-    for(int i=1; i<=sz; i++) if(h[i]!=th[i]) return true;
-    return false;
-}
 
 void cleanup() {
     m_init();
@@ -165,42 +106,7 @@ void cleanup() {
     for(int i=1; i<=sz; i++) printf("%d",th[i]);
     puts(""); puts("");
 
-    while(moves()) {
-        puts("");
-        for(int i=1; i<=sz; i++) {
-            printf("%d",h[i]);
-        }
-        puts("");
 
 
-        puts("!!");
-        int wrongCnt[10];
-        for(int i=0; i<10; i++) wrongCnt[i]=0;
-        for(int i=1; i<=sz; i++) {
-            if(th[i]!=h[i]) wrongCnt[th[i]]++;
-        }
-        int mxi,mx=-1;
-        for(int i=1; i<10; i++) {
-            if(mx<wrongCnt[i]) {
-                mx=wrongCnt[i];
-                mxi=i;
-            }
-        }
-
-        int ozp = zp,i=1,ilen;
-        while(i<=sz) {
-            for(; i<=sz && (h[i]!=mxi || th[i]==mxi); i++);
-            if(i==sz) break;
-            //if(h[i]==mxi && th[i]!=mxi) {
-            for(ilen=0; i+ilen<=sz && ilen<BLANK_SIZE && ilen<sz-zp && h[i+ilen]==mxi && th[i+ilen]!=mxi; ilen++);
-            if(ilen!=0) {
-                mmove(i,zp,ilen);
-                i+=ilen;
-                zp+=ilen;
-            }
-            //}
-        }
-        zp=ozp;
-    }
 }
 
