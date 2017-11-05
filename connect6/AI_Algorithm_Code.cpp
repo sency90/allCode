@@ -1,24 +1,24 @@
 // Samsung Go Tournament Form C (g++-4.8.3)
 
 /*
-[AI ÄÚµå ÀÛ¼º ¹æ¹ı]
-1. char info[]ÀÇ ¹è¿­ ¾È¿¡                    "TeamName:ÀÚ½ÅÀÇ ÆÀ¸í,Department:ÀÚ½ÅÀÇ ¼Ò¼Ó"                    ¼ø¼­·Î ÀÛ¼ºÇÕ´Ï´Ù.
-( ÁÖÀÇ ) Teamname:°ú Department:´Â ²À µé¾î°¡¾ß ÇÕ´Ï´Ù.
-"ÀÚ½ÅÀÇ ÆÀ¸í", "ÀÚ½ÅÀÇ ¼Ò¼Ó"À» ¼öÁ¤ÇØ¾ß ÇÕ´Ï´Ù.
-2. ¾Æ·¡ÀÇ myturn() ÇÔ¼ö ¾È¿¡ ÀÚ½Å¸¸ÀÇ AI ÄÚµå¸¦ ÀÛ¼ºÇÕ´Ï´Ù.
-3. AI ÆÄÀÏÀ» Å×½ºÆ® ÇÏ½Ç ¶§´Â "À°¸ñ ¾Ë°í¸®Áò´ëÈ¸ Åø"À» »ç¿ëÇÕ´Ï´Ù.
-4. À°¸ñ ¾Ë°í¸®Áò ´ëÈ¸ ÅøÀÇ ¿¬½ÀÇÏ±â¿¡¼­ ¹ÙµÏµ¹À» ´©¸¥ ÈÄ, ÀÚ½ÅÀÇ "ÆÀ¸í" ÀÌ µé¾î°£ ¾Ë°í¸®ÁòÀ» Ãß°¡ÇÏ¿© Å×½ºÆ® ÇÕ´Ï´Ù.
-[º¯¼ö ¹× ÇÔ¼ö]
-myturn(int cnt) : ÀÚ½ÅÀÇ AI ÄÚµå¸¦ ÀÛ¼ºÇÏ´Â ¸ŞÀÎ ÇÔ¼ö ÀÔ´Ï´Ù.
-int cnt (myturn()ÇÔ¼öÀÇ ÆÄ¶ó¹ÌÅÍ) : µ¹À» ¸î ¼ö µÖ¾ßÇÏ´ÂÁö Á¤ÇÏ´Â º¯¼ö, cnt°¡ 1ÀÌ¸é À°¸ñ ½ÃÀÛ ½Ã  ÇÑ ¹ø¸¸  µÎ´Â »óÈ²(ÇÑ ¹ø), cnt°¡ 2ÀÌ¸é ±× ÀÌÈÄ µ¹À» µÎ´Â »óÈ²(µÎ ¹ø)
-int  x[0], y[0] : ÀÚ½ÅÀÌ µÑ Ã¹ ¹ø Â° µ¹ÀÇ xÁÂÇ¥ , yÁÂÇ¥°¡ ÀúÀåµÇ¾î¾ß ÇÕ´Ï´Ù.
-int  x[1], y[1] : ÀÚ½ÅÀÌ µÑ µÎ ¹ø Â° µ¹ÀÇ xÁÂÇ¥ , yÁÂÇ¥°¡ ÀúÀåµÇ¾î¾ß ÇÕ´Ï´Ù.
-void domymove(int x[], int y[], cnt) : µÑ µ¹µéÀÇ ÁÂÇ¥¸¦ ÀúÀåÇØ¼­ Ãâ·Â
-//int board[BOARD_SIZE][BOARD_SIZE]; ¹ÙµÏÆÇ ÇöÀç»óÈ² ´ã°í ÀÖ¾î ¹Ù·Î»ç¿ë °¡´ÉÇÔ. ´Ü, ¿øº»µ¥ÀÌÅÍ·Î ¼öÁ¤ Àı´ë±İÁö
-// ³õÀ»¼ö ¾ø´Â À§Ä¡¿¡ ¹ÙµÏµ¹À» ³õÀ¸¸é ½Ç°İÆĞ Ã³¸®.
-boolean ifFree(int x, int y) : ÇöÀç [x,y]ÁÂÇ¥¿¡ ¹ÙµÏµ¹ÀÌ ÀÖ´ÂÁö È®ÀÎÇÏ´Â ÇÔ¼ö (¾øÀ¸¸é true, ÀÖÀ¸¸é false)
-int showBoard(int x, int y) : [x, y] ÁÂÇ¥¿¡ ¹«½¼ µ¹ÀÌ Á¸ÀçÇÏ´ÂÁö º¸¿©ÁÖ´Â ÇÔ¼ö (1 = ÀÚ½ÅÀÇ µ¹, 2 = »ó´ëÀÇ µ¹, 3 = ºí·°Å·)
-<-------AI¸¦ ÀÛ¼ºÇÏ½Ç ¶§, °°Àº ÀÌ¸§ÀÇ ÇÔ¼ö ¹× º¯¼ö »ç¿ëÀ» ±ÇÀåÇÏÁö ¾Ê½À´Ï´Ù----->
+   [AI ì½”ë“œ ì‘ì„± ë°©ë²•]
+   1. char info[]ì˜ ë°°ì—´ ì•ˆì—                    "TeamName:ìì‹ ì˜ íŒ€ëª…,Department:ìì‹ ì˜ ì†Œì†"                    ìˆœì„œë¡œ ì‘ì„±í•©ë‹ˆë‹¤.
+   ( ì£¼ì˜ ) Teamname:ê³¼ Department:ëŠ” ê¼­ ë“¤ì–´ê°€ì•¼ í•©ë‹ˆë‹¤.
+   "ìì‹ ì˜ íŒ€ëª…", "ìì‹ ì˜ ì†Œì†"ì„ ìˆ˜ì •í•´ì•¼ í•©ë‹ˆë‹¤.
+   2. ì•„ë˜ì˜ myturn() í•¨ìˆ˜ ì•ˆì— ìì‹ ë§Œì˜ AI ì½”ë“œë¥¼ ì‘ì„±í•©ë‹ˆë‹¤.
+   3. AI íŒŒì¼ì„ í…ŒìŠ¤íŠ¸ í•˜ì‹¤ ë•ŒëŠ” "ìœ¡ëª© ì•Œê³ ë¦¬ì¦˜ëŒ€íšŒ íˆ´"ì„ ì‚¬ìš©í•©ë‹ˆë‹¤.
+   4. ìœ¡ëª© ì•Œê³ ë¦¬ì¦˜ ëŒ€íšŒ íˆ´ì˜ ì—°ìŠµí•˜ê¸°ì—ì„œ ë°”ë‘‘ëŒì„ ëˆ„ë¥¸ í›„, ìì‹ ì˜ "íŒ€ëª…" ì´ ë“¤ì–´ê°„ ì•Œê³ ë¦¬ì¦˜ì„ ì¶”ê°€í•˜ì—¬ í…ŒìŠ¤íŠ¸ í•©ë‹ˆë‹¤.
+   [ë³€ìˆ˜ ë° í•¨ìˆ˜]
+   myturn(int cnt) : ìì‹ ì˜ AI ì½”ë“œë¥¼ ì‘ì„±í•˜ëŠ” ë©”ì¸ í•¨ìˆ˜ ì…ë‹ˆë‹¤.
+   int cnt (myturn()í•¨ìˆ˜ì˜ íŒŒë¼ë¯¸í„°) : ëŒì„ ëª‡ ìˆ˜ ë‘¬ì•¼í•˜ëŠ”ì§€ ì •í•˜ëŠ” ë³€ìˆ˜, cntê°€ 1ì´ë©´ ìœ¡ëª© ì‹œì‘ ì‹œ  í•œ ë²ˆë§Œ  ë‘ëŠ” ìƒí™©(í•œ ë²ˆ), cntê°€ 2ì´ë©´ ê·¸ ì´í›„ ëŒì„ ë‘ëŠ” ìƒí™©(ë‘ ë²ˆ)
+   int  x[0], y[0] : ìì‹ ì´ ë‘˜ ì²« ë²ˆ ì§¸ ëŒì˜ xì¢Œí‘œ , yì¢Œí‘œê°€ ì €ì¥ë˜ì–´ì•¼ í•©ë‹ˆë‹¤.
+   int  x[1], y[1] : ìì‹ ì´ ë‘˜ ë‘ ë²ˆ ì§¸ ëŒì˜ xì¢Œí‘œ , yì¢Œí‘œê°€ ì €ì¥ë˜ì–´ì•¼ í•©ë‹ˆë‹¤.
+   void domymove(int x[], int y[], cnt) : ë‘˜ ëŒë“¤ì˜ ì¢Œí‘œë¥¼ ì €ì¥í•´ì„œ ì¶œë ¥
+//int board[BOARD_SIZE][BOARD_SIZE]; ë°”ë‘‘íŒ í˜„ì¬ìƒí™© ë‹´ê³  ìˆì–´ ë°”ë¡œì‚¬ìš© ê°€ëŠ¥í•¨. ë‹¨, ì›ë³¸ë°ì´í„°ë¡œ ìˆ˜ì • ì ˆëŒ€ê¸ˆì§€
+// ë†“ì„ìˆ˜ ì—†ëŠ” ìœ„ì¹˜ì— ë°”ë‘‘ëŒì„ ë†“ìœ¼ë©´ ì‹¤ê²©íŒ¨ ì²˜ë¦¬.
+boolean ifFree(int x, int y) : í˜„ì¬ [x,y]ì¢Œí‘œì— ë°”ë‘‘ëŒì´ ìˆëŠ”ì§€ í™•ì¸í•˜ëŠ” í•¨ìˆ˜ (ì—†ìœ¼ë©´ true, ìˆìœ¼ë©´ false)
+int showBoard(int x, int y) : [x, y] ì¢Œí‘œì— ë¬´ìŠ¨ ëŒì´ ì¡´ì¬í•˜ëŠ”ì§€ ë³´ì—¬ì£¼ëŠ” í•¨ìˆ˜ (1 = ìì‹ ì˜ ëŒ, 2 = ìƒëŒ€ì˜ ëŒ, 3 = ë¸”ëŸ­í‚¹)
+<-------AIë¥¼ ì‘ì„±í•˜ì‹¤ ë•Œ, ê°™ì€ ì´ë¦„ì˜ í•¨ìˆ˜ ë° ë³€ìˆ˜ ì‚¬ìš©ì„ ê¶Œì¥í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤----->
 */
 
 #include <Windows.h>
@@ -30,26 +30,27 @@ int showBoard(int x, int y) : [x, y] ÁÂÇ¥¿¡ ¹«½¼ µ¹ÀÌ Á¸ÀçÇÏ´ÂÁö º¸¿©ÁÖ´Â ÇÔ¼ö (
 #include <ctime>
 #include <algorithm>
 #include <queue>
+#include <functional>
 #include "Connect6Algo.h"
 using namespace std;
 
-// "»ùÇÃÄÚµå[C]"  -> ÀÚ½ÅÀÇ ÆÀ¸í (¼öÁ¤)
-// "AIºÎ¼­[C]"  -> ÀÚ½ÅÀÇ ¼Ò¼Ó (¼öÁ¤)
-// Á¦Ãâ½Ã ½ÇÇàÆÄÀÏÀº ¹İµå½Ã ÆÀ¸íÀ¸·Î Á¦Ãâ!
+// "ìƒ˜í”Œì½”ë“œ[C]"  -> ìì‹ ì˜ íŒ€ëª… (ìˆ˜ì •)
+// "AIë¶€ì„œ[C]"  -> ìì‹ ì˜ ì†Œì† (ìˆ˜ì •)
+// ì œì¶œì‹œ ì‹¤í–‰íŒŒì¼ì€ ë°˜ë“œì‹œ íŒ€ëª…ìœ¼ë¡œ ì œì¶œ!
 char info[] ={"TeamName:plzrun,Department:EDS"};
 
 #define N 19
 #define EMPTY 0
-//PLAYER¿Í OPPLAYER´Â myturn()ÇÔ¼ö ¾È¿¡¼­¸¸ »ç¿ë °¡´ÉÇÏ´Ù.
+//PLAYERì™€ OPPLAYERëŠ” myturn()í•¨ìˆ˜ ì•ˆì—ì„œë§Œ ì‚¬ìš© ê°€ëŠ¥í•˜ë‹¤.
 #define PLAYER 1
 #define OPPLAYER 2
 #define BLOCK 3
 #define MARK 4
 #define MARK7 5
-const double Inf = 1600000.0;
-const double D[]={1.0,1.00000181862,1.00000363725,1.00000726562};
-const double W[]={3.4,2.8532,2.5938,2.358,2.144};
-const double E=1.1;
+const int Inf = 0x3f3f3f3f;
+//const double D[]={1.0,1.00000181862,1.00000363725,1.00000726562};
+//const double W[]={3.4,2.8532,2.5938,2.358,2.144};
+//const double E=1.1;
 
 char buff[200];
 //extern inline int showBoard(int x, int y);
@@ -57,31 +58,31 @@ char buff[200];
 
 
 struct HalfMove{
-	int x,y;
-	HalfMove(){} HalfMove(int x, int y):x(x),y(y){}
-	inline bool operator==(const HalfMove &rhs) const { return (x==rhs.x && y==rhs.y); }
-	inline bool operator!=(const HalfMove &rhs) const { return (x!=rhs.x || y!=rhs.y); }
-	inline bool isOutOfBound() const { return (x<0 || y<0 || x>=N || y>=N); }
-	inline bool isNone() const { return x<0; }
+    int x,y;
+    HalfMove(){} HalfMove(int x, int y):x(x),y(y){}
+    inline bool operator==(const HalfMove &rhs) const { return (x==rhs.x && y==rhs.y); }
+    inline bool operator!=(const HalfMove &rhs) const { return (x!=rhs.x || y!=rhs.y); }
+    inline bool isOutOfBound() const { return (x<0 || y<0 || x>=N || y>=N); }
+    inline bool isNone() const { return x<0; }
 };
 const HalfMove NoneHalfMove(-1,-1);
 
 struct Move{
-	HalfMove first,second;
-	Move():first(NoneHalfMove),second(NoneHalfMove){} Move(HalfMove first, HalfMove second):first(first),second(second){}
-	inline bool operator==(const Move &rhs) const { return (first==rhs.first && second==rhs.second); }
-	inline bool operator!=(const Move &rhs) const { return (first!=rhs.first || second!=rhs.second); }
-	inline bool isNone() const { return first.x<0; }
+    HalfMove first,second;
+    Move():first(NoneHalfMove),second(NoneHalfMove){} Move(HalfMove first, HalfMove second):first(first),second(second){}
+    inline bool operator==(const Move &rhs) const { return (first==rhs.first && second==rhs.second); }
+    inline bool operator!=(const Move &rhs) const { return (first!=rhs.first || second!=rhs.second); }
+    inline bool isNone() const { return first.x<0; }
 };
 const Move NoneMove(NoneHalfMove,NoneHalfMove);
 
-struct MoveScore{
-	Move mv;
-	double score;
-	MoveScore():mv(NoneMove),score(-Inf){}
-	MoveScore(Move mv, double score):mv(mv),score(score){}
-	bool operator<(const MoveScore &rhs) const { return score>rhs.score; }
-	bool operator==(const MoveScore &rhs) const { return score==rhs.score; }
+struct HalfMoveScore{
+    HalfMove mv;
+    int score;
+    HalfMoveScore():mv(NoneHalfMove),score(-Inf){}
+    HalfMoveScore(HalfMove mv, int score):mv(mv),score(score){}
+    bool operator<(const HalfMoveScore &rhs) const { return score>rhs.score; }
+    bool operator==(const HalfMoveScore &rhs) const { return score==rhs.score; }
 };
 
 const int dx[]={-1,0,1,1}, dy[]={1,1,1,0};
@@ -89,272 +90,423 @@ int B[N][N];
 
 inline bool isOutOfBound(int x, int y) { return (x<0 || y<0 || x>=N || y>=N); }
 inline Move getBoardInfo(int player) {
-	Move ret;
-	int tmp, opp=3-player;
-	for(int i=0; i<N; i++) {
-		for(int j=0; j<N; j++) {
-			if(B[i][j]>=MARK) B[i][j]=EMPTY;
-			tmp=showBoard(i,j);
-			if(tmp!=B[i][j] && tmp==opp){
-				B[i][j]=tmp;
-				if(ret.isNone()) ret.first = HalfMove(i,j);
-				else{
-					ret.second = HalfMove(i,j);
-					//return ret; //2°³¸¸ ¹ß°ßÇÏ¸é ÀÌÀü º¸µå»óÅÂ¿Í ´Ù¸¥ Á¡À» ¹ß°ßÇÒ ¼ö ¾øÀ¸¹Ç·Î ¿©±â¼­ ¹Ù·Î ³¡³½´Ù.
-				}
-			}
-			B[i][j]=tmp;
-		}
-	}
-	return ret;
+    Move ret;
+    int tmp, opp=3-player;
+    for(int i=0; i<N; i++) {
+        for(int j=0; j<N; j++) {
+            if(B[i][j]>=MARK) B[i][j]=EMPTY;
+            tmp=showBoard(i,j);
+            if(tmp!=B[i][j] && tmp==opp){
+                B[i][j]=tmp;
+                if(ret.isNone()) ret.first = HalfMove(i,j);
+                else{
+                    ret.second = HalfMove(i,j);
+                    //return ret; //2ê°œë§Œ ë°œê²¬í•˜ë©´ ì´ì „ ë³´ë“œìƒíƒœì™€ ë‹¤ë¥¸ ì ì„ ë°œê²¬í•  ìˆ˜ ì—†ìœ¼ë¯€ë¡œ ì—¬ê¸°ì„œ ë°”ë¡œ ëë‚¸ë‹¤.
+                }
+            }
+            B[i][j]=tmp;
+        }
+    }
+    return ret;
 }
 
-//(x,y) ~ (x+5*dx[dir],y+5*dx[dir])¸¦ window¶ó ÇÒ ¶§, window ¹ÛÀÇ Á¡À¸·Î ÀÎÇØ 7¸ñ ÀÌ»óÀÌ ¸¸µé¾îÁú ¼ö ÀÖ´ÂÁö È®ÀÎÇÑ´Ù.
-//´Ü, ÇØ´ç ÇÔ¼ö°¡ window³»ºÎ¿¡¼­ ¹İµå½Ã 4¸ñÀÌ»óÀÌ ¸¸µé¾îÁú ¼ö ÀÖ´ÂÁö º¸ÀåÇÏÁö´Â ¾Ê´Â´Ù.
+//(x,y) ~ (x+5*dx[dir],y+5*dx[dir])ë¥¼ windowë¼ í•  ë•Œ, window ë°–ì˜ ì ìœ¼ë¡œ ì¸í•´ 7ëª© ì´ìƒì´ ë§Œë“¤ì–´ì§ˆ ìˆ˜ ìˆëŠ”ì§€ í™•ì¸í•œë‹¤.
+//ë‹¨, í•´ë‹¹ í•¨ìˆ˜ê°€ windowë‚´ë¶€ì—ì„œ ë°˜ë“œì‹œ 4ëª©ì´ìƒì´ ë§Œë“¤ì–´ì§ˆ ìˆ˜ ìˆëŠ”ì§€ ë³´ì¥í•˜ì§€ëŠ” ì•ŠëŠ”ë‹¤.
 inline bool couldMakeConnect7(int x,int y,int player,int dir){
-	return !(isOutOfBound(x-dx[dir],y-dy[dir]) || B[x-dx[dir]][y-dy[dir]]!=player) && (isOutOfBound(x+6*dx[dir],y+6*dx[dir] || B[x+6*dx[dir]][y+6*dy[dir]]));
+    return !(isOutOfBound(x-dx[dir],y-dy[dir]) || B[x-dx[dir]][y-dy[dir]]!=player) && (isOutOfBound(x+6*dx[dir],y+6*dx[dir] || B[x+6*dx[dir]][y+6*dy[dir]]));
+}
+
+inline void initMark(){
+    for(int i=0; i<N; i++){
+        for(int j=0; j<N; j++){
+            if(B[i][j]>=MARK) B[i][j]=EMPTY;
+        }
+    }
 }
 
 Move moveForConnect6(int player){
-	int opplayer = 3-player;
-	for(int x=0; x<N; x++){
-		for(int y=0; y<N; y++){
-			if(B[x][y]!=player) continue;
-			for(int dir=0; dir<4; dir++){
-				int playerStone=1; //(x,y)´Â ÀÚ±â ÀÚ½ÅÀÌ¹Ç·Î 1°³´Â ¼¼¾îµÎ°í ½ÃÀÛÇÑ´Ù.
-				if(isOutOfBound(x+5*dx[dir],y+5*dy[dir])) continue; //window¿¡ 6°³ÀÇ µ¹À» ³õÁö ¸øÇÑ´Ù¸é skip
-				if(couldMakeConnect7(x,y,player,dir)) continue; //7¸ñÀÇ ¿ì·Á°¡ ÀÖ´Â °æ¿ì´Â skip
-				for(int k=0,nx=x+dx[dir],ny=y+dy[dir]; k<5; k++,nx+=dx[dir],ny+=dy[dir]){
-					//if(isOutOfBound(nx,ny)) break; //À§¿¡¼­ °É·¯³ÂÀ¸¹Ç·Î (nx,ny)°¡ Board¹üÀ§ ¹ÛÀÎ °÷À» °¡¸®Å³ ÀÏÀº ¾ø´Ù.
-					if(B[nx][ny]==player) playerStone++;
-					else if(B[nx][ny]==EMPTY) continue;
-					else break;
-				}
-				if(playerStone>=4){
-					Move ret;
-					for(int k=0,nx=x+dx[dir],ny=y+dy[dir]; k<5; k++,nx+=dx[dir],ny+=dy[dir]){
-						if(B[nx][ny]==EMPTY){
-							if(ret.isNone()) ret.first = HalfMove(nx,ny);
-							else ret.second = HalfMove(nx,ny);
-						}
-					}
-					return ret; //connet6¸¦ ¸¸µé ¼ö ÀÖ´Â °æ¿ì, ¿©±â¼­ returnµÊ
-				}
-			}
-		}
-	}
-	return NoneMove;
+    int opplayer = 3-player;
+    for(int x=0; x<N; x++){
+        for(int y=0; y<N; y++){
+            if(B[x][y]!=player) continue;
+            for(int dir=0; dir<4; dir++){
+                int playerStone=1; //(x,y)ëŠ” ìê¸° ìì‹ ì´ë¯€ë¡œ 1ê°œëŠ” ì„¸ì–´ë‘ê³  ì‹œì‘í•œë‹¤.
+                if(isOutOfBound(x+5*dx[dir],y+5*dy[dir])) continue; //windowì— 6ê°œì˜ ëŒì„ ë†“ì§€ ëª»í•œë‹¤ë©´ skip
+                if(couldMakeConnect7(x,y,player,dir)) continue; //7ëª©ì˜ ìš°ë ¤ê°€ ìˆëŠ” ê²½ìš°ëŠ” skip
+                for(int k=0,nx=x+dx[dir],ny=y+dy[dir]; k<5; k++,nx+=dx[dir],ny+=dy[dir]){
+                    //if(isOutOfBound(nx,ny)) break; //ìœ„ì—ì„œ ê±¸ëŸ¬ëƒˆìœ¼ë¯€ë¡œ (nx,ny)ê°€ Boardë²”ìœ„ ë°–ì¸ ê³³ì„ ê°€ë¦¬í‚¬ ì¼ì€ ì—†ë‹¤.
+                    if(B[nx][ny]==player) playerStone++;
+                    else if(B[nx][ny]==EMPTY) continue;
+                    else {
+                        playerStone=0;
+                        break;
+                    }
+                }
+                if(playerStone>=4){
+                    Move ret;
+                    for(int k=0,nx=x+dx[dir],ny=y+dy[dir]; k<5; k++,nx+=dx[dir],ny+=dy[dir]){
+                        if(B[nx][ny]==EMPTY){
+                            if(ret.isNone()) ret.first = HalfMove(nx,ny);
+                            else ret.second = HalfMove(nx,ny);
+                        }
+                    }
+                    return ret; //connet6ë¥¼ ë§Œë“¤ ìˆ˜ ìˆëŠ” ê²½ìš°, ì—¬ê¸°ì„œ returnë¨
+                }
+            }
+        }
+    }
+    return NoneMove;
 }
 
 HalfMove getAnyValidHalfMove(int player){
-	for(int x=0; x<N; x++){
-		for(int y=0; y<N; y++){
-			if(B[x][y]!=EMPTY) continue; //(x,y)°¡ ºñ¾îÀÖ´Â °÷¸¸ Á¶»çÇÑ´Ù.
-			bool good=true;
-			for(int dir=0; dir<4; dir++){
-				int playerStone = 1; //(x,y)¿¡ player°¡ µ¹À» µ×´Ù°í °¡Á¤ÇÑ´Ù.
-				//if(isOutOfBound(x+5*dx[dir],y+5*dy[dir])) continue; //6¸ñÀ» ¸¸µé ¼ö ¾ø´Â °æ¿ì´Â good
-				//if(couldMakeConnect7(x,y,player,dir)) continue; //7¸ñÀÇ ¿ì·Á°¡ ÀÖ´Â °æ¿ì´Â good
-				for(int k=0,nx=x+dx[dir],ny=y+dy[dir]; k<5; k++,nx+=dx[dir],ny+=dy[dir]){
-					if(isOutOfBound(nx,ny)) break;
-					if(B[nx][ny]==player) playerStone++;
-					else break;
-				}
-				for(int k=0,nx=x-dx[dir],ny=y-dy[dir]; k<5; k++,nx-=dx[dir],ny-=dy[dir]){
-					if(isOutOfBound(nx,ny)) break;
-					if(B[nx][ny]==player) playerStone++;
-					else break;
-				}
-				if(playerStone>=7){
-					//7¸ñÀÌ»óÀÌ Çü¼ºµÇ´Â°æ¿ì ÇÊÆĞÀÌ¹Ç·Î Àı´ë µÎ¾î¼­´Â ¾ÈµÈ´Ù.
-					good=false;
-					break;
-				}
-			}
-			if(good) return HalfMove(x,y);
-		}
-	}
-	return HalfMove(0,0); //´õ ÀÌ»ó µÑ °÷ÀÌ ¾øÀ¸¹Ç·Î ¾Æ¹«°÷ÀÌ³ª ¸®ÅÏÇÑ´Ù.
+    for(int x=0; x<N; x++){
+        for(int y=0; y<N; y++){
+            if(B[x][y]!=EMPTY) continue; //(x,y)ê°€ ë¹„ì–´ìˆëŠ” ê³³ë§Œ ì¡°ì‚¬í•œë‹¤.
+            bool good=true;
+            for(int dir=0; dir<4; dir++){
+                int playerStone = 1; //(x,y)ì— playerê°€ ëŒì„ ë’€ë‹¤ê³  ê°€ì •í•œë‹¤.
+                //if(isOutOfBound(x+5*dx[dir],y+5*dy[dir])) continue; //6ëª©ì„ ë§Œë“¤ ìˆ˜ ì—†ëŠ” ê²½ìš°ëŠ” good
+                //if(couldMakeConnect7(x,y,player,dir)) continue; //7ëª©ì˜ ìš°ë ¤ê°€ ìˆëŠ” ê²½ìš°ëŠ” good
+                for(int k=0,nx=x+dx[dir],ny=y+dy[dir]; k<5; k++,nx+=dx[dir],ny+=dy[dir]){
+                    if(isOutOfBound(nx,ny)) break;
+                    if(B[nx][ny]==player) playerStone++;
+                    else break;
+                }
+                for(int k=0,nx=x-dx[dir],ny=y-dy[dir]; k<5; k++,nx-=dx[dir],ny-=dy[dir]){
+                    if(isOutOfBound(nx,ny)) break;
+                    if(B[nx][ny]==player) playerStone++;
+                    else break;
+                }
+                if(playerStone>=7){
+                    //7ëª©ì´ìƒì´ í˜•ì„±ë˜ëŠ”ê²½ìš° í•„íŒ¨ì´ë¯€ë¡œ ì ˆëŒ€ ë‘ì–´ì„œëŠ” ì•ˆëœë‹¤.
+                    good=false;
+                    break;
+                }
+            }
+            if(good) return HalfMove(x,y);
+        }
+    }
+    return HalfMove(0,0); //ë” ì´ìƒ ë‘˜ ê³³ì´ ì—†ìœ¼ë¯€ë¡œ ì•„ë¬´ê³³ì´ë‚˜ ë¦¬í„´í•œë‹¤.
 }
 
-vector<Move> getDefensiveStrategicMoves(int player,Move oppLastMove){
-	vector<Move> threatList;
-	int opp=3-player,cnt=2;
-	if(oppLastMove.second.isNone()) cnt=1;
-	int x[2]={oppLastMove.first.x, oppLastMove.second.x},y[2]={oppLastMove.first.y, oppLastMove.second.y};
-	for(int i=0; i<cnt; i++){
-		for(int dir=0; dir<4; dir++){
-			for(int sx=x[i],sy=y[i],z=0; z<6; z++,sx-=dx[dir],sy-=dy[dir]){
-				if(isOutOfBound(sx+5*dx[dir],sy+5*dy[dir])) continue;
-
-				int oppStone=0;
-				for(int nx=sx,ny=sy,k=0; k<6; k++,nx+=dx[dir],ny+=dy[dir]){
-					if(B[nx][ny]==opp) oppStone++;
-					else if(B[nx][ny]==EMPTY || B[nx][ny]==MARK7) continue;
-					else{
-						oppStone=0;
-						break;
-					}
-				}
-				if(oppStone>=4){
-					if(couldMakeConnect7(sx,sy,opp,dir)){
-						//»ó´ë¹æ7¸ñÀÌ ¸¸µé¾îÁö¸é EMPTYºÎºĞ¸¸ MARK7À¸·Î ¹Ù²ãÁØ´Ù.
-						for(int nx=sx,ny=sy,k=0; k<6; k++,nx+=dx[dir],ny+=dy[dir]) if(B[nx][ny]==EMPTY) B[nx][ny]=MARK7;
-					} else{
-						Move tmpMove;
-						for(int nx=sx,ny=sy,k=0; k<6; k++,nx+=dx[dir],ny+=dy[dir]){
-							if(B[nx][ny]==EMPTY || B[nx][ny]==MARK7){
-								B[nx][ny]=MARK;
-								if(tmpMove.isNone()) tmpMove.first = HalfMove(nx,ny);
-								else tmpMove.second = HalfMove(nx,ny);
-							}
-						}
-						threatList.push_back(tmpMove);
-					}
-				}
-				if(threatList.size()>=3) return threatList; //ÇÊÆĞ
-			}
-		}
-	}
-	return threatList;
+bool hasThreat(int player, Move mv) {
+    int opp=3-player;
+    if(!mv.first.isNone()) B[mv.first.x][mv.first.y]=player;
+    if(!mv.second.isNone()) B[mv.second.x][mv.second.y]=player;
+    HalfMove tmp[2] = {mv.first, mv.second};
+    for(int i=0; i<2; i++) {
+        if(tmp[i].isNone()) continue;
+        for(int dir=0; dir<4; dir++){
+            for(int j=0; j<2; j++) {
+                int sx,sy;
+                if(j==0) sx=tmp[i].x+dx[dir],sy=tmp[i].y+dy[dir];
+                else sx=tmp[i].x-6*dx[dir],sy=tmp[i].y-6*dy[dir];
+                if(isOutOfBound(sx,sy)) continue;
+                if(isOutOfBound(sx+5*dx[dir],sy+5*dy[dir])) continue;
+                int oppStone=0;
+                for(int nx=sx,ny=sy,k=0; k<6; k++,nx+=dx[dir],ny+=dy[dir]){
+                    if(B[nx][ny]==opp) oppStone++;
+                    else if(B[nx][ny]==EMPTY) continue;
+                    else{
+                        oppStone=0;
+                        break;
+                    }
+                }
+                if(oppStone>=4){
+                    if((isOutOfBound(sx-dx[dir],sy-dy[dir])||B[sx-dx[dir]][sy-dy[dir]]!=opp) && (isOutOfBound(sx+6*dx[dir],sy+6*dy[dir]) || B[sx+6*dx[dir]][sy+6*dy[dir]])) continue;
+                    else{
+                        if(!mv.first.isNone()) B[mv.first.x][mv.first.y]=EMPTY;
+                        if(!mv.second.isNone()) B[mv.second.x][mv.second.y]=EMPTY;
+                        return true;
+                    }
+                }
+            }
+        }
+    }
+    if(!mv.first.isNone()) B[mv.first.x][mv.first.y]=EMPTY;
+    if(!mv.second.isNone()) B[mv.second.x][mv.second.y]=EMPTY;
+    return false;
 }
 
+vector<Move> getDefensiveStrategicMoves(int player,Move oppLastMove,int &threatCnt){
+    vector<Move> threatList,ret;
+    int opp=3-player,cnt=2;
+    if(oppLastMove.second.isNone()) cnt=1;
+    int x[2]={oppLastMove.first.x, oppLastMove.second.x},y[2]={oppLastMove.first.y, oppLastMove.second.y};
+    for(int i=0; i<cnt; i++){
+        for(int dir=0; dir<4; dir++){
+            for(int sx=x[i],sy=y[i],z=0; z<6; z++,sx-=dx[dir],sy-=dy[dir]){
+                if(isOutOfBound(sx,sy)) continue;
+                if(isOutOfBound(sx+5*dx[dir],sy+5*dy[dir])) continue;
 
-double getHalfMoveScore(int player,HalfMove co){
-	int opp=3-player;
-	int noMeetOppCnt=0;
-	double totalScore=0.0;
-	for(int dir=0; dir<4; dir++){
-		double score=1.0;
-		bool everMetOpp=false;
-		for(int nx=co.x+dx[dir],ny=co.y+dy[dir],k=0; k<5; k++,nx+=dx[dir],ny+=dy[dir]){
-			if(isOutOfBound(nx,ny)) break;
-			if(B[nx][ny]==player) score*=W[k];
-			else if(B[nx][ny]!=opp) score*=E; //B[nx][ny]==EMPTY
-			else{
-				everMetOpp=true;
-				break;
-			}
-		}
-		for(int nx=co.x-dx[dir],ny=co.y-dy[dir],k=0; k<5; k++,nx-=dx[dir],ny-=dy[dir]){
-			if(isOutOfBound(nx,ny)) break;
-			if(B[nx][ny]==player) score*=W[k];
-			else if(B[nx][ny]!=opp) score*=E; //B[nx][ny]==EMPTY
-			else{
-				everMetOpp=true;
-				break;
-			}
-		}
-		if(!everMetOpp) noMeetOppCnt++;
-		totalScore+=score;
-	}
-	return totalScore*D[noMeetOppCnt];
+                int oppStone=0;
+                for(int nx=sx,ny=sy,k=0; k<6; k++,nx+=dx[dir],ny+=dy[dir]){
+                    if(B[nx][ny]==opp) oppStone++;
+                    else if(B[nx][ny]==EMPTY || B[nx][ny]==MARK7) continue;
+                    else{
+                        oppStone=0;
+                        break;
+                    }
+                }
+                if(oppStone>=4){
+                    if(couldMakeConnect7(sx,sy,opp,dir)){
+                        //ìƒëŒ€ë°©7ëª©ì´ ë§Œë“¤ì–´ì§€ë©´ EMPTYë¶€ë¶„ë§Œ MARK7ìœ¼ë¡œ ë°”ê¿”ì¤€ë‹¤.
+                        for(int nx=sx,ny=sy,k=0; k<6; k++,nx+=dx[dir],ny+=dy[dir]) if(B[nx][ny]==EMPTY) B[nx][ny]=MARK7;
+                    } else{
+                        Move tmpMove;
+                        for(int nx=sx,ny=sy,k=0; k<6; k++,nx+=dx[dir],ny+=dy[dir]){
+                            if(B[nx][ny]==EMPTY || B[nx][ny]==MARK7){
+                                B[nx][ny]=MARK;
+                                if(tmpMove.isNone()) tmpMove.first = HalfMove(nx,ny);
+                                else tmpMove.second = HalfMove(nx,ny);
+                            }
+                        }
+                        if(!tmpMove.isNone()) threatList.push_back(tmpMove);
+                    }
+                }
+                if(threatList.size()>=3){
+                    initMark();
+                    threatCnt = threatList.size();
+                    return threatList; //í•„íŒ¨
+                }
+            }
+        }
+    }
+    initMark();
+
+    threatCnt = threatList.size();
+    if(threatList.size()==0) return threatList;
+    else if(threatList.size()==1){
+        HalfMove tmp;
+        for(int i=0; i<2; i++){
+            if(i==0) tmp = threatList[0].first;
+            else tmp = threatList[0].second;
+            if(tmp.isNone()) continue;
+            if(!hasThreat(player,Move(tmp,NoneHalfMove))){
+                ret.push_back(Move(tmp,NoneHalfMove));
+            }
+        }
+    } else if(threatList.size()==2) {
+        Move tmp;
+        for(int i=0; i<2; i++) {
+            if(i==0) tmp.first = threatList[0].first;
+            else tmp.first = threatList[0].second;
+            for(int j=0; j<2; j++) {
+                if(j==0) tmp.second = threatList[1].first;
+                else tmp.second = threatList[1].second;
+
+                if(tmp.isNone()) continue;
+                if(!hasThreat(player, tmp)) ret.push_back(tmp);
+            }
+        }
+    } else return threatList; //Unreachable Code
+    return ret;
 }
 
-double getMoveScore(int player,Move mv){
-	double score=0.0;
-	if(!mv.first.isNone()) score+=getHalfMoveScore(player,mv.first);
-	if(!mv.second.isNone()) score+=getHalfMoveScore(player,mv.second);
-	return score;
+int PlayerFactor[6]={0,100,396,1205,0,0};
+int OppFactor[6]={0,133,679,1952,0,0};
+int getHalfMoveScore(int player, HalfMove co) {
+    int score=0;
+    int opp = 3-player;
+    if(co.isNone()) return 0;
+    B[co.x][co.y]=player;
+    for(int dir=0; dir<4; dir++) {
+        for(int sx=co.x,sy=co.y,z=0;z<6;z++,sx-=dx[dir],sy-=dy[dir]) {
+            if(isOutOfBound(sx,sy)||isOutOfBound(sx+5*dx[dir],sy+5*dy[dir])) continue;
+            int oppStone=0,playerStone=0;
+            for(int nx=sx,ny=sy,k=0;k<6;k++,nx+=dx[dir],ny+=dy[dir]) {
+                if(B[nx][ny]==BLOCK) {
+                    playerStone = oppStone = 0;
+                    break;
+                } else if(B[nx][ny]==opp) oppStone++;
+                else if(B[nx][ny]==player) playerStone++;
+            }
+            if(playerStone==4 && oppStone==0) {
+                B[co.x][co.y]=EMPTY;
+                return Inf;
+            }
+            else if(oppStone==0) score+=PlayerFactor[playerStone];
+            else {
+                score+=OppFactor[oppStone];
+                score+=PlayerFactor[playerStone];
+            }
+        }
+    }
+    B[co.x][co.y]=EMPTY;
+    return score;
 }
 
+int getMoveScore(int player,Move mv){
+    int score=0;
+    if(mv.isNone()) return 0;
+    score+=getHalfMoveScore(player,mv.first);
+    if(!mv.second.isNone()) {
+        B[mv.first.x][mv.first.y]=player;
+        score+=getHalfMoveScore(player,mv.second);
+        B[mv.first.x][mv.first.y]=EMPTY;
+    }
+    return score;
+}
+
+vector<HalfMoveScore> tmpScore;
 Move moveForTheBest(int player,Move &oppLastMove){
-	Move ret = moveForConnect6(player);
-	if(!ret.isNone()){
-		if(ret.second.isNone()){
-			B[ret.first.x][ret.first.y] = player;
-			ret.second = getAnyValidHalfMove(player);
-			B[ret.first.x][ret.first.y] = EMPTY;
-		}
-		return ret;
-	} else{
-		//while(1);
-		vector<Move> threatList = getDefensiveStrategicMoves(player,oppLastMove);
-		if(threatList.size()>=3) {
-			//while(1);
-			return Move(threatList[0].first,threatList[1].second); //ÇÊÆĞ´Ï±î ¾Æ¹«°Å³ª ³½´Ù.
-		}
-		else if(threatList.size()==2){
-			Move tmpMove;
-			double mnScore=Inf;
-			for(int i=0; i<2; i++){
-				if(i==0) tmpMove.first = threatList[0].first;
-				else tmpMove.first = threatList[0].second;
-				for(int j=0; j<2; j++){
-					if(j==0) tmpMove.second = threatList[1].first;
-					else tmpMove.second = threatList[1].second;
+    int opp = 3-player;
+    Move ret = moveForConnect6(player);
+    if(!ret.isNone()){
+        if(ret.second.isNone()){
+            B[ret.first.x][ret.first.y] = player;
+            ret.second = getAnyValidHalfMove(player);
+            B[ret.first.x][ret.first.y] = EMPTY;
+        }
+        return ret;
+    } else{
+        int threatCnt=0;
+        //threatListì—ëŠ” threatì„ ëª¨ë‘ ë§‰ì„ ìˆ˜ ìˆëŠ” Moveë“¤ì˜ ëª¨ë“  í›„ë³´ê°€ ë‹´ê²¨ì„œ ë‚˜ì˜¨ë‹¤.
+        //ë”°ë¼ì„œ threatListì˜ ê°œìˆ˜ëŠ” threatì˜ ê°œìˆ˜ë³´ë‹¤ ë§ì„ìˆ˜ë„ ìˆê³  ì ì„ìˆ˜ë„ ìˆë‹¤.
+        vector<Move> threatList = getDefensiveStrategicMoves(player,oppLastMove,threatCnt);
+        if(threatCnt>=3) {
+            return Move(threatList[0].first,threatList[1].second); //í•„íŒ¨ë‹ˆê¹Œ ì•„ë¬´ê±°ë‚˜ ë‚¸ë‹¤.
+        } else if(threatCnt==2){
+            int mxScore=0;
+            for(int i=0; i<threatList.size(); i++) {
+                int score = getMoveScore(player,threatList[i]);
+                if(mxScore < score) {
+                    mxScore = score;
+                    ret = threatList[i];
+                }
+            }
+            return ret;
+        } else if(threatCnt==1){
+            Move tmpMove;
+            int mxScore=0;
+            for(int i=0; i<threatList.size(); i++) {
+                tmpMove.first = threatList[i].first;
 
-					if(!tmpMove.first.isNone()) B[tmpMove.first.x][tmpMove.first.y]=player;
-					if(!tmpMove.second.isNone()) B[tmpMove.second.x][tmpMove.second.y]=player;
-					double score = getMoveScore(player,tmpMove);
-					if(mnScore > score){
-						mnScore = score;
-						ret = tmpMove;
-					}
-					if(!tmpMove.first.isNone()) B[tmpMove.first.x][tmpMove.first.y]=EMPTY;
-					if(!tmpMove.second.isNone()) B[tmpMove.second.x][tmpMove.second.y]=EMPTY;
-				}
-			}
-			return ret;
-		} else if(threatList.size()==1){
-			while(1);
-			return Move(HalfMove(N-1,N-1),HalfMove(N-2,N-2));
-			//To Do
-		} else{
-			//To Do
-		}
-	}
-	return ret;
+                for(int x=0; x<N; x++){
+                    for(int y=0; y<N; y++){
+                        if(B[x][y]!=EMPTY) continue;
+                        //if(B[x][y]==player || B[x][y]==opp || B[x][y]==BLOCK) continue;
+                        tmpMove.second = HalfMove(x,y);
+                        int score = getMoveScore(player,tmpMove);
+                        if(mxScore < score){
+                            mxScore = score;
+                            ret = tmpMove;
+                        }
+                    }
+                }
+            }
+        } else{
+            tmpScore.clear();
+            for(int x=0; x<N; x++){
+                for(int y=0; y<N; y++){
+                    if(B[x][y]!=EMPTY) continue;
+                    tmpScore.push_back(HalfMoveScore(HalfMove(x,y),getHalfMoveScore(player,HalfMove(x,y))));
+                }
+            }
+            sort(tmpScore.begin(),tmpScore.end());
+            int lim = min(tmpScore.size(),20);
+            Move tmpMove;
+            int mxScore=0;
+            for(int i=0; i<lim; i++){
+                for(int x=0; x<N; x++){
+                    for(int y=0; y<N; y++){
+                        if(B[x][y]!=EMPTY) continue;
+                        if(tmpScore[i].mv == HalfMove(x,y)) continue;
+                        tmpMove = Move(tmpScore[i].mv,HalfMove(x,y));
+                        int score = getMoveScore(player,tmpMove);
+                        if(mxScore < score){
+                            mxScore = score;
+                            ret = tmpMove;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return ret;
 }
 
 void myturn(int cnt){
-	int x[2],y[2];
+    int x[2],y[2];
 
-	// ÀÌ ºÎºĞ¿¡¼­ ¾Ë°í¸®Áò ÇÁ·Î±×·¥(AI)À» ÀÛ¼ºÇÏ½Ê½Ã¿À. ±âº» Á¦°øµÈ ÄÚµå¸¦ ¼öÁ¤ ¶Ç´Â »èÁ¦ÇÏ°í º»ÀÎÀÌ ÄÚµå¸¦ »ç¿ëÇÏ½Ã¸é µË´Ï´Ù.
-	// ÇöÀç Sample codeÀÇ AI´Â RandomÀ¸·Î µ¹À» ³õ´Â AlgorithmÀÌ ÀÛ¼ºµÇ¾î ÀÖ½À´Ï´Ù.
+    // ì´ ë¶€ë¶„ì—ì„œ ì•Œê³ ë¦¬ì¦˜ í”„ë¡œê·¸ë¨(AI)ì„ ì‘ì„±í•˜ì‹­ì‹œì˜¤. ê¸°ë³¸ ì œê³µëœ ì½”ë“œë¥¼ ìˆ˜ì • ë˜ëŠ” ì‚­ì œí•˜ê³  ë³¸ì¸ì´ ì½”ë“œë¥¼ ì‚¬ìš©í•˜ì‹œë©´ ë©ë‹ˆë‹¤.
+    // í˜„ì¬ Sample codeì˜ AIëŠ” Randomìœ¼ë¡œ ëŒì„ ë†“ëŠ” Algorithmì´ ì‘ì„±ë˜ì–´ ìˆìŠµë‹ˆë‹¤.
 
-	srand((unsigned)time(NULL));
-	Move oppLastMove = getBoardInfo(PLAYER);
-	if(cnt!=1){
-		Move mv = moveForTheBest(PLAYER,oppLastMove);
-		if(!mv.isNone()){
-			x[0]=mv.first.x; y[0]=mv.first.y;
-			if(!mv.second.isNone()) x[1]=mv.second.x,y[1]=mv.second.y;
-			else{
-				HalfMove hmv = getAnyValidHalfMove(PLAYER);
-				x[1]=hmv.x,y[1]=hmv.y;
-			}
-		} else{
-			HalfMove halfmv1 = getAnyValidHalfMove(PLAYER);
-			B[halfmv1.x][halfmv1.y]=PLAYER;
-			HalfMove halfmv2 = getAnyValidHalfMove(PLAYER);
-			B[halfmv1.x][halfmv1.y]=EMPTY;
-			x[0]=halfmv1.x; y[0]=halfmv1.y;
-			x[1]=halfmv2.x; y[1]=halfmv2.y;
-		}
-	} else{
-		for(int i = 0; i < cnt; i++){
-			do{
-				x[i] = rand() % width;
-				y[i] = rand() % height;
-				if(terminateAI) return;
-			} while(!isFree(x[i],y[i]));
+    srand((unsigned)time(NULL));
+    Move oppLastMove = getBoardInfo(PLAYER);
+    if(cnt!=1){
+        Move mv = moveForTheBest(PLAYER,oppLastMove);
+        if(!mv.isNone()){
+            x[0]=mv.first.x; y[0]=mv.first.y;
+            if(!mv.second.isNone()) x[1]=mv.second.x,y[1]=mv.second.y;
+            else{
+                B[x[0]][y[0]]=PLAYER;
+                HalfMove hmv = getAnyValidHalfMove(PLAYER);
+                B[x[0]][y[0]]=EMPTY;
+                x[1]=hmv.x,y[1]=hmv.y;
+            }
+        } else{
+            HalfMove halfmv1 = getAnyValidHalfMove(PLAYER);
+            B[halfmv1.x][halfmv1.y]=PLAYER;
+            HalfMove halfmv2 = getAnyValidHalfMove(PLAYER);
+            B[halfmv1.x][halfmv1.y]=EMPTY;
+            x[0]=halfmv1.x; y[0]=halfmv1.y;
+            x[1]=halfmv2.x; y[1]=halfmv2.y;
+        }
+    } else{
+        typedef pair<int,int> pii;
+        queue<pii> q;
+        int tmpBoard[N][N];
+        for(int i=0; i<N; i++){
+            for(int j=0; j<N; j++){
+                if(i==0||i==N-1||j==0||j==N-1||B[i][j]==BLOCK) {
+                    tmpBoard[i][j]=1;
+                    q.push(pii(i,j));
+                } else tmpBoard[i][j]=0;
+            }
+        }
+        int cnt=1;
+        while(!q.empty()) {
+            int sz=q.size();
+            bool everIn=false;
+            for(int z=0; z<sz; z++){
+                pii t=q.front(); q.pop();
+                for(int i=0; i<4; i++){
+                    int nx=t.first+dx[i],ny=t.second+dy[i];
+                    if(isOutOfBound(nx,ny)) continue;
+                    if(tmpBoard[nx][ny]) continue;
+                    tmpBoard[nx][ny]=cnt+1;
+                    q.push(pii(nx,ny));
+                    everIn=true;
+                }
+                for(int i=0; i<4; i++){
+                    int nx=t.first-dx[i],ny=t.second-dy[i];
+                    if(isOutOfBound(nx,ny)) continue;
+                    if(tmpBoard[nx][ny]) continue;
+                    tmpBoard[nx][ny]=cnt+1;
+                    q.push(pii(nx,ny));
+                    everIn=true;
+                }
+            }
+            if(!everIn) break;
+            cnt++;
+        }
 
-			if(x[1] == x[0] && y[1] == y[0]) i--;
-		}
-	}
-
-	//domymove()¸¦ È£ÃâÇÏ±â Àü¿¡ ³»°¡ µĞ ¼ö´Â B(board)¿¡ ¾÷µ¥ÀÌÆ®ÇÑ´Ù.
-	/*
-	for(int i=0; i<cnt; i++) B[x[i]][y[i]]=PLAYER;
-	for(int i=0; i<N; i++){
-		for(int j=0; j<N; j++){
-			if(B[i][j]>=MARK) B[i][j]=EMPTY;
-		}
-	}*/
-
-	// ÀÌ ºÎºĞ¿¡¼­ ÀÚ½ÅÀÌ ³õÀ» µ¹À» Ãâ·ÂÇÏ½Ê½Ã¿À.
-	// ÇÊ¼ö ÇÔ¼ö : domymove(x¹è¿­,y¹è¿­,¹è¿­Å©±â)
-	// ¿©±â¼­ ¹è¿­Å©±â(cnt)´Â myturn()ÀÇ ÆÄ¶ó¹ÌÅÍ cnt¸¦ ±×´ë·Î ³Ö¾î¾ßÇÕ´Ï´Ù.
-	domymove(x,y,cnt);
+        for(int i=0; i<N; i++) {
+            for(int j=0; j<N; j++) {
+                if(tmpBoard[i][j]==cnt) {
+                    x[0]=i,y[0]=j;
+                    goto BRK;
+                }
+            }
+        }
+    }
+    if(x[0]==x[1] && y[0]==y[1]) { //ì ˆëŒ€ë¡œ ì¼ì–´ë‚˜ì„œëŠ” ì•ˆë˜ëŠ” ì¼.
+        B[x[0]][y[0]]=PLAYER;
+        HalfMove halfmv = getAnyValidHalfMove(PLAYER);
+        B[x[0]][y[0]]=EMPTY;
+        x[1]=halfmv.x, y[1]=halfmv.y;
+    }
+BRK:
+    domymove(x,y,cnt);
 }
