@@ -1,36 +1,37 @@
-#include <iostream>
-#include <vector>
-#include <queue>
-#include <algorithm>
-#include <cstring>
+#include <cstdio>
 using namespace std;
-char s[100001][2];
-int v[100001];
-int chk[100001];
-queue<int> q;
+int v[10];
 int main() {
-    int n,op; scanf("%d",&n);
-    for(int i=1; i<=n; i++) {
-        scanf("%s%d",s[i],&v[i]);
-
-        int prv;
-        if(i==0 && s[i][0]!='^') {
-            prv=v[i];
-            chk[prv]=i;
+    int n; scanf("%d", &n);
+    for(int i=0; i<10; i++) v[i]=2;
+    while(n--) {
+        char s[2]; int t;
+        scanf("%s %d", s, &t);
+        if(s[0]=='|') {
+            for(int i=0; i<10; i++) {
+                if((t>>i)&1) v[i]=1;
+            }
+        } else if(s[0]=='&') {
+            for(int i=0; i<10; i++) {
+                if(!((t>>i)&1)) v[i]=0;
+            }
         } else {
-            if(s[i][0]=='|') prv|=v[i];
-            else if(s[i][0]=='&') prv&=v[i];
-            else prv^=v[i];
+            for(int i=0; i<10; i++) {
+                if((t>>i)&1) v[i]^=1;
+            }
         }
-        if(!chk[prv]) chk[prv]=i;
-        else {
+    }
 
-        }
+    int AND=0,OR=0,XOR=0;
+    for(int i=0; i<10; i++) {
+        if(v[i]==0) AND |= (1<<i);
+        else if(v[i]==1) OR |= (1<<i);
+        else if(v[i]==3) XOR ^= (1<<i);
     }
-    printf("%lu\n", q.size());
-    while(!q.empty()) {
-        int x = q.front(); q.pop();
-        printf("%c %d\n", s[x][0],v[x]);
-    }
+
+    printf("3\n");
+    printf("& %d\n", AND^1023);
+    printf("| %d\n", OR);
+    printf("^ %d\n", XOR);
     return 0;
 }
