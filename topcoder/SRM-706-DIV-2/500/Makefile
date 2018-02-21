@@ -1,44 +1,37 @@
+CXX=g++
+CXXFLAGS= -Wall -O2
 
-# Set the command for your C++ compiler, and specify any compiler flags you
-# want to use (e.g. -g -Werror).
-CXX		= g++
-CXXFLAGS	= -ggdb -Wall
+STEM=$(basename $(s))
+BIN=./bin/$(STEM)
+LGREEN=\033[0;92m
+NC=\033[0m
 
-# The driver outputs TAP (Test Anything Protocol), so it can also be used with
-# any TAP test harness (e.g. prove).  Set the path to your test harness here,
-# then use the `prove' target to run the tests with that harness.
-PROVE		= prove
-PROVEFLAGS	= -e ""
+default:
+	@echo "$(LGREEN)$(CXX) $(s) -o $(BIN) $(CXXFLAGS) -std=c++14"
+	@$(CXX) $(s) -o $(BIN) $(CXXFLAGS) -std=c++14
+	@echo "$(shell pwd)/bin/$(STEM)$(NC)"
+	@$(BIN)
 
+c:
+	@echo "$(LGREEN)gcc $(s) -o $(BIN) $(CXXFLAGS)$(NC)"
+	@gcc $(s) -o $(BIN) $(CXXFLAGS)
 
-ifeq ($(OS),Windows_NT)
-EXEEXT = .exe
-endif
+cc:
+	@echo "$(LGREEN)$(CXX) $(s) -o $(BIN) $(CXXFLAGS)$(NC)"
+	@$(CXX) $(s) -o $(BIN) $(CXXFLAGS)
 
+c11:
+	@echo "$(LGREEN)$(CXX) $(s) -o $(BIN) $(CXXFLAGS) -std=c++11$(NC)"
+	@$(CXX) $(s) -o $(BIN) $(CXXFLAGS) -std=c++11
 
-all: driver$(EXEEXT)
+c14:
+	@echo "$(LGREEN)$(CXX) $(s) -o $(BIN) $(CXXFLAGS) -std=c++14$(NC)"
+	@$(CXX) $(s) -o $(BIN) $(CXXFLAGS) -std=c++14
 
-clean:
-	rm -f driver$(EXEEXT)
-
-distclean: clean
-	rm -f SellingFruits
-
-run: all
-	./driver$(EXEEXT)
-
-test: all
-	./driver$(EXEEXT) --abort-on-fail
-
-prove: all
-	$(PROVE) $(PROVEFLAGS) ./driver$(EXEEXT)
-
-
-%$(EXEEXT): %.cc
-	$(LINK.cc) $^ $(LOADLIBES) $(LDLIBS) -o $@
-
-driver$(EXEEXT): SellingFruits.cc
-
-.PHONY: all clean distclean run test prove
-
-# vim:ft=make:noet:ts=8
+java:
+	@echo "$(LGREEN)javac $(s)"
+	@javac $(s)
+	@echo "java $(STEM)$(NC)"
+	@java $(STEM)
+	@echo "$(LGREEN)rm -rf $(STEM).class$(NC)"
+	@rm -rf "$(STEM).class"

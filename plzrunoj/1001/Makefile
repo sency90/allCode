@@ -1,15 +1,37 @@
-.SUFFIXES:
-
 CXX=g++
-CPPFLAGS= -Wall -O2
+CXXFLAGS= -Wall -O2
 
-BIN=$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+STEM=$(basename $(s))
+BIN=./bin/$(STEM)
+LGREEN=\033[0;92m
+NC=\033[0m
+
+default:
+	@echo "$(LGREEN)$(CXX) $(s) -o $(BIN) $(CXXFLAGS) -std=c++14"
+	@$(CXX) $(s) -o $(BIN) $(CXXFLAGS) -std=c++14
+	@echo "$(shell pwd)/bin/$(STEM)$(NC)"
+	@$(BIN)
+
+c:
+	@echo "$(LGREEN)gcc $(s) -o $(BIN) $(CXXFLAGS)$(NC)"
+	@gcc $(s) -o $(BIN) $(CXXFLAGS)
 
 cc:
-	$(CXX) $(BIN).cpp -o ./$(BIN) $(CPPFLAGS)
+	@echo "$(LGREEN)$(CXX) $(s) -o $(BIN) $(CXXFLAGS)$(NC)"
+	@$(CXX) $(s) -o $(BIN) $(CXXFLAGS)
 
 c11:
-	$(CXX) $(BIN).cc -o ./$(BIN) $(CPPFLAGS) -std=c++11
+	@echo "$(LGREEN)$(CXX) $(s) -o $(BIN) $(CXXFLAGS) -std=c++11$(NC)"
+	@$(CXX) $(s) -o $(BIN) $(CXXFLAGS) -std=c++11
 
 c14:
-	$(CXX) $(BIN).cxx -o ./$(BIN) $(CPPFLAGS) -std=c++14
+	@echo "$(LGREEN)$(CXX) $(s) -o $(BIN) $(CXXFLAGS) -std=c++14$(NC)"
+	@$(CXX) $(s) -o $(BIN) $(CXXFLAGS) -std=c++14
+
+java:
+	@echo "$(LGREEN)javac $(s)"
+	@javac $(s)
+	@echo "java $(STEM)$(NC)"
+	@java $(STEM)
+	@echo "$(LGREEN)rm -rf $(STEM).class$(NC)"
+	@rm -rf "$(STEM).class"
