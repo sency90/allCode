@@ -1,16 +1,12 @@
-#include <stdio.h>
-int n;
-char str[101][101];
-void func(char (*s)[101]) {
-    for(int i=0; i<n; i++) {
-        printf("%s\n", s[i]);
-    }
-}
+#include <cstdio>
+using namespace std;
 int main() {
-    scanf("%d",&n);
+    int n; scanf("%d",&n);
     for(int i=0; i<n; i++) {
-        scanf("%s", str[i]);
+        for(int j=0; j<n; j++) {
+            printf("(%2d,%2d), ",i+j, n+i-j-1);
+        }
+        puts("");
     }
-    func(str);
     return 0;
 }
