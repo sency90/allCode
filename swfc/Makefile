@@ -15,6 +15,8 @@ default:
 c:
 	@echo "$(LGREEN)gcc $(s) -o $(BIN) $(CXXFLAGS)$(NC)"
 	@gcc $(s) -o $(BIN) $(CXXFLAGS)
+	@echo "$(shell pwd)/bin/$(STEM)$(NC)"
+	@$(BIN)
 
 cc:
 	@echo "$(LGREEN)$(CXX) $(s) -o $(BIN) $(CXXFLAGS)$(NC)"

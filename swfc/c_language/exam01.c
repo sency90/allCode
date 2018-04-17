@@ -1,29 +1,21 @@
-#define typename(x) _Generic((x),                                                 \
-        _Bool: "_Bool",                  unsigned char: "unsigned char",          \
-         char: "char",                     signed char: "signed char",            \
-    short int: "short int",         unsigned short int: "unsigned short int",     \
-          int: "int",                     unsigned int: "unsigned int",           \
-     long int: "long int",           unsigned long int: "unsigned long int",      \
-long long int: "long long int", unsigned long long int: "unsigned long long int", \
-        float: "float",                         double: "double",                 \
-  long double: "long double",                   char *: "pointer to char",        \
-       void *: "pointer to void",                int *: "pointer to int",         \
-      default: "other")
 /***********************************************************/
 // 1부. 문법 재정립
 /***********************************************************/
-
+ 
 /***********************************************************/
 // [1-1-1] : 음수의 메모리 표현
-// type에 따라 메모리에 들어가는 형태가 바뀌는 것이 아니다.
-// type에 따라 메모리를 읽는 방법이 바뀌는 것이다.
 /***********************************************************/
+
 #if 0
+
 #include <stdio.h>
-int main(void) {
+
+void main(void)
+
+{
 	int si = -1;
 	unsigned int ui = 0xffffffff;
-
+	
 	printf("%d\n", si);
 	printf("%u\n", si);
 	printf("%#x\n", si);
@@ -32,121 +24,116 @@ int main(void) {
 	printf("%u\n", ui);
 	printf("%#x\n", ui);
 }
+
 #endif
-
-
-/***********************************************************/
-// [plzrun] page.15
-/***********************************************************/
-#if 0
-#include <stdio.h>
-typedef unsigned char uchar;
-int main() {
-    unsigned int a = 0x12345678;
-    printf("%#x => ", a);
-    printf("%#2x %#2x %#2x %#2x\n", *(uchar *)&a, *((uchar *)&a+1), *((uchar *)&a+2), *((uchar *)&a+3));
-    return 0;
-}
-#endif
-
 
 /***********************************************************/
 // [1-1-2] : 다음의 결과를 예측하라
-// 0x100
-// 0xfffffffe
-// depends on OS => Mac OS, Windows OS, Linux, Unix : 0xfffffffe
 /***********************************************************/
-#if 0
+
+#if 0 
+
 #include <stdio.h>
-int main(void) {
+
+void main(void)
+{
 	unsigned char c = 0xff;
-	if(c == 0xff) printf("%#x\n",c+1);
-	else printf("%#x\n",c-1);
+
+	if(c == 0xff)
+		printf("%x\n",c+1);
+	else
+		printf("%x\n",c-1);
 }
+
 #endif
 
-#if 0
+#if 0 
+
 #include <stdio.h>
-int main(void) {
+
+void main(void)
+{
 	signed char c = 0xff;
-	if(c == 0xff) printf("%#x\n",c+1);
-	else printf("%#x\n",c-1);
+
+	if(c == 0xff)
+		printf("%x\n",c+1);
+	else
+		printf("%x\n",c-1);
 }
+
 #endif
 
-#if 0
+#if 0 
+
 #include <stdio.h>
-int main(void) {
+
+void main(void)
+{
 	char c = 0xff;
-	if(c == 0xff) printf("%x\n",c+1);
-	else printf("%x\n",c-1);
+
+	if(c == 0xff)
+		printf("%x\n",c+1);
+	else
+		printf("%x\n",c-1);
 }
+
 #endif
 
 /***********************************************************/
 // [1-1-3] : 다음의 결과를 예측하라
-// sizeof의 결과 값은 size_t 자료형을 갖는다.
-// size_t는 unsigned_int 타입이 아니다.
-// size_t는 unsigned data type을 반환하는데,
-// 해당 시스템에서 어떤 값 객체가 차지할 수 있는 이론적인 최대 크기를 표현하는 자료형(data type)이다.
-// 64bit OS를 쓰고 있다면 64bit크기를 가지며, 32bit OS를 쓰고 있다면 32bit 크기를 갖는다.
 /***********************************************************/
-#if 0
+
+#if 0 
+
 #include <stdio.h>
-int main(void) {
+
+void main(void)
+{
 	int a[4] = {1,2,3,4};
-    // sizeof operator의 type이 size_t(현재 나의 OS에서는 unsigned long)이므로 a[0]-a[1]의 type인 int보다 level이 높다.
-    // 따라서 a[0]-a[1]인 -1 값이 unsigned에서 0xfffff...로 해석되므로 이 if문의 expr값은 false가 된다.
-	if(a[0]-a[1] < sizeof(a)) printf("%d\n", a[sizeof(char)]);
-    else printf("%d\n", a[sizeof(short)]);
+
+	if(a[0]-a[1] < sizeof(a)) 
+		printf("%d\n", a[sizeof(char)]);
+	else
+		printf("%d\n", a[sizeof(short)]);
 }
+
 #endif
 
 #if 0
-#include <stdio.h>
-int main(void) {
-    int a = -1;
-    printf("%u\n", sizeof(a));      //4
-    printf("%lu\n", sizeof(int));   //4
-    printf("%llu\n", sizeof(-1));   //4
-    printf("%d\n", sizeof a);       //4
-    printf("%hd\n", sizeof - 1);    //4
 
-    // printf("%d\n", sizeof int);
+#include <stdio.h>
+
+void main(void)
+{
+	int a = -1;
+
+	printf("%d\n", sizeof(a));
+	printf("%d\n", sizeof(int));
+	printf("%d\n", sizeof(-1));
+	printf("%d\n", sizeof a);
+	printf("%d\n", sizeof - 1);
+
+	// printf("%d\n", sizeof int);
 }
+
 #endif
-
-
-#include <stdio.h>
-int main() {
-    unsigned char uc;
-    signed char sc;
-    unsigned int ui;
-    signed int si;
-    sc = si = 0x12345678;
-    uc = si = 0x12345678;
-    printf("%x %x\n", sc, uc);
-
-    sc = ui = 0x12345678;
-    uc = ui = 0x12345678;
-    printf("%x %x\n", sc, uc);
-    return 0;
-}
 
 /***********************************************************/
 // [1-1-4] : signed short vs. unsigned short
 /***********************************************************/
-#if 0
+
+#if 0 
+
 #include <stdio.h>
 
-int main(void) {
-    signed short ss = -1;
-    unsigned short us = -1;
+void main(void)
+{
+	signed short ss = -1;
+	unsigned short us = -1;
 
-    printf("ss: %#x, us: %#x\n", ss,us);
-    if(ss < us) printf("UNSIGNED SHORT\n");
-    else if(ss > us) printf("SIGNED SHORT\n");
-    else printf("SAME\n");
+	if(ss < us) printf("UNSIGNED SHORT\n");
+	else if(ss > us) printf("SIGNED SHORT\n");
+	else printf("SAME\n");
 }
 
 #endif
@@ -159,14 +146,14 @@ int main(void) {
 
 #include <stdio.h>
 
-int main(void)
+void main(void)
 {
-    signed int test = -1;
-    signed int si = 1;
-    unsigned int ui = 2;
+	signed int test = -1;
+	signed int si = 1;
+	unsigned int ui = 2;
 
-    printf("%d\n", (0 ? si : ui) > test);
-    printf("%d\n", (1 ? si : ui) > test);
+	printf("%d\n", (0 ? si : ui) > test);
+	printf("%d\n", (1 ? si : ui) > test);
 }
 
 #endif
@@ -179,16 +166,16 @@ int main(void)
 
 #include <stdio.h>
 
-int main(void)
+void main(void)
 {
-    float a = 3.1;
-    float b = 3.5;
+	float a = 3.1;
+	float b = 3.5;
 
-    if(a == 3.1) printf("TRUE1\n");
-    else printf("FALSE1\n");
-
-    if(b == 3.5) printf("TRUE2\n");
-    else printf("FALSE2\n");
+	if(a == 3.1) printf("TRUE1\n");
+	else printf("FALSE1\n");
+	
+	if(b == 3.5) printf("TRUE2\n");
+	else printf("FALSE2\n");
 }
 
 #endif
@@ -202,10 +189,10 @@ int main(void)
 #include <stdio.h>
 #include <limits.h>
 
-int main(void)
+void main(void)
 {
-    printf("a=%.20f\n", 100.f/3.f);
-    printf("b=%.20f\n", 100./3.);
+	printf("a=%.20f\n", 100.f/3.f);
+	printf("b=%.20f\n", 100./3.);
 }
 
 #endif
@@ -218,16 +205,16 @@ int main(void)
 
 #include <stdio.h>
 
-int main(void)
+void main(void)
 {
-    int i, cnt;
-    float f;
+	int i, cnt;
+	float f;
 
-    for(cnt=0, i=1; i<=10; i++) cnt++;
-    printf("INT=%d\n", cnt);
+	for(cnt=0, i=1; i<=10; i++) cnt++;
+	printf("INT=%d\n", cnt);
 
-    for(cnt=0, f=0.1; f<=1.0; f+=0.1) cnt++;
-    printf("FLOAT=%d\n", cnt);
+	for(cnt=0, f=0.1; f<=1.0; f+=0.1) cnt++;
+	printf("FLOAT=%d\n", cnt);
 }
 
 #endif
@@ -240,11 +227,11 @@ int main(void)
 
 #include <stdio.h>
 
-int main(void)
+void main(void)
 {
-    float f = 3.5f;
+	float f = 3.5f;
 
-    printf("%#x\n", f);
+	printf("%#x\n", f);
 }
 
 #endif
@@ -266,23 +253,23 @@ typedef unsigned int U32;
 
 void MMU_SetMTT(int vaddrStart, int vaddrEnd, int paddrStart,int attr)
 {
-    U32 *pTT;
-    int i,nSec;
+	U32 *pTT;
+	int i,nSec;
+ 
+	pTT=(U32 *)_MMUTT_STARTADDRESS+(vaddrStart>>20);
+	nSec=(vaddrEnd>>20)-(vaddrStart>>20);
 
-    pTT=(U32 *)_MMUTT_STARTADDRESS+(vaddrStart>>20);
-    nSec=(vaddrEnd>>20)-(vaddrStart>>20);
-
-    for(i=0;i<=nSec;i++)
-    {
-        *pTT++=attr |(((paddrStart>>20)+i)<<20);
-        printf("TT[0x%.3X] = 0x%.8X\n", i, _MMUTT_STARTADDRESS[i]);
-    }
+	for(i=0;i<=nSec;i++)
+	{
+		*pTT++=attr |(((paddrStart>>20)+i)<<20);
+		printf("TT[0x%.3X] = 0x%.8X\n", i, _MMUTT_STARTADDRESS[i]);
+	}
 }
 
-int main(void)
+void main(void)
 {
     MMU_SetMTT(0x00000000,0x002FFFFF,0x30000000,RW_NCNB);
-    MMU_SetMTT(0x7FF00000,0x801FFFFF,0x30000000,RW_NCNB);
+	MMU_SetMTT(0x7FF00000,0x801FFFFF,0x30000000,RW_NCNB);
 }    
 
 #endif
@@ -300,24 +287,24 @@ typedef unsigned int U32;
 
 void MMU_SetMTT(U32 vaddrStart,U32 vaddrEnd,U32 paddrStart,int attr)
 {
-    U32 i, j;
-    U32 start = vaddrStart >> 20;
-    U32 end = vaddrEnd >> 20;
+	U32 i, j;
+	U32 start = vaddrStart >> 20;
+	U32 end = vaddrEnd >> 20;
 
-    paddrStart = (paddrStart & 0xfff00000) | (attr & 0x000fffff);
-
-    for(i=start, j=0; i<=end; i++, j++)
-    {
-        _MMUTT_STARTADDRESS[i] = paddrStart + (j<<20);
-        printf("TT[0x%.3X] = 0x%.8X\n", i, _MMUTT_STARTADDRESS[i]);
-    }
+	paddrStart = (paddrStart & 0xfff00000) | (attr & 0x000fffff);
+ 
+	for(i=start, j=0; i<=end; i++, j++)
+	{
+		_MMUTT_STARTADDRESS[i] = paddrStart + (j<<20);
+		printf("TT[0x%.3X] = 0x%.8X\n", i, _MMUTT_STARTADDRESS[i]);
+	}
 }
 
 
-int main(void)
+void main(void)
 {
     MMU_SetMTT(0x00000000,0x002FFFFF,0x30000000,RW_NCNB);
-    MMU_SetMTT(0x7FF00000,0x801FFFFF,0x30000000,RW_NCNB);
+	MMU_SetMTT(0x7FF00000,0x801FFFFF,0x30000000,RW_NCNB);
 }    
 
 #endif
@@ -330,13 +317,13 @@ int main(void)
 
 #include <stdio.h>
 
-int main(void)
+void main(void)
 {
-    unsigned int ux = 0x80000001;
-    signed int sx = 0x80000001;
+	unsigned int ux = 0x80000001;
+	signed int sx = 0x80000001;
 
-    printf("%#.8x, %#.8x\n\n", ux>>2, ux<<2);
-    printf("%#.8x, %#.8x\n\n", sx>>2, sx<<2);
+	printf("%#.8x, %#.8x\n\n", ux>>2, ux<<2);
+	printf("%#.8x, %#.8x\n\n", sx>>2, sx<<2);
 }
 
 #endif
@@ -349,11 +336,11 @@ int main(void)
 
 #include <stdio.h>
 
-int main(void)
+void main(void)
 {
-    printf("Hello ""Embedded ""C!\n");
-    printf("Hello "  "Embedded "  "C!\n");
-    printf("%s\n", "Hello ""Embedded ""C!\n");
+	printf("Hello ""Embedded ""C!\n");
+	printf("Hello "  "Embedded "  "C!\n");
+	printf("%s\n", "Hello ""Embedded ""C!\n");
 }
 
 #endif
@@ -373,31 +360,31 @@ int d = 300;
 
 void f2(void)
 {
-    int c = 30;
+	int c = 30;
 
-    a++, b++, c++, d++;
-    printf("f2: %d %d %d %d\n", a, b, c, d);
+	a++, b++, c++, d++;
+	printf("f2: %d %d %d %d\n", a, b, c, d);
 }
 
 void f1(void)
 {
-    int b = 10;
-    int c = 20;
+	int b = 10;
+	int c = 20;
 
-    f2();
-    a++, b++, c++, d++;
-    printf("f1: %d %d %d %d\n", a, b, c, d);
+	f2();
+	a++, b++, c++, d++;
+	printf("f1: %d %d %d %d\n", a, b, c, d);
 }
 
-int main(void)
+void main(void)
 {
-    int a = 1000;
-    int b = 2000;
-    int c = 3000;
+	int a = 1000;
+	int b = 2000;
+	int c = 3000;
 
-    f1();
-    a++, b++, c++, d++;
-    printf("main: %d %d %d %d\n", a, b, c, d);
+	f1();
+	a++, b++, c++, d++;
+	printf("main: %d %d %d %d\n", a, b, c, d);
 }
 
 #endif
@@ -415,24 +402,24 @@ void f1(void);
 int a = 10; 
 static int s = 20;
 
-int main(void)
+void main(void)
 {
-    static int s;
+	static int s;
 
-    a++, s++;
-    printf("%d %d\n", a, s);
-    f1();
-    a++, s++;
-    printf("%d %d\n", a, s);
-    f1();
+	a++, s++;
+	printf("%d %d\n", a, s);
+	f1();
+	a++, s++;
+	printf("%d %d\n", a, s);
+	f1();
 }
 
 void f1(void)
 {
-    int a = 1; static int s = 2;
+	int a = 1; static int s = 2;
 
-    a++, s++;
-    printf("%d %d\n", a, s);
+	a++, s++;
+	printf("%d %d\n", a, s);
 }
 
 #endif
@@ -444,23 +431,23 @@ void f1(void)
 #if 0
 
 #include <stdio.h>
-
+	
 extern void func(void);
 
 int a;
 static int b = 10;
 extern int c;
 
-int main(void)
+void main(void)
 {
-    func();
+	func();
 
-    c++;
-    a++;
-    b++;
+	c++;
+	a++;
+	b++;
 
-    printf("a=%d\n", a);
-    printf("b=%d\n", b);
+	printf("a=%d\n", a);
+	printf("b=%d\n", b);
 }
 
 #endif
@@ -477,13 +464,13 @@ extern void func(void);
 
 static int sqr(int a)
 {
-    return a * a;
+	return a * a;
 }
 
-int main(void)
+void main(void)
 {
-    func();
-    printf("%d\n", sqr(3));
+	func();
+	printf("%d\n", sqr(3));
 }
 
 #endif
@@ -499,19 +486,19 @@ int main(void)
 
 int func(int x)
 {
-    if(x>0) 
-    {
-        return x + func(x-2);
-    }
-    else 
-    {
-        return 0; 	 
-    }
+	if(x>0) 
+	{
+		return x + func(x-2);
+	}
+	else 
+	{
+		return 0; 	 
+	}
 }	
-
-int main(void)                    
+	
+void main(void)                    
 {                                      
-    printf("%d\n", func(10));  
+	printf("%d\n", func(10));  
 }    
 
 #endif
@@ -526,24 +513,24 @@ int main(void)
 
 int prt(int x)
 {
-    if(x == 0) return x;
+	if(x == 0) return x;
 
-    else if(x%2)
-    {
-        printf("%d\n", x + prt(x-1)); //1:
-        return x;
-    }
-    else
-    {
-        printf("%d\n", x + prt(x-1)); //2:
-        return x;
-    }
+	else if(x%2)
+	{
+		printf("%d\n", x + prt(x-1)); //1:
+		return x;
+	}
+	else
+	{
+		printf("%d\n", x + prt(x-1)); //2:
+		return x;
+	}
 }
 
-int main(void)
+void main(void)
 {
-    int i;
-    i = prt(5); //3:
+	int i;
+	i = prt(5); //3:
 }
 
 #endif
@@ -558,21 +545,21 @@ int main(void)
 
 void func(int x)
 {
-    int a = 10;
-    static int b = 20;
+	int a = 10;
+	static int b = 20;
 
-    if(x == 0) return; 
-    else func(x-1);
+	if(x == 0) return; 
+	else func(x-1);
+	
+	a++; 
+	b++;
 
-    a++; 
-    b++;
-
-    printf("a=%d b=%d x=%d\n", a, b, x);
+	printf("a=%d b=%d x=%d\n", a, b, x);
 }	
-
-int main(void)                    
+	
+void main(void)                    
 {                                      
-    func(6);  
+	func(6);  
 }    
 
 #endif
@@ -589,23 +576,23 @@ typedef unsigned int INT;
 
 extern void func(void);
 
-int main(void)
+void main(void)
 {
-    typedef signed int INT;
-    INT a = 1;
+	typedef signed int INT;
+	INT a = 1;
 
-    if(-1 < a) printf("TRUE1\n");
-    else printf("FALSE1\n");
+	if(-1 < a) printf("TRUE1\n");
+	else printf("FALSE1\n");
 
-    {
-        typedef unsigned int INT;
-        INT a = 1;
+	{
+		typedef unsigned int INT;
+		INT a = 1;
 
-        if(-1 < a) printf("TRUE2\n");
-        else printf("FALSE2\n");
-    }
+		if(-1 < a) printf("TRUE2\n");
+		else printf("FALSE2\n");
+	}
 
-    func();
+	func();
 }
 
 #endif
@@ -618,17 +605,17 @@ int main(void)
 
 #include <stdio.h>
 
-int main(void)
+void main(void)
 {
-    int cnt = 0;
-    char *p = "Embedded";
+	int cnt = 0;
+	char *p = "Embedded";
 
-    while(*p)
-    {
-        if(*p++ == 'd') cnt ++;
-    }
+	while(*p)
+	{
+		if(*p++ == 'd') cnt ++;
+	}
 
-    printf("%d\n", cnt);
+	printf("%d\n", cnt);
 }
 
 #endif
@@ -643,16 +630,16 @@ int main(void)
 
 void str_copy(char * d, const char * s)
 {
-    while(*d++ = *s++);
+	while(*d++ = *s++);
 }
 
-int main(void)
+void main(void)
 {
-    char a[5];
-    char b[5] = "ABCD";
+	char a[5];
+	char b[5] = "ABCD";
 
-    str_copy(a, b);
-    printf("%s\n%s\n", a, b);
+	str_copy(a, b);
+	printf("%s\n%s\n", a, b);
 }
 
 #endif
@@ -672,12 +659,12 @@ unsigned int  str_lenth(const char * d)
 
 }
 
-int main(void)
+void main(void)
 {
-    char a[ ] = "Willtek";
+	char a[ ] = "Willtek";
 
-    printf("%d\n", sizeof(a));
-    printf("%d\n", str_lenth(a));
+	printf("%d\n", sizeof(a));
+	printf("%d\n", str_lenth(a));
 }
 
 #endif
@@ -697,14 +684,14 @@ void str_add(char * d, const char * s)
 
 }
 
-int main(void)
+void main(void)
 {
-    char a[15] = "Willtek";
-    char b[15] = " Corp.";
+	char a[15] = "Willtek";
+	char b[15] = " Corp.";
 
-    str_add(a, b);
+	str_add(a, b);
 
-    printf("%s\n", a);
+	printf("%s\n", a);
 }
 
 #endif
@@ -724,14 +711,14 @@ int str_comp(const char *a, const char *b)
 
 }
 
-int main(void)
+void main(void)
 {
-    printf("%d\n", str_comp("ABC", "BC"));
-    printf("%d\n", str_comp("ABC", "AC"));
-    printf("%d\n", str_comp("ABC", "AB"));
-    printf("%d\n", str_comp("abc", "ABC"));
-    printf("%d\n", str_comp("ab", " "));
-    printf("%d\n", str_comp("A", "AB"));
+	printf("%d\n", str_comp("ABC", "BC"));
+	printf("%d\n", str_comp("ABC", "AC"));
+	printf("%d\n", str_comp("ABC", "AB"));
+	printf("%d\n", str_comp("abc", "ABC"));
+	printf("%d\n", str_comp("ab", " "));
+	printf("%d\n", str_comp("A", "AB"));
 }
 
 #endif
@@ -744,32 +731,32 @@ int main(void)
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(void) 
+void main(void) 
 {
-int i;
-int * p;
+	int i;
+	int * p;
 
-p = malloc(10 * sizeof(int));
-if(p == 0x0) return;
+	p = malloc(10 * sizeof(int));
+	if(p == 0x0) return;
 
-for(i = 0; i < 10; i++)
-{
-printf("malloc[%d]=%d\n", i, p[i]);
-}
+	for(i = 0; i < 10; i++)
+	{
+		printf("malloc[%d]=%d\n", i, p[i]);
+	}
 
-free(p);
+	free(p);
 
-printf("\n\n");
+	printf("\n\n");
 
-p = calloc(10, sizeof(int));
-if(p == 0x0) return;
+	p = calloc(10, sizeof(int));
+	if(p == 0x0) return;
 
-for(i = 0; i < 10; i++)
-{
-printf("calloc[%d]=%d\n", i, p[i]);
-}
+	for(i = 0; i < 10; i++)
+	{
+		printf("calloc[%d]=%d\n", i, p[i]);
+	}
 
-free(p);
+	free(p);
 }
 */
 
@@ -782,31 +769,31 @@ free(p);
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(void)
+void main(void)
 {
-    int i, *p, *q, *r;
+	int i, *p, *q, *r;
 
-    r = p = malloc(40);
-    q = malloc(40);
+	r = p = malloc(40);
+	q = malloc(40);
 
-    for(i=0;i<10;i++)
-    {
-        p[i] = i;
-    }
+	for(i=0;i<10;i++)
+	{
+		p[i] = i;
+	}
 
-    r = realloc(r, 40*2);
+	r = realloc(r, 40*2);
+	
+	for(i=10;i<20;i++)
+	{
+		r[i] = i;
+	}
 
-    for(i=10;i<20;i++)
-    {
-        r[i] = i;
-    }
+	printf("p=%p, r=%p\n", p, r);
 
-    printf("p=%p, r=%p\n", p, r);
-
-    for(i=0;i<20;i++)
-    {
-        printf("p[%d]=%d, r[%d]=%d\n", i, p[i], i, r[i]);
-    }
+	for(i=0;i<20;i++)
+	{
+		printf("p[%d]=%d, r[%d]=%d\n", i, p[i], i, r[i]);
+	}
 }
 
 #endif
@@ -821,25 +808,25 @@ int main(void)
 
 void func(int *p, int *q, int *r)
 {
-    *p += 1;
-    *q += 1;
-    *r += 1;
+	*p += 1;
+	*q += 1;
+	*r += 1;
 }
 
-int main(void)
+void main(void)
 {
-    int i = 10;
+	int i = 10;
 
-    int a[1];
-    int *p = &i;
+	int a[1];
+	int *p = &i;
 
-    a[0] = 100;
-    *p = 100;
+	a[0] = 100;
+	*p = 100;
 
-    printf("%d, %d\n", i, a[0]);
+	printf("%d, %d\n", i, a[0]);
 
-    func(&i, a, p);
-    printf("%d, %d\n", i, a[0]);
+	func(&i, a, p);
+	printf("%d, %d\n", i, a[0]);
 }
 
 #endif
@@ -854,15 +841,15 @@ int main(void)
 
 int add(int a, int b)
 {
-    int *p = &a;
-    p[-1] = 0;
+	int *p = &a;
+	p[-1] = 0;
 
-    return a+b;
+	return a+b;
 }
 
-int main(void)
+void main(void)
 {
-    printf("%d\n", add(3,4));
+	printf("%d\n", add(3,4));
 }
 
 #endif
@@ -877,19 +864,19 @@ int main(void)
 
 void func(int *p)
 {
-    *p = 100;
-    p++;
-    printf("0x%p\n", p);
+	*p = 100;
+	p++;
+	printf("0x%p\n", p);
 }
 
-int main(void)
+void main(void)
 {
-    int a[]={1,2,3,4};
-    int *p = a;
+	int a[]={1,2,3,4};
+	int *p = a;
 
-    func(p);
-    printf("%d\n", *p);
-    printf("0x%p, 0x%p\n", a, p);
+	func(p);
+	printf("%d\n", *p);
+	printf("0x%p, 0x%p\n", a, p);
 }
 
 #endif
@@ -900,19 +887,19 @@ int main(void)
 
 void func(int **p)
 {
-    **p = 100;
-    (*p)++;
-    printf("0x%p\n", (*p));
+	**p = 100;
+	(*p)++;
+	printf("0x%p\n", (*p));
 }
 
-int main(void)
+void main(void)
 {
-    int a[]={1,2,3,4};
-    int *p = a;
+	int a[]={1,2,3,4};
+	int *p = a;
 
-    func(&p);
-    printf("%d\n", a[0]);
-    printf("0x%p, 0x%p\n", a, p);
+	func(&p);
+	printf("%d\n", a[0]);
+	printf("0x%p, 0x%p\n", a, p);
 }
 
 #endif 
@@ -927,29 +914,29 @@ int main(void)
 
 int func(const int **p)
 {
-    int i;
-    int sum = 0;
+	int i;
+	int sum = 0;
 
-    printf("=========%d\n", (*p)[0]);
-
-
+	printf("=========%d\n", (*p)[0]);
 
 
 
 
-    return sum;
+
+
+	return sum;
 }
 
-int main(void)
+void main(void)
 {
-    int i;
-    int a[] = {1, 10, 2, -5, -20, 3, 100, 200, 300, 4, -10, -20, -30, -40};
-    const int *p = a;
+	int i;
+	int a[] = {1, 10, 2, -5, -20, 3, 100, 200, 300, 4, -10, -20, -30, -40};
+	const int *p = a;
 
-    for(i=0; i<4; i++)
-    {
-        printf("SUM=%d\n", func(&p));
-    }
+	for(i=0; i<4; i++)
+	{
+		printf("SUM=%d\n", func(&p));
+	}
 }
 
 #endif
@@ -970,11 +957,11 @@ int NO_1 = 128;
 int NO_2 = 256;
 int NO_A = 512;
 
-int main(void)
+void main(void)
 {
-    PRT(1);
-    PRT(2);
-    PRT(A);
+	PRT(1);
+	PRT(2);
+	PRT(A);
 }
 
 #endif
@@ -989,16 +976,16 @@ int main(void)
 
 #define PRT
 
-int main(void)
+void main(void)
 {
 #ifdef PRT
-    printf("defined PRT\n");
+	printf("defined PRT\n");
 #endif
 
 #ifdef ABC
-    printf("defined ABC\n");
+	printf("defined ABC\n");
 #else
-    printf("not defined ABC\n");
+	printf("not defined ABC\n");
 #endif
 }
 
@@ -1010,16 +997,16 @@ int main(void)
 
 #define PRT
 
-int main(void)
+void main(void)
 {
 #ifndef PRT
-    printf("not defined PRT\n");
+	printf("not defined PRT\n");
 #endif
 
 #ifndef ABC
-    printf("not defined ABC\n");
+	printf("not defined ABC\n");
 #else
-    printf("defined ABC\n");
+	printf("defined ABC\n");
 #endif
 }
 
@@ -1035,14 +1022,14 @@ int main(void)
 
 #define DEBUG
 
-int main(void)
+void main(void)
 {
 #ifdef DEBUG
-#undef DEBUG
+	#undef DEBUG
 #endif
 
 #ifdef DEBUG
-    printf("[DBG Message] a = %d\n", a);
+	printf("[DBG Message] a = %d\n", a);
 #endif
 }
 
@@ -1054,14 +1041,14 @@ int main(void)
 
 #define TEST	0
 
-int main(void)
+void main(void)
 {
 #ifdef TEST
-#undef TEST
-#define TEST	1
+	#undef TEST
+	#define TEST	1
 #endif
 
-    printf("TEST = %d\n", TEST);
+	printf("TEST = %d\n", TEST);
 }
 
 #endif
@@ -1076,19 +1063,19 @@ int main(void)
 
 #define SOUND_DEVICE_TYPE	0
 
-int main(void)
+void main(void)
 {
 #if !SOUND_DEVICE_TYPE
-    printf("사운드 장치를 사용하지 않음\n");
+	printf("사운드 장치를 사용하지 않음\n");
 
 #elif SOUND_DEVICE_TYPE == 1
-    printf("STEREO 모드 장치 사용\n");
+	printf("STEREO 모드 장치 사용\n");
 
 #else
-    printf("CODE 15 : Unknown Device!\n");
+	printf("CODE 15 : Unknown Device!\n");
 
 #endif
-    printf("사운드 모드 = %d\n", SOUND_DEVICE_TYPE);
+	printf("사운드 모드 = %d\n", SOUND_DEVICE_TYPE);
 }
 
 #endif
@@ -1103,24 +1090,24 @@ int main(void)
 
 #define SOUND_DEVICE_TYPE	0
 
-int main(void)
+void main(void)
 {
 #if SOUND_DEVICE_TYPE == 1
-    printf("사운드 장치를 사용하지 않음\n");
+	printf("사운드 장치를 사용하지 않음\n");
 #else
-    printf("CODE 15 : Unknown Device!\n");
+	printf("CODE 15 : Unknown Device!\n");
 #endif
 
 #if defined SOUND_DEVICE_TYPE
-    printf("define SOUND_DEVICE_TYPE\n");
+	printf("define SOUND_DEVICE_TYPE\n");
 #else
-    printf("not define SOUND_DEVICE_TYPE\n");
+	printf("not define SOUND_DEVICE_TYPE\n");
 #endif
 
 #if !defined SOUND_DEVICE_TYPE
-    printf("define SOUND_DEVICE_TYPE\n");
+	printf("define SOUND_DEVICE_TYPE\n");
 #else
-    printf("not define SOUND_DEVICE_TYPE\n");
+	printf("not define SOUND_DEVICE_TYPE\n");
 #endif
 }
 
@@ -1136,16 +1123,16 @@ int main(void)
 
 #define SOUND_DEVICE_TYPE	1
 
-int main(void)
+void main(void)
 {
 #if !SOUND_DEVICE_TYPE
-    printf("사운드 장치를 사용하지 않음\n");
+	printf("사운드 장치를 사용하지 않음\n");
 
 #else
-#error CODE 15: Unknown Device!
+	#error CODE 15: Unknown Device!
 
 #endif
-    printf("사운드 모드 = %d\n", SOUND_DEVICE_TYPE);
+	printf("사운드 모드 = %d\n", SOUND_DEVICE_TYPE);
 }
 
 #endif
@@ -1162,13 +1149,13 @@ int main(void)
 //#pragma warning (once : 4552)
 //#pragma warning (error : 4700)
 
-int main(void)
+void main(void)
 {
-    unsigned int a, b; //(C4101 : b 미사용)
+	unsigned int a, b; //(C4101 : b 미사용)
 
-    a + 1;		//(C4552 : "+" has no effect)
-    a >> 4;		//(C4552 : ">>" has no effect)
-    a = a;		//(C4700 : use not initialized a)
+	a + 1;		//(C4552 : "+" has no effect)
+	a >> 4;		//(C4552 : ">>" has no effect)
+	a = a;		//(C4700 : use not initialized a)
 }
 
 #endif
@@ -1185,18 +1172,18 @@ int main(void)
 
 #include <stdio.h>
 
-int main(void)
+void main(void)
 {
-    int a[10];
+	int a[10];
 
-    int *start = &a[0];
-    int *end = &a[9]+1;
-    int *p = &a[3];
-
-    printf("%d\n", sizeof(a)/sizeof(a[0]));
-    printf("%d\n", (end-start)/sizeof(int));
-    printf("%d\n", (p-start)/sizeof(int));
-    printf("%d\n", (end-p)/sizeof(int));
+	int *start = &a[0];
+	int *end = &a[9]+1;
+	int *p = &a[3];
+	
+	printf("%d\n", sizeof(a)/sizeof(a[0]));
+	printf("%d\n", (end-start)/sizeof(int));
+	printf("%d\n", (p-start)/sizeof(int));
+	printf("%d\n", (end-p)/sizeof(int));
 }
 
 #endif
@@ -1209,22 +1196,22 @@ int main(void)
 
 #include <stdio.h>
 
-int main(void)
+void main(void)
 {
-    int *p, *q;
+	int *p, *q;
 
-    p = (int *)0x1008;
-    q = (int *)0x1000;
+	p = (int *)0x1008;
+	q = (int *)0x1000;
+	
+	printf("%#x\n", p*q);
+	printf("%#x\n", p/q);
+	printf("%#x\n", p+q);
+	printf("%#x\n", p-q);
 
-    printf("%#x\n", p*q);
-    printf("%#x\n", p/q);
-    printf("%#x\n", p+q);
-    printf("%#x\n", p-q);
-
-    printf("%#x\n", p*2);
-    printf("%#x\n", p/2);
-    printf("%#x\n", p+2);
-    printf("%#x\n", p-2);
+	printf("%#x\n", p*2);
+	printf("%#x\n", p/2);
+	printf("%#x\n", p+2);
+	printf("%#x\n", p-2);
 }
 
 #endif
@@ -1239,20 +1226,20 @@ int main(void)
 
 int sum(int b[4])
 {
-    int i, sum = 0;
+	int i, sum = 0;
 
-    for(i=0; i<(sizeof(b)/sizeof(b[0])); i++)
-    {
-        sum += b[i];
-    }
-    return sum;
+	for(i=0; i<(sizeof(b)/sizeof(b[0])); i++)
+	{
+		sum += b[i];
+	}
+	return sum;
 }
 
-int main(void)
+void main(void)
 {
-    int a[4] = {1,2,3,4};
+	int a[4] = {1,2,3,4};
 
-    printf("%d\n", sum(a));
+	printf("%d\n", sum(a));
 }
 
 #endif
@@ -1263,19 +1250,19 @@ int main(void)
 
 void func(int b[5])
 {
-    printf("%x\n", b);
-    printf("%x\n", &b[0]);
-    printf("%d\n", sizeof(b));
+	printf("%x\n", b);
+	printf("%x\n", &b[0]);
+	printf("%d\n", sizeof(b));
 }
 
-int main(void)
+void main(void)
 {
-    int a[5] = {10,20,30,40, 50};
+	int a[5] = {10,20,30,40, 50};
 
-    printf("%x\n", a);
-    printf("%x\n", &a[0]);
-    printf("%d\n", sizeof(a));
-    func(a);
+	printf("%x\n", a);
+	printf("%x\n", &a[0]);
+	printf("%d\n", sizeof(a));
+	func(a);
 }
 
 #endif
@@ -1289,21 +1276,21 @@ int main(void)
 #include <stdio.h>
 
 int a[4] = {1,2,3,4};
-
-int main(void)
+	
+void main(void)
 {
-    printf("%d\n", a[0]);
-    printf("%d\n", a[3]);
-    printf("%d\n", a[4]);
-    printf("%d\n", a[-1]);
+	printf("%d\n", a[0]);
+	printf("%d\n", a[3]);
+	printf("%d\n", a[4]);
+	printf("%d\n", a[-1]);
 
-    printf("%d\n", (a+1)[2]);
-    printf("%d\n", a[3]);
+	printf("%d\n", (a+1)[2]);
+	printf("%d\n", a[3]);
 
-    printf("%d\n", a[2]);
-    printf("%d\n", *(a+2));
-    printf("%d\n", *(2+a));
-    printf("%d\n", 2[a]);
+	printf("%d\n", a[2]);
+	printf("%d\n", *(a+2));
+	printf("%d\n", *(2+a));
+	printf("%d\n", 2[a]);
 }
 
 #endif
@@ -1316,17 +1303,17 @@ int main(void)
 
 #include <stdio.h>
 
-int main(void)
+void main(void)
 {
-    int *a;
+	int *a;
 
-    int *b1[4];
-    int **b2[4];
-    int b3[4];
+	int *b1[4];
+	int **b2[4];
+	int b3[4];
 
-    b1[0] = a;
-    b2[0] = &a;
-    b3[0] = *a;
+	b1[0] = a;
+	b2[0] = &a;
+	b3[0] = *a;
 }
 
 #endif
@@ -1335,19 +1322,19 @@ int main(void)
 
 #include <stdio.h>
 
-int main(void)
+void main(void)
 {
-    int (*p)[4];
+	int (*p)[4];
 
-    // 변수 선언
+	// 변수 선언
 
-    b1[4]
-        b2[4]
-        b3[4]
+		b1[4]
+		b2[4]
+		b3[4]
 
-        b1[0] = p;
-    b2[0] = &p;
-    b3[0] = (*p)[1];
+	b1[0] = p;
+	b2[0] = &p;
+	b3[0] = (*p)[1];
 }
 
 #endif
@@ -1356,19 +1343,19 @@ int main(void)
 
 #include <stdio.h>
 
-int main(void)
+void main(void)
 {
-    int a[3];
+	int a[3];
 
-    // 변수 선언
+	// 변수 선언
 
-    b1[4]
-        b2[4]
-        b3[4]
+		b1[4]
+		b2[4]
+		b3[4]
 
-        b1[0] = a;
-    b2[0] = &a;
-    b3[0] = a[1];
+	b1[0] = a;
+	b2[0] = &a;
+	b3[0] = a[1];
 }
 
 #endif
@@ -1377,19 +1364,19 @@ int main(void)
 
 #include <stdio.h>
 
-int main(void)
+void main(void)
 {
-    int *a[3];
+	int *a[3];
 
-    // 변수 선언
+	// 변수 선언
 
-    b1[4]
-        b2[4]
-        b3[4]
+		b1[4]
+		b2[4]
+		b3[4]
 
-        b1[0] = a;
-    b2[0] = &a;
-    b3[0] = a[1];
+	b1[0] = a;
+	b2[0] = &a;
+	b3[0] = a[1];
 }
 
 #endif
@@ -1404,26 +1391,26 @@ int main(void)
 
 int *a;
 
-f1(void)
+	f1(void)
 {
-    return a;
+	return a;
 }
 
-f2(void)
+	f2(void)
 {
-    return &a;
+	return &a;
 }
 
-f3(void)
+	f3(void)
 {
-    return *a;
+	return *a;
 }
 
-int main(void)
+void main(void)
 {
-    f1();
-    f2();
-    f3();
+	f1();
+	f2();
+	f3();
 }
 
 #endif
@@ -1434,26 +1421,26 @@ int main(void)
 
 int (*p)[4];
 
-f1(void)
+	f1(void)
 {
-    return p;
+	return p;
 }
 
-f2(void)
+	f2(void)
 {
-    return &p;
+	return &p;
 }
 
-f3(void)
+	f3(void)
 {
-    return (*p)[1];
+	return (*p)[1];
 }
 
-int main(void)
+void main(void)
 {
-    f1();
-    f2();
-    f3();
+	f1();
+	f2();
+	f3();
 }
 
 #endif
@@ -1464,26 +1451,26 @@ int main(void)
 
 int (*p)(int);
 
-f1(void)
+	f1(void)
 {
-    return p;
+	return p;
 }
 
-f2(void)
+	f2(void)
 {
-    return &p;
+	return &p;
 }
 
-f3(void)
+	f3(void)
 {
-    return (*p)(3);
+	return (*p)(3);
 }
 
-int main(void)
+void main(void)
 {
-    f1();
-    f2();
-    f3();
+	f1();
+	f2();
+	f3();
 }
 
 #endif
@@ -1496,15 +1483,15 @@ int main(void)
 
 #include <stdio.h> 
 
-int main(void)
+void main(void)
 {
-    char a[ ] = "LEW";
-    char *p = "%s\n";
+	char a[ ] = "LEW";
+	char *p = "%s\n";
 
-    printf("%s\n", "LEW");
-    printf("%s\n", a);
-    printf("%s\n", *a);
-    printf(p, a);
+	printf("%s\n", "LEW");
+	printf("%s\n", a);
+	printf("%s\n", *a);
+	printf(p, a);
 }
 
 #endif
@@ -1517,15 +1504,15 @@ int main(void)
 
 #include <stdio.h>
 
-int main(void)
+void main(void)
 {
-    char a[4] = "LEW";
-    char *p = a;
+	char a[4] = "LEW";
+	char *p = a;
 
-    printf("%X:%X \n", p, &p);
-    printf("%X:%X \n", a, &a);
-    printf("%X:%X \n", main, &main);
-    printf("%X:%X \n", "LEW", &"LEW");
+	printf("%X:%X \n", p, &p);
+	printf("%X:%X \n", a, &a);
+	printf("%X:%X \n", main, &main);
+	printf("%X:%X \n", "LEW", &"LEW");
 }
 
 #endif
@@ -1540,17 +1527,17 @@ int main(void)
 
 int x[4] = {1,2,3,4};
 
-int main(void)
+void main(void)
 {
-    int *a[4] = {x+3, x+2, x+1, x};
+	int *a[4] = {x+3, x+2, x+1, x};
+	
+	printf("%d\n", x[2]);	
 
-    printf("%d\n", x[2]);	
+	// 배열 a를 이용하여 x[2]를 30으로
 
-    // 배열 a를 이용하여 x[2]를 30으로
+	     = 30;   
 
-    = 30;   
-
-    printf("%d\n", x[2]);
+	printf("%d\n", x[2]);
 }
 
 #endif
@@ -1567,25 +1554,25 @@ int x[4] = {1,2,3,4};
 
 int *f1(void)
 {
-    return x;
+	return x;
 }
 
 void f2(int *p)
 {
-    printf("%d == %d == %d == %d\n", x[2], *(x+2), p[0], *p);
+	printf("%d == %d == %d == %d\n", x[2], *(x+2), p[0], *p);
 }
 
-int main(void)
+void main(void)
 {
-    int *p;
-    int *a[4] = {x+3, x+2, x+1, x};
+	int *p;
+	int *a[4] = {x+3, x+2, x+1, x};
 
-    p=x;
+	p=x;
 
-    printf("%d == %d\n", x[2], p[2]);
-    printf("%d == %d == %d == %d\n", x[2], *(x+2), a[3][2], *a[1]);
-    printf("%d == %d == %d == %d\n", x[2], *(x+2), f1()[2], *(f1()+2));
-    f2(x+2);
+	printf("%d == %d\n", x[2], p[2]);
+	printf("%d == %d == %d == %d\n", x[2], *(x+2), a[3][2], *a[1]);
+	printf("%d == %d == %d == %d\n", x[2], *(x+2), f1()[2], *(f1()+2));
+	f2(x+2);
 }
 
 #endif
@@ -1600,9 +1587,9 @@ int main(void)
 
 char err[3][25] = {"Speed Error!", "Position Error!", "Unknown Command Error!"};
 
-int main(void)
+void main(void)
 {
-    printf("%s\n", 	err[1]);
+	printf("%s\n", 	err[1]);
 }
 
 #endif
@@ -1613,9 +1600,9 @@ int main(void)
 
 char *err[3] = {"Speed Error!", "Position Error!", "Unknown Command Error!"};
 
-int main(void)
+void main(void)
 {
-    printf("%s\n", 	err[1]);
+	printf("%s\n", 	err[1]);
 }
 
 #endif
@@ -1628,16 +1615,16 @@ int main(void)
 
 #include <stdio.h> 
 
-int main(void)
+void main(void)
 {
-    char a[4] = "LEW";
+	char a[4] = "LEW";
 
-    printf("%X	%X \n", a, &a);
-    printf("%X	%X \n", "LEW", &"LEW");
-    printf("%c	%c\n", a[0], a[1]);
-    printf("%c	%c\n", "LEW"[0], "LEW"[1]);
-    printf("%c	%X \n", *a, a+1);
-    printf("%c	%X \n", *"LEW", "LEW"+1);
+	printf("%X	%X \n", a, &a);
+	printf("%X	%X \n", "LEW", &"LEW");
+	printf("%c	%c\n", a[0], a[1]);
+	printf("%c	%c\n", "LEW"[0], "LEW"[1]);
+	printf("%c	%X \n", *a, a+1);
+	printf("%c	%X \n", *"LEW", "LEW"+1);
 }
 
 #endif
@@ -1652,21 +1639,21 @@ int main(void)
 
 int add(int a, int b)
 {
-    return a+b;
+	return a+b;
 }
 
-int main(void)
+void main(void)
 {
-    int (*p)() = add;
+	int (*p)() = add;
 
-    printf("%d\n", add(3,4));
-    printf("%d\n", (&add)(3,4));
-    printf("%d\n", (*add)(3,4));
-    printf("%d\n", (**add)(3,4));
+	printf("%d\n", add(3,4));
+	printf("%d\n", (&add)(3,4));
+	printf("%d\n", (*add)(3,4));
+	printf("%d\n", (**add)(3,4));
 
-    printf("%d\n", p(3,4));
-    printf("%d\n", (*p)(3,4));
-    printf("%d\n", (**p)(3,4));
+	printf("%d\n", p(3,4));
+	printf("%d\n", (*p)(3,4));
+	printf("%d\n", (**p)(3,4));
 }
 
 #endif
@@ -1679,14 +1666,14 @@ int main(void)
 
 #include <stdio.h> 
 
-int main(void)
+void main(void)
 {
-    int a[4] = {10,20,30,40}; 
-    int (*p)[4] = &a;
+	int a[4] = {10,20,30,40}; 
+	int (*p)[4] = &a;
 
-    printf("%#x\n", p);
-    printf("%#x\n", p+1);
-    printf("%#x\n", *p);
+	printf("%#x\n", p);
+	printf("%#x\n", p+1);
+	printf("%#x\n", *p);
 }
 
 #endif
@@ -1701,18 +1688,18 @@ int main(void)
 
 void func(           p          )
 {
-    // main의 a[2]를 50으로
+	// main의 a[2]를 50으로
 
-    = 50;
+        = 50;
 }
 
-int main(void)
+void main(void)
 {
-    int a[4] = {10,20,30,40};
-
-    printf("%d\n", a[2]);	
-    func(&a);
-    printf("%d\n", a[2]);
+	int a[4] = {10,20,30,40};
+	
+	printf("%d\n", a[2]);	
+	func(&a);
+	printf("%d\n", a[2]);
 }
 
 #endif
@@ -1725,12 +1712,12 @@ int main(void)
 
 #include <stdio.h>
 
-int main(void) 
+void main(void) 
 {
-    int a, b = 10;
+	int a, b = 10;
 
-    a = b;
-    printf("a=%d, b=%d\n", a, b);
+	a = b;
+	printf("a=%d, b=%d\n", a, b);
 }
 
 #endif
@@ -1739,18 +1726,18 @@ int main(void)
 
 #include <stdio.h>
 
-int main(void) 
+void main(void) 
 {
-    struct st
-    {
-        int a;
-        char b;
-    } y = {100, 'A'};
+	struct st
+	{
+		int a;
+		char b;
+	} y = {100, 'A'};
 
-    struct st x = y;
+	struct st x = y;
 
-    printf("x.a=%d, x.b=%c\n", x.a, x.b);
-    printf("y.a=%d, y.b=%c\n", y.a, y.b);
+	printf("x.a=%d, x.b=%c\n", x.a, x.b);
+	printf("y.a=%d, y.b=%c\n", y.a, y.b);
 }
 
 #endif
@@ -1765,18 +1752,18 @@ int main(void)
 
 struct math
 {
-    int id;
-    char name[20];
-    int score;
+	int id;
+	char name[20];
+	int score;
 }mid, final={1, "Kim", 50};
 
-int main(void)
+void main(void)
 {
-    mid = final;
-
-    printf("%d\n", mid.id);
-    printf("%s\n", mid.name);
-    printf("%d\n", mid.score);
+	mid = final;
+	
+	printf("%d\n", mid.id);
+	printf("%s\n", mid.name);
+	printf("%d\n", mid.score);
 }
 
 #endif
@@ -1787,23 +1774,23 @@ int main(void)
 
 struct math
 {
-    int id;
-    char name[20];
-    int score;
+	int id;
+	char name[20];
+	int score;
 };
 
 void cheat(struct math test);
 
-int main(void)
+void main(void)
 {
-    struct math final={1, "Kim", 50};
-    cheat(final);
-    printf("%d\n", final.score);
+	struct math final={1, "Kim", 50};
+	cheat(final);
+	printf("%d\n", final.score);
 }
 
 void cheat(struct math test)
 {
-    test.score = 100;
+	test.score = 100;
 }
 
 #endif
@@ -1815,26 +1802,26 @@ void cheat(struct math test)
 #if 0
 
 #include <stdio.h> 
-
+ 
 struct math
 {
-    int id;
-    char name[20];
-    int score;
+	int id;
+	char name[20];
+	int score;
 };
 
 void cheat(struct math * test);
 
-int main(void)
+void main(void)
 {
-    struct math final={1, "Kim", 50};
-    cheat(&final);
-    printf("%d\n", final.score);
+	struct math final={1, "Kim", 50};
+	cheat(&final);
+	printf("%d\n", final.score);
 }
 
 void cheat(struct math * test)
 {
-    = 100;
+			 = 100;
 }
 
 #endif
@@ -1849,14 +1836,14 @@ void cheat(struct math * test)
 
 int a[3][4] = {{1,2,3,4},{5,6,7,8},{9,10,11,12}};
 
-int main(void)
+void main(void)
 {
-    printf("%d\n", a[2][3]);
-    printf("%d\n", *(*(a+2)+3));
-    printf("%d\n", (a+1)[1][3]);
-    printf("%d\n", ((a+1)[1]+2)[1]);
-    printf("%d\n", 3[a[2]]);
-    printf("%d\n", 3[2[a]]);
+	printf("%d\n", a[2][3]);
+	printf("%d\n", *(*(a+2)+3));
+	printf("%d\n", (a+1)[1][3]);
+	printf("%d\n", ((a+1)[1]+2)[1]);
+	printf("%d\n", 3[a[2]]);
+	printf("%d\n", 3[2[a]]);
 }
 
 #endif
@@ -1871,16 +1858,16 @@ int main(void)
 
 char a[3][4] = {"kim","lew","seo"};
 
-int main(void)
+void main(void)
 {
-    printf("%d\n",a);
-    printf("%d\n",*a);
-    printf("%d\n",a[0]);
-    printf("%c\n",*a[0]);
-    printf("%d\n",a[1]);
-    printf("%c\n",*a[1]);
-    printf("%d\n",a[2]);
-    printf("%c\n",*a[2]);
+	printf("%d\n",a);
+	printf("%d\n",*a);
+	printf("%d\n",a[0]);
+	printf("%c\n",*a[0]);
+	printf("%d\n",a[1]);
+	printf("%c\n",*a[1]);
+	printf("%d\n",a[2]);
+	printf("%c\n",*a[2]);
 }
 
 #endif
@@ -1895,16 +1882,16 @@ int main(void)
 
 void draw_pixel(int y, int x, int value,      p     )
 {
-    p[y][x] = value;
+	p[y][x] = value;
 }
 
-int main(void)
+void main(void)
 {
-    int a[2][3] = {1,2,3,4,5,6};
+	int a[2][3] = {1,2,3,4,5,6};
 
-    printf("%d\n", a[1][2]);
-    draw_pixel(1, 2, 10, a);
-    printf("%d\n", a[1][2]);
+	printf("%d\n", a[1][2]);
+	draw_pixel(1, 2, 10, a);
+	printf("%d\n", a[1][2]);
 }
 
 #endif
@@ -1917,15 +1904,15 @@ int main(void)
 
 #include <stdio.h>
 
-func(void)
+       func(void)
 {
-    static int a[3][4] = {1,2,3,4,5,6,7,8,9,10,11,12};
-    return a;
+	static int a[3][4] = {1,2,3,4,5,6,7,8,9,10,11,12};
+	return a;
 }
 
-int main(void)
+void main(void)
 {
-    printf("%d\n",     func()        );
+	printf("%d\n",     func()        );
 }
 
 #endif
@@ -1938,29 +1925,29 @@ int main(void)
 
 #include <stdio.h>
 
-int main(void)
+void main(void)
 {
-    int a[2][3][4];
-    int (*b[3])[4];
-    int *(*c[2])(int *);
-    int *d[3][4];
-    int (*(*e[5])(void))[4];
+	int a[2][3][4];
+	int (*b[3])[4];
+	int *(*c[2])(int *);
+	int *d[3][4];
+	int (*(*e[5])(void))[4];
 
-    // pa ~ pe 포인터 변수 선언
-    // 아래에 pa ~ pe 까지 포인터를 선언한다
-    // 컴파일시 단 하나의 경고도 발생하지 않아야 한다
-
-
+	// pa ~ pe 포인터 변수 선언
+	// 아래에 pa ~ pe 까지 포인터를 선언한다
+	// 컴파일시 단 하나의 경고도 발생하지 않아야 한다
 
 
 
 
 
-    pa = a;
-    pb = b;
-    pc = c;
-    pd = d;
-    pe = e;
+
+
+	pa = a;
+	pb = b;
+	pc = c;
+	pd = d;
+	pe = e;
 }
 
 #endif
@@ -1973,20 +1960,20 @@ int main(void)
 
 #include <stdio.h>
 
-int main(void)
+void main(void)
 {
-    char arr[5][10] = {"Kim", "Lew", "Kang", "Song", "Park"};
-    char (*p)[10];
+	char arr[5][10] = {"Kim", "Lew", "Kang", "Song", "Park"};
+	char (*p)[10];
 
-    p = arr;
+	p = arr;
+	
+	printf("%s\n", *p);
+	printf("%s\n", *(p+1));
+	printf("%c\n", *(*(p+2)+1));
 
-    printf("%s\n", *p);
-    printf("%s\n", *(p+1));
-    printf("%c\n", *(*(p+2)+1));
-
-    printf("%s\n", p[0]);
-    printf("%s\n", p[1]);
-    printf("%c\n", p[2][1]);
+	printf("%s\n", p[0]);
+	printf("%s\n", p[1]);
+	printf("%c\n", p[2][1]);
 }
 
 #endif
@@ -2003,13 +1990,13 @@ int a[3][4] = {1,2,3,4,5,6,7,8,9,10,11,12};
 
 int func(void * p, int a, int x)
 {
-    int (*q)[4] = p;
-    return (a+4)[q[x-1]];
+	int (*q)[4] = p;
+	return (a+4)[q[x-1]];
 }
 
-int main(void)
+void main(void)
 {
-    printf("%d\n", func(a, 1, 2));
+	printf("%d\n", func(a, 1, 2));
 }
 
 #endif
@@ -2025,12 +2012,12 @@ int main(void)
 int a[3][4] = {{1,2,3,4},{5,6,7,8},{9,10,11,12}};
 int *b[3] = {a[2], a[1], a[0]};
 
-int main(void)
+void main(void)
 {
-    printf("%d\n", 	a[2][3]);
-
-    //b를 이용하여 배열내의 숫자 12을 인쇄하시오
-    printf("%d\n", 			);
+	printf("%d\n", 	a[2][3]);
+	
+	//b를 이용하여 배열내의 숫자 12을 인쇄하시오
+	printf("%d\n", 			);
 }
 
 #endif
@@ -2046,12 +2033,12 @@ int main(void)
 int a[3][4] = {{1,2,3,4},{5,6,7,8},{9,10,11,12}};
 int *p = a[0];
 
-int main(void)
+void main(void)
 {
-    printf("%d\n", 	a[2][3]);
-
-    //p 변수만 이용하여 배열내의 숫자 12을 인쇄하시오
-    printf("%d\n", 			);
+	printf("%d\n", 	a[2][3]);
+	
+	//p 변수만 이용하여 배열내의 숫자 12을 인쇄하시오
+	printf("%d\n", 			);
 }
 
 #endif
@@ -2068,42 +2055,42 @@ int a[2][3][4] = {{{1,2,3,4},{5,6,7,8},{9,10,11,12}},{{10,20,30,40},{50,60,70,80
 
 void f1(               ) 
 {
-    printf("%d\n",                 );
+	printf("%d\n",                 );
 }
 
 void f2(               )  
 {
-    printf("%d\n",                 );
+	printf("%d\n",                 );
 }
 
 void f3(               ) 
 {
-    printf("%d\n",                 );
+	printf("%d\n",                 );
 }
 
 void f4(               ) 
 {
-    printf("%d\n",                 );
+	printf("%d\n",                 );
 }
 
 void f5(               ) 
 {
-    printf("%d\n",                 );
+	printf("%d\n",                 );
 }
 
 void f6(               ) 
 {
-    printf("%d\n",         );
+	printf("%d\n",         );
 }
 
-int main(void)
+void main(void)
 {
-    f1(*(a[0]+1));  
-    f2(*(a+2));
-    f3(a);
-    f4(a+3);
-    f5(&a);
-    f6(&a-1);
+	f1(*(a[0]+1));  
+	f2(*(a+2));
+	f3(a);
+	f4(a+3);
+	f5(&a);
+	f6(&a-1);
 }
 
 #endif
@@ -2123,36 +2110,36 @@ int (**p)[3] = c;
 
 f1(void) 
 {
-    return c[1];	
+	return c[1];	
 }
 
 f2(void)  
 {
-    return c+1;
+	return c+1;
 }
 
 f3(void) 
 {
-    return a[0]-1;
+	return a[0]-1;
 }
 
-f4(void) 
+ f4(void) 
 {
-    return p;
+	return p;
 }
 
 f5(void) 
 {
-    return &c;
+	return &c;
 }
 
-int main(void)
+void main(void)
 {
-    printf("6=%d\n",       f1()         );
-    printf("6=%d\n",       f2()         );
-    printf("6=%d\n",       f3()         );
-    printf("6=%d\n",       f4()         );
-    printf("6=%d\n",       f5()         );
+	printf("6=%d\n",       f1()         );
+	printf("6=%d\n",       f2()         );
+	printf("6=%d\n",       f3()         );
+	printf("6=%d\n",       f4()         );
+	printf("6=%d\n",       f5()         );
 }
 
 #endif
@@ -2169,12 +2156,12 @@ char *c[] = {"ENTER", "NEW", "POINT", "FIRST"};
 char **cp[] = {c+3, c+2, c+1, c};
 char ***cpp = cp;
 
-int main(void)
+void main(void)
 {
-    printf("%s", **++cpp);
-    printf("%s ", *--*++cpp+3);
-    printf("%s", *cpp[-2]+3);
-    printf("%s\n", cpp[-1][-1]+1);
+	printf("%s", **++cpp);
+	printf("%s ", *--*++cpp+3);
+	printf("%s", *cpp[-2]+3);
+	printf("%s\n", cpp[-1][-1]+1);
 }
 
 #endif
@@ -2189,32 +2176,32 @@ int main(void)
 
 int add(int a, int b)
 {
-    return a+b;
+	return a+b;
 }	
 
 void f1(void)
 {
-    printf("func\n");
+	printf("func\n");
 }
 
 int * f2(void)
 {
-    static int a[4] = {1,2,3,4};
+	static int a[4] = {1,2,3,4};
 
-    return a;
+	return a;
 }
 
-int main(void)
+void main(void)
 {
-    // p, q, r 선언
+	// p, q, r 선언
 
-    // p, q, r에 대응 함수 대입
+	// p, q, r에 대응 함수 대입
 
-    printf("%d\n", add(3,4));
-    f1();
-    printf("%d\n", f2()[2]);
+	printf("%d\n", add(3,4));
+	f1();
+	printf("%d\n", f2()[2]);
 
-    // 위와 동일한 결과가 나오도록 p, q, r로 실행
+	// 위와 동일한 결과가 나오도록 p, q, r로 실행
 
 
 
@@ -2232,23 +2219,23 @@ int main(void)
 
 int add(int a, int b)
 {
-    return a+b;
+	return a+b;
 }
 
 int sub(int a, int b)
 {
-    return a-b;
+	return a-b;
 }
 
 void func(                  )
 {
-    printf("%d\n", p(3,4));
+	printf("%d\n", p(3,4));
 }
 
-int main(void)
+void main(void)
 {
-    func(add);
-    func(sub);
+	func(add);
+	func(sub);
 }
 
 #endif
@@ -2263,32 +2250,32 @@ int main(void)
 
 int add(int a, int b)
 {
-    return a+b;
+	return a+b;
 }
 
 int sqr(int a)
 {
-    return a*a;
+	return a*a;
 }
 
 int func(void)
 {
-    return 100;
+	return 100;
 }
 
 // add, sqr, func에 공통적인 함수 등가포인터 p 설계
 
 
-int main(void)
+void main(void)
 {
-    p = add;
-    printf("%d\n", p(3,4));
+	p = add;
+	printf("%d\n", p(3,4));
 
-    p = sqr;
-    printf("%d\n", p(3));
+	p = sqr;
+	printf("%d\n", p(3));
 
-    p = func;
-    printf("%d\n", p( ));
+	p = func;
+	printf("%d\n", p( ));
 }
 
 #endif
@@ -2304,43 +2291,43 @@ int main(void)
 
 int add(int a, int b)
 {
-    return a+b;
+	return a+b;
 }
 
 int sub(int a, int b)
 {
-    return a-b;
+	return a-b;
 }
 
 int mul(int a, int b)
 {
-    return a*b;
+	return a*b;
 }
 
 int get_key(void)
 {
-    return rand() % 3;
+	return rand() % 3;
 }
 
 int op(int a, int b)
 {
-    switch(get_key())
-    {
-        case 0	: return add(a,b);
-        case 1	: return sub(a,b);
-        case 2	: return mul(a,b);
-    }
+	switch(get_key())
+	{
+		case 0	: return add(a,b);
+		case 1	: return sub(a,b);
+		case 2	: return mul(a,b);
+	}
 }
 
-int main(void)
+void main(void)
 {
-    printf("%d\n", op(3, 4));
-    printf("%d\n", op(3, 4));
-    printf("%d\n", op(3, 4));
-    printf("%d\n", op(3, 4));
-    printf("%d\n", op(3, 4));
-    printf("%d\n", op(3, 4));
-    printf("%d\n", op(3, 4));
+	printf("%d\n", op(3, 4));
+	printf("%d\n", op(3, 4));
+	printf("%d\n", op(3, 4));
+	printf("%d\n", op(3, 4));
+	printf("%d\n", op(3, 4));
+	printf("%d\n", op(3, 4));
+	printf("%d\n", op(3, 4));
 }
 
 #endif
@@ -2356,40 +2343,40 @@ int main(void)
 
 int add(int a, int b)
 {
-    return a+b;
+	return a+b;
 }
 
 int sub(int a, int b)
 {
-    return a-b;
+	return a-b;
 }
 
 int mul(int a, int b)
 {
-    return a*b;
+	return a*b;
 }
 
 int get_key(void)
 {
-    return rand() % 3;
+	return rand() % 3;
 }
 
-fa[3]        = {add, sub, mul};
+       fa[3]        = {add, sub, mul};
 
 int op(int a, int b)
 {
-    return fa[get_key()](a,b);
+	return fa[get_key()](a,b);
 }
 
-int main(void)
+void main(void)
 {
-    printf("%d\n", op(3, 4));
-    printf("%d\n", op(3, 4));
-    printf("%d\n", op(3, 4));
-    printf("%d\n", op(3, 4));
-    printf("%d\n", op(3, 4));
-    printf("%d\n", op(3, 4));
-    printf("%d\n", op(3, 4));
+	printf("%d\n", op(3, 4));
+	printf("%d\n", op(3, 4));
+	printf("%d\n", op(3, 4));
+	printf("%d\n", op(3, 4));
+	printf("%d\n", op(3, 4));
+	printf("%d\n", op(3, 4));
+	printf("%d\n", op(3, 4));
 }
 
 #endif
@@ -2405,40 +2392,40 @@ int main(void)
 
 int add(int a, int b)
 {
-    return a+b;
+	return a+b;
 }
 
 int sub(int a, int b)
 {
-    return a-b;
+	return a-b;
 }
 
 int mul(int a, int b)
 {
-    return a*b;
+	return a*b;
 }
 
 int get_key(void)
 {
-    return rand() % 3;
+	return rand() % 3;
 }
 
 int (*fa[3])(int, int) = {add, sub, mul};
-
-op(     fp     )
+	
+			op(     fp     )
 {
-    return fa[fp()];
+	return fa[fp()];
 }
 
-int main(void)
+void main(void)
 {
-    printf("%d\n", op(get_key)(3, 4));
-    printf("%d\n", op(get_key)(3, 4));
-    printf("%d\n", op(get_key)(3, 4));
-    printf("%d\n", op(get_key)(3, 4));
-    printf("%d\n", op(get_key)(3, 4));
-    printf("%d\n", op(get_key)(3, 4));
-    printf("%d\n", op(get_key)(3, 4));
+	printf("%d\n", op(get_key)(3, 4));
+	printf("%d\n", op(get_key)(3, 4));
+	printf("%d\n", op(get_key)(3, 4));
+	printf("%d\n", op(get_key)(3, 4));
+	printf("%d\n", op(get_key)(3, 4));
+	printf("%d\n", op(get_key)(3, 4));
+	printf("%d\n", op(get_key)(3, 4));
 }
 
 #endif
@@ -2454,37 +2441,37 @@ int main(void)
 
 struct _st 
 { 
-    int num; 
-    char *name; 
+	int num; 
+	char *name; 
 };
 
 struct _st book[10] =  {{7, "Kim"},	 {2, "Lew"}, 	 {10, "Kang"},
-    {3, "Lee"},	 {6, "Seo"},	 {1, "Song"},
-    {5, "Ki"},	 {8, "Moon"}, 	 {9, "Park"},
-    {4, "Jung"}};
+						{3, "Lee"},	 {6, "Seo"},	 {1, "Song"},
+						{5, "Ki"},	 {8, "Moon"}, 	 {9, "Park"},
+			            {4, "Jung"}};
 
 int compare_num_up(const void * a1, const void * a2)
 {
-    register const struct _st * p = a1, *q = a2;
-
-    if(p->num > q->num) return 1;
-    if(p->num < q->num) return -1;
-    return 0;
+	register const struct _st * p = a1, *q = a2;
+	
+	if(p->num > q->num) return 1;
+	if(p->num < q->num) return -1;
+	return 0;
 }
 
-int main(void)
+void main(void)
 {
-    int i; struct _st tmp; struct _st *p;
+	int i; struct _st tmp; struct _st *p;
 
-    for(i=0; i<10; i++) printf("%d:%s\n", book[i].num, book[i].name);
-    printf("\n");
-    qsort(book, sizeof(book)/sizeof(book[0]), sizeof(struct _st), compare_num_up);
-    for(i=0; i<10; i++) printf("%d:%s\n", book[i].num, book[i].name);	
+	for(i=0; i<10; i++) printf("%d:%s\n", book[i].num, book[i].name);
+	printf("\n");
+	qsort(book, sizeof(book)/sizeof(book[0]), sizeof(struct _st), compare_num_up);
+	for(i=0; i<10; i++) printf("%d:%s\n", book[i].num, book[i].name);	
 
-    tmp.num = 8;
-    p = bsearch(&tmp, book, 10, sizeof(struct _st), compare_num_up);
-    if(p)	printf("\nSearch Result => %d : %s\n", p->num, p->name);
-    else	printf("\nSearch Failed\n");
+	tmp.num = 8;
+	p = bsearch(&tmp, book, 10, sizeof(struct _st), compare_num_up);
+	if(p)	printf("\nSearch Result => %d : %s\n", p->num, p->name);
+	else	printf("\nSearch Failed\n");
 }
 
 #endif
@@ -2500,42 +2487,42 @@ int main(void)
 
 int add(int a, int b)
 {
-    return a+b;
+	return a+b;
 }
 
 int sub(int a, int b)
 {
-    return a-b;
+	return a-b;
 }
 
 int mul(int a, int b)
 {
-    return a*b;
+	return a*b;
 }
 
 int get_key(void)
 {
-    return rand() % 3;
+	return rand() % 3;
 }
 
 typedef 
-
+	
 FPTR fa[3] = {add, sub, mul};
-
+	
 FPTR op(FPTR fp)
 {
-    return fa[fp()];
+	return fa[fp()];
 }
 
-int main(void)
+void main(void)
 {
-    printf("%d\n", op(get_key)(3, 4));
-    printf("%d\n", op(get_key)(3, 4));
-    printf("%d\n", op(get_key)(3, 4));
-    printf("%d\n", op(get_key)(3, 4));
-    printf("%d\n", op(get_key)(3, 4));
-    printf("%d\n", op(get_key)(3, 4));
-    printf("%d\n", op(get_key)(3, 4));
+	printf("%d\n", op(get_key)(3, 4));
+	printf("%d\n", op(get_key)(3, 4));
+	printf("%d\n", op(get_key)(3, 4));
+	printf("%d\n", op(get_key)(3, 4));
+	printf("%d\n", op(get_key)(3, 4));
+	printf("%d\n", op(get_key)(3, 4));
+	printf("%d\n", op(get_key)(3, 4));
 }
 
 #endif
@@ -2550,21 +2537,21 @@ int main(void)
 
 #include <stdio.h> 
 
-f2(void)
+       f2(void)
 {
-    static int a[3][4] = {1,2,3,4,5,6,7,8,9,10,11,12};
+	static int a[3][4] = {1,2,3,4,5,6,7,8,9,10,11,12};
 
-    return a;
+	return a;
 }
 
-f1(void)
+        f1(void)
 {
-    return f2;
+	return f2;
 }
 
-int main(void)
+void main(void)
 {
-    printf("%d\n",           f1( )          );	
+	printf("%d\n",           f1( )          );	
 }
 
 #endif
@@ -2580,19 +2567,19 @@ typedef FP1
 
 FP2 f2(void)               
 {
-    static int a[3][4] = {1,2,3,4,5,6,7,8,9,10,11,12};
+	static int a[3][4] = {1,2,3,4,5,6,7,8,9,10,11,12};
 
-    return a;
+	return a;
 }
 
 FP1 f1(void)                     
 {
-    return &f2;
+	return &f2;
 }
 
-int main(void)
+void main(void)
 {
-    printf("%d\n",        f1( )      );
+	printf("%d\n",        f1( )      );
 }
 
 #endif
@@ -2605,21 +2592,21 @@ int main(void)
 
 #include <stdio.h> 
 
-f2(void)
+       f2(void)
 {
-    static int a[3][4] = {1,2,3,4,5,6,7,8,9,10,11,12};
+	static int a[3][4] = {1,2,3,4,5,6,7,8,9,10,11,12};
 
-    return a;
+	return a;
 }
 
-f1(void)
+        f1(void)
 {
-    return f2()[2];
+	return f2()[2];
 }
 
-int main(void)
+void main(void)
 {
-    printf("%d\n",           f1( )          );	
+	printf("%d\n",           f1( )          );	
 }
 
 #endif
@@ -2632,21 +2619,21 @@ int main(void)
 
 #include <stdio.h> 
 
-f2(void)
+       f2(void)
 {
-    static int a[3][4] = {1,2,3,4,5,6,7,8,9,10,11,12};
+	static int a[3][4] = {1,2,3,4,5,6,7,8,9,10,11,12};
 
-    return &a;
+	return &a;
 }
 
-f1(void)
+        f1(void)
 {
-    return f2()[0];
+	return f2()[0];
 }
 
-int main(void)
+void main(void)
 {
-    printf("%d\n",           f1( )          );	
+	printf("%d\n",           f1( )          );	
 }
 
 #endif
@@ -2661,24 +2648,24 @@ int main(void)
 
 struct _st
 {
-    int num;
-    char * name;
+	int num;
+	char * name;
 };
 
-f2(void)                     // [1]
+                 f2(void)                     // [1]
 {
-    static struct _st a[2][3] = {{{1,"KIM"}, {2,"SONG"}, {3, "KI"}}, {{4, "KANG"}, {5, "PARK"}, {6, "LEW"}}};
-    return a;
+	static struct _st a[2][3] = {{{1,"KIM"}, {2,"SONG"}, {3, "KI"}}, {{4, "KANG"}, {5, "PARK"}, {6, "LEW"}}};
+	return a;
 }
 
-f1(int num)                   // [2]
+                f1(int num)                   // [2]
 {
-    return f2()[num];
+	return f2()[num];
 }
 
-int main(void)
+void main(void)
 {
-    printf("%s\n",          f1(0)                 );   // [3]
+	printf("%s\n",          f1(0)                 );   // [3]
 }
 
 #endif
@@ -2690,26 +2677,26 @@ int main(void)
 #if 0 
 #include <stdio.h>
 int *f1(void) {
-    static int a[4] = {1,2,3,4};
-    return a;
+	static int a[4] = {1,2,3,4};
+	return a;
 }
 
 int *f2(void) {
-    static int a[4] = {10,20,30,40};
-    return a;	
+	static int a[4] = {10,20,30,40};
+	return a;	
 }
 int *(*fa[2])() = {f1, f2};
 int f4(void) { return 1; }
 
 int *(**func1(void))() {     // [1]
-    return fa;
+	return fa;
 }
 
 int *(*func2(int (*p)()))() { return func1()[p()]; }
 
-int main(void)
+void main(void)
 {
-    printf("%d\n",     func2(f4)()[3]      );   // [3]
+	printf("%d\n",     func2(f4)()[3]      );   // [3]
 }
 
 #endif
@@ -2723,42 +2710,42 @@ int main(void)
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(void)
+void main(void)
 {
-    int i, j, x;
-    int **p;
+	int i, j, x;
+	int **p;
 
-    x = 3;
+	x = 3;
 
-    p = malloc(x * sizeof(int *));
+	p = malloc(x * sizeof(int *));
 
-    for(i=0; i<x; i++)
-    {
-        p[i] = malloc(4 * sizeof (int));
-    }
+	for(i=0; i<x; i++)
+	{
+		p[i] = malloc(4 * sizeof (int));
+	}
 
-    for(i=0; i<x; i++)
-    {
-        for(j=0; j<4; j++)
-        {
-            p[i][j] = i*4+j;
-        }
-    }
+	for(i=0; i<x; i++)
+	{
+		for(j=0; j<4; j++)
+		{
+			p[i][j] = i*4+j;
+		}
+	}
 
-    for(i=0; i<x; i++)
-    {
-        for(j=0; j<4; j++)
-        {
-            printf("%d\n", p[i][j]);
-        }
-    }
+	for(i=0; i<x; i++)
+	{
+		for(j=0; j<4; j++)
+		{
+			printf("%d\n", p[i][j]);
+		}
+	}
 
-    for(i=0; i<x; i++)
-    {
-        free(p[i]);
-    }
+	for(i=0; i<x; i++)
+	{
+		free(p[i]);
+	}
 
-    free(p);
+	free(p);
 }
 
 #endif
@@ -2772,39 +2759,39 @@ int main(void)
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(void)
+void main(void)
 {
-    int i, j, x;
-    int **p;
+	int i, j, x;
+	int **p;
 
-    x = 3;
+	x = 3;
 
-    p = malloc(x * sizeof(int *));
-    p[0] = malloc(x * 4 * sizeof(int));
+	p = malloc(x * sizeof(int *));
+	p[0] = malloc(x * 4 * sizeof(int));
 
-    for(i=1; i<x; i++)
-    {
-        p[i] = p[0] + i*4;
-    }
+	for(i=1; i<x; i++)
+	{
+		p[i] = p[0] + i*4;
+	}
 
-    for(i=0; i<x; i++)
-    {
-        for(j=0; j<4; j++)
-        {
-            p[i][j] = i*4+j;
-        }
-    }
+	for(i=0; i<x; i++)
+	{
+		for(j=0; j<4; j++)
+		{
+			p[i][j] = i*4+j;
+		}
+	}
 
-    for(i=0; i<x; i++)
-    {
-        for(j=0; j<4; j++)
-        {
-            printf("%d\n", p[i][j]);
-        }
-    }
+	for(i=0; i<x; i++)
+	{
+		for(j=0; j<4; j++)
+		{
+			printf("%d\n", p[i][j]);
+		}
+	}
 
-    free(p[0]);
-    free(p);
+	free(p[0]);
+	free(p);
 }
 
 #endif
@@ -2818,32 +2805,32 @@ int main(void)
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(void)
+void main(void)
 {
-    int i, j, x;
-    int (*p)[4];
+	int i, j, x;
+	int (*p)[4];
 
-    x = 3;
+	x = 3;
 
-    p = malloc(x * sizeof(int [4]));
+	p = malloc(x * sizeof(int [4]));
 
-    for(i=0; i<x; i++)
-    {
-        for(j=0; j<4; j++)
-        {
-            p[i][j] = i*4+j;
-        }
-    }
+	for(i=0; i<x; i++)
+	{
+		for(j=0; j<4; j++)
+		{
+			p[i][j] = i*4+j;
+		}
+	}
 
-    for(i=0; i<x; i++)
-    {
-        for(j=0; j<4; j++)
-        {
-            printf("%d\n", p[i][j]);
-        }
-    }
+	for(i=0; i<x; i++)
+	{
+		for(j=0; j<4; j++)
+		{
+			printf("%d\n", p[i][j]);
+		}
+	}
 
-    free(p);
+	free(p);
 }
 
 #endif
@@ -2857,39 +2844,39 @@ int main(void)
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(void)
+void main(void)
 {
-    int i, j, m, n;
-    int **p;
+	int i, j, m, n;
+	int **p;
 
-    m = 3, n = 4;
+	m = 3, n = 4;
 
-    p = malloc(m * sizeof(int *));
-    p[0] = malloc(m * n * sizeof(int));
+	p = malloc(m * sizeof(int *));
+	p[0] = malloc(m * n * sizeof(int));
 
-    for(i=1; i<m; i++)
-    {
-        p[i] = p[0] + i*n;
-    }
+	for(i=1; i<m; i++)
+	{
+		p[i] = p[0] + i*n;
+	}
 
-    for(i=0; i<m; i++)
-    {
-        for(j=0; j<n; j++)
-        {
-            p[i][j] = i*n+j;
-        }
-    }
+	for(i=0; i<m; i++)
+	{
+		for(j=0; j<n; j++)
+		{
+			p[i][j] = i*n+j;
+		}
+	}
 
-    for(i=0; i<m; i++)
-    {
-        for(j=0; j<n; j++)
-        {
-            printf("%d\n", p[i][j]);
-        }
-    }
+	for(i=0; i<m; i++)
+	{
+		for(j=0; j<n; j++)
+		{
+			printf("%d\n", p[i][j]);
+		}
+	}
 
-    free(p[0]);
-    free(p);
+	free(p[0]);
+	free(p);
 }
 
 #endif
@@ -2903,28 +2890,28 @@ int main(void)
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(void)
+void main(void)
 {
-    int i, j;
-    int m = 3, n = 4;
-    int *p;
+	int i, j;
+	int m = 3, n = 4;
+	int *p;
 
-    p = malloc(m * n * sizeof(int));
+	p = malloc(m * n * sizeof(int));
 
-    for(i=0; i<m; i++)
-    {
-        for(j=0; j<n; j++)
-        {
-            p[i*n+j] = i*n+j;
-        }
-    }
+	for(i=0; i<m; i++)
+	{
+		for(j=0; j<n; j++)
+		{
+			p[i*n+j] = i*n+j;
+		}
+	}
 
-    for(i=0; i<(m*n); i++)
-    {
-        printf("%d\n", p[i]);
-    }
+	for(i=0; i<(m*n); i++)
+	{
+		printf("%d\n", p[i]);
+	}
 
-    free(p);
+	free(p);
 }
 
 #endif
@@ -2937,16 +2924,16 @@ int main(void)
 
 #include <stdio.h> 
 
-int main(void)
+void main(void)
 {
-    char a[ ] = "Motel";
-    char *p   = "Motel";
+	char a[ ] = "Motel";
+	char *p   = "Motel";
 
-    a[0] = 'H';
-    p[0] = 'H';
+	a[0] = 'H';
+	p[0] = 'H';
 
-    printf("%s\n", a);
-    printf("%s\n", p);
+	printf("%s\n", a);
+	printf("%s\n", p);
 }
 
 #endif
@@ -2961,52 +2948,24 @@ int main(void)
 
 int sum(int *p)
 {
-    int i, s = 0;
+	int i, s = 0;
 
-    for(i=0; i<5; i++)
-    {
-        s += p[i];
-        p[i] = 0;
-    }
+	for(i=0; i<5; i++)
+	{
+		s += p[i];
+		p[i] = 0;
+	}
 
-    return s;
+	return s;
 }
 
-int main(void)
+void main(void)
 {
-    int r;
-    int a[5] = {1,2,3,4,5};
+	int r;
+	int a[5] = {1,2,3,4,5};
 
-    r = sum(a);
-    printf("%d, %d\n", r, a[0]);
-}
-
-#endif
-
-#if 0
-
-#include <stdio.h>
-
-int sum(const int *p)
-{
-    int i, s = 0;
-
-    for(i=0; i<5; i++)
-    {
-        s += p[i];
-        p[i] = 0;
-    }
-
-    return s;
-}
-
-int main(void)
-{
-    int r;
-    int a[5] = {1,2,3,4,5};
-
-    r = sum(a);
-    printf("%d, %d\n", r, a[0]);
+	r = sum(a);
+	printf("%d, %d\n", r, a[0]);
 }
 
 #endif
@@ -3017,25 +2976,53 @@ int main(void)
 
 int sum(const int *p)
 {
-    int i, s = 0;
-    int *q = p;
+	int i, s = 0;
 
-    for(i=0; i<5; i++)
-    {
-        s += q[i];
-        q[0] = 0;
-    }
+	for(i=0; i<5; i++)
+	{
+		s += p[i];
+		p[i] = 0;
+	}
 
-    return s;
+	return s;
 }
 
-int main(void)
+void main(void)
 {
-    int r;
-    int a[5] = {1,2,3,4,5};
+	int r;
+	int a[5] = {1,2,3,4,5};
 
-    r = sum(a);
-    printf("%d, %d\n", r, a[0]);
+	r = sum(a);
+	printf("%d, %d\n", r, a[0]);
+}
+
+#endif
+
+#if 0
+
+#include <stdio.h>
+
+int sum(const int *p)
+{
+	int i, s = 0;
+	int *q = p;
+
+	for(i=0; i<5; i++)
+	{
+		s += q[i];
+		q[0] = 0;
+	}
+
+	return s;
+}
+
+void main(void)
+{
+	int r;
+	int a[5] = {1,2,3,4,5};
+
+	r = sum(a);
+	printf("%d, %d\n", r, a[0]);
 }
 
 #endif
@@ -3051,12 +3038,12 @@ int main(void)
 int a[4] = {1,2,3,4};
 const int b[4] = {10,20, 30, 40};
 
-int main(void)
+void main(void)
 {
-    a[0] = 100;
-    b[0] = 100;
+	a[0] = 100;
+	b[0] = 100;
 
-    printf("%d %d\n", a[0], b[0]);
+	printf("%d %d\n", a[0], b[0]);
 }
 
 #endif
@@ -3071,28 +3058,28 @@ int main(void)
 
 typedef int ** IPP;
 
-int main(void)
+void main(void)
 {
-    int a[4] = {1,2,3,4};
-    int *p = a;
+	int a[4] = {1,2,3,4};
+	int *p = a;
+	
+	int const ** p1 = &p;
+	int * const * p2 = &p;
+	int ** const p3 = &p;
+	const int ** p4 = &p;
 
-    int const ** p1 = &p;
-    int * const * p2 = &p;
-    int ** const p3 = &p;
-    const int ** p4 = &p;
+	const IPP p5 = &p;
 
-    const IPP p5 = &p;
-
-    **p1 = 200;
-    *p2 = a+1;
-    p3 = &p+1;
-    **p4 = 300;
-
-    p5 = &p+1;
-    *p5 = a+1;
-    **p5 = 400;
-
-    printf("%d, %d\n", a[0], a[1]);
+	**p1 = 200;
+	*p2 = a+1;
+	p3 = &p+1;
+	**p4 = 300;
+	
+	p5 = &p+1;
+	*p5 = a+1;
+	**p5 = 400;
+	
+	printf("%d, %d\n", a[0], a[1]);
 }
 
 #endif
@@ -3107,16 +3094,16 @@ int main(void)
 
 void func(int x)
 {
-    printf("%f\n",                            );
-    printf("%f\n",                            );
-    printf("%f\n",                            );
+	printf("%f\n",                            );
+	printf("%f\n",                            );
+	printf("%f\n",                            );
 }
 
-int main(void)
+void main(void)
 {
-    double d[3] = {3.14, 5.125, -7.42};
+	double d[3] = {3.14, 5.125, -7.42};
 
-    func((int)d);
+	func((int)d);
 }
 
 #endif
@@ -3127,19 +3114,19 @@ int main(void)
 
 void func(int x)
 {
-    int i;
+	int i;
 
-    for(i=0; i<3; i++)
-    {
+	for(i=0; i<3; i++)
+	{
 
-    }
+	}
 }
 
-int main(void)
+void main(void)
 {
-    double d[3] = {3.14, 5.125, -7.42};
+	double d[3] = {3.14, 5.125, -7.42};
 
-    func((int)d);
+	func((int)d);
 }
 
 #endif
@@ -3154,20 +3141,20 @@ int main(void)
 
 void func(void * p)
 {
-    int i;
+	int i;
 
-    for(i=0; i<3; i++)
-    {
-        printf("%f\n",              );
-    }
+	for(i=0; i<3; i++)
+	{
+		printf("%f\n",              );
+	}
 }
 
-int main(void)
+void main(void)
 {
-    double d[3] = {3.14, 5.125, -7.42};
-    void *p = d;
+	double d[3] = {3.14, 5.125, -7.42};
+	void *p = d;
 
-    func(&p);
+	func(&p);
 }
 
 #endif
@@ -3182,13 +3169,13 @@ int main(void)
 
 void func(void *p)
 {
-    printf("%s\n",          );
+	printf("%s\n",          );
 }
 
-int main(void)
+void main(void)
 {
-    char * p = "Willtek";
-    func(&p);
+	char * p = "Willtek";
+	func(&p);
 }
 
 #endif
@@ -3202,22 +3189,22 @@ int main(void)
 #include <stdio.h>
 
 struct st {
-    int i;
-    char c;
+	int i;
+	char c;
 };
 typedef struct st S;
 
 void func(long long int a) {
-    printf("%d\n",(*(S*)(&a)).i);
-    printf("%c\n",(*(S*)(&a)).c);
-    //printf("%c\n",(*(struct st**)&a)->c);
+	printf("%d\n",(*(S*)(&a)).i);
+	printf("%c\n",(*(S*)(&a)).c);
+	//printf("%c\n",(*(struct st**)&a)->c);
 }
 
-int main(void)
+void main(void)
 {
-    struct st x = {100, 'A'};
+	struct st x = {100, 'A'};
 
-    func(*(long long int *)&x);
+	func(*(long long int *)&x);
 }
 
 #endif
@@ -3231,14 +3218,14 @@ int main(void)
 #include <stdio.h>
 
 int func(int a, int b) {
-    return a+b;
+	return a+b;
 }
-
-int main(void) {
-    int a = (int)func;
-    printf("%d\n", func(3,4));
-    //printf("%d\n",(*(int(*)())a)(3,4));
-    printf("%d\n", (*(int(**)())&a)(3,4)                );
+	
+void main(void) {
+	int a = (int)func;
+	printf("%d\n", func(3,4));
+	//printf("%d\n",(*(int(*)())a)(3,4));
+	printf("%d\n", (*(int(**)())&a)(3,4)                );
 }
 
 #endif
@@ -3250,16 +3237,16 @@ int main(void) {
 #if 0 
 #include <stdio.h>
 void func(void * p) {
-    printf("%d\n",  (*(int(**)(int,int))p)(3,4)           );
+	printf("%d\n",  (*(int(**)(int,int))p)(3,4)           );
 }
 
 int add(int a, int b) {
-    return a+b;
+	return a+b;
 }
-
-int main(void) {
-    void *p = (void *)add;
-    func(&p);
+	
+void main(void) {
+	void *p = (void *)add;
+	func(&p);
 }
 
 #endif
@@ -3271,16 +3258,16 @@ int main(void) {
 #if 0
 
 #include <stdio.h>
-
+  
 int add(int a, int b)
 {
-    return a+b;
+	return a+b;
 }
 
-int main(void)
+void main(void)
 {
-    printf("%d\n", add(3));
-    printf("%d\n", add(3,4,5));
+	printf("%d\n", add(3));
+	printf("%d\n", add(3,4,5));
 }
 
 #endif
@@ -3289,12 +3276,12 @@ int main(void)
 
 #include <stdio.h>
 
-int main(void)
+void main(void)
 {
-    int a = 1, b = 2, c = 3;
+	int a = 1, b = 2, c = 3;
 
-    printf("남는 Argument : %d %d \n", a, b, c);
-    printf("적은 Argument : %d %d %d\n", a, b);
+	printf("남는 Argument : %d %d \n", a, b, c);
+	printf("적은 Argument : %d %d %d\n", a, b);
 }
 
 #endif
@@ -3309,20 +3296,20 @@ int main(void)
 
 int my_add(int cnt, ...)
 {
-    int i, sum = 0;
+	int i, sum = 0;
 
-    for(i = 1; i<= cnt; i++)
-    {
-        sum += *(int*)(&cnt+i);
+	for(i = 1; i<= cnt; i++)
+	{
+		sum += *(int*)(&cnt+i);
 
-    }
-    return sum;
+	}
+	return sum;
 }
 
-int main(void)
+void main(void)
 {
-    printf("%d\n", my_add(3,7,5,4));
-    printf("%d\n", my_add(5,1,2,6,9,10));
+	printf("%d\n", my_add(3,7,5,4));
+	printf("%d\n", my_add(5,1,2,6,9,10));
 }
 
 #endif
@@ -3337,22 +3324,22 @@ int main(void)
 
 void my_ellipsis(int a, ...)
 {
-    printf("%d\n", a);
-    printf("%u\n",                );
-    printf("%c\n",                );
-    printf("%f\n",                );
-    printf("%f\n",                );
+	printf("%d\n", a);
+	printf("%u\n",                );
+	printf("%c\n",                );
+	printf("%f\n",                );
+	printf("%f\n",                );
 }
 
-int main(void)
+void main(void)
 {
-    int a = 10; 
-    unsigned char b = 100; 
-    unsigned char c = 'A';
-    float d = 3.14f; 
-    double e = 5.125;
-
-    my_ellipsis(a,b,c,d,e);
+	int a = 10; 
+	unsigned char b = 100; 
+	unsigned char c = 'A';
+	float d = 3.14f; 
+	double e = 5.125;
+	
+	my_ellipsis(a,b,c,d,e);
 }
 
 #endif
@@ -3365,11 +3352,11 @@ int main(void)
 
 #include <stdio.h>
 
-int main(void)
+void main(void)
 {
-    float f = 3.5f;
+	float f = 3.5f;
 
-    printf("%#x\n", f);
+	printf("%#x\n", f);
 }
 
 #endif
@@ -3378,11 +3365,11 @@ int main(void)
 
 #include <stdio.h>
 
-int main(void)
+void main(void)
 {
-    float f = 3.1f;
+	float f = 3.1f;
 
-    printf("%#x\n", f);
+	printf("%#x\n", f);
 }
 
 #endif
@@ -3395,14 +3382,14 @@ int main(void)
 
 #include <stdio.h>
 
-int main(void)
+void main(void)
 {
-    float a = 3.5f;
-    double b = 3.5;
+	float a = 3.5f;
+	double b = 3.5;
 
-    printf("float : %#.8x\n",         );
-
-    printf("double: %#.8x : %.8x\n\n",        ,        );
+	printf("float : %#.8x\n",         );
+	
+	printf("double: %#.8x : %.8x\n\n",        ,        );
 }
 
 #endif
@@ -3418,31 +3405,31 @@ int main(void)
 
 void my_printf(char * fmt, ...)
 {
-    int *ap = (int *)&fmt + 1;
+	int *ap = (int *)&fmt + 1;
 
-    while(*fmt)
-    {
-        switch(*fmt++)
-        {
-            case 'u' : printf("%u\n",              	); break;
-            case 'd' : printf("%d\n",              	); break;
-            case 'c' : printf("%c\n",         		); break;
-            case 'f' : printf("%f\n",  				); break;
-            case 's' : printf("%s\n",  			    ); break;
-        }
-    }
+	while(*fmt)
+	{
+		switch(*fmt++)
+		{
+			case 'u' : printf("%u\n",              	); break;
+			case 'd' : printf("%d\n",              	); break;
+			case 'c' : printf("%c\n",         		); break;
+			case 'f' : printf("%f\n",  				); break;
+			case 's' : printf("%s\n",  			    ); break;
+		}
+	}
 }
 
-int main(void)
+void main(void)
 {
-    int a = 10; 
-    unsigned char b = 100; 
-    unsigned char b2 = 'A';
-    float c = 3.14f; 
-    double d = 5.125;
-
-    my_printf("ducffsd",a,b,b2,c,d,"Keyseek",100);
-    my_printf("fdsc", -10.75, 100, "Willtek", 'B');
+	int a = 10; 
+	unsigned char b = 100; 
+	unsigned char b2 = 'A';
+	float c = 3.14f; 
+	double d = 5.125;
+	
+	my_printf("ducffsd",a,b,b2,c,d,"Keyseek",100);
+	my_printf("fdsc", -10.75, 100, "Willtek", 'B');
 }
 
 #endif
@@ -3458,31 +3445,31 @@ int main(void)
 
 void my_printf(char * fmt, ...)
 {
-    va_list ap;
-    va_start(ap, fmt);
+	va_list ap;
+	va_start(ap, fmt);
 
-    while(*fmt)
-    {
-        switch(*fmt++)
-        {
-            case 'u' : printf("%X\n", va_arg(ap, unsigned int)); break;	
-            case 'd' : printf("%d\n", va_arg(ap, int)); break;	
-            case 'c' : printf("%c\n", va_arg(ap, char)); break;
-            case 'f' : printf("%f\n", va_arg(ap, double)); break;	
-            case 's' : printf("%s\n", va_arg(ap, char *)); break;	
-        }
-    }
+	while(*fmt)
+	{
+		switch(*fmt++)
+		{
+			case 'u' : printf("%X\n", va_arg(ap, unsigned int)); break;	
+			case 'd' : printf("%d\n", va_arg(ap, int)); break;	
+			case 'c' : printf("%c\n", va_arg(ap, char)); break;
+			case 'f' : printf("%f\n", va_arg(ap, double)); break;	
+			case 's' : printf("%s\n", va_arg(ap, char *)); break;	
+		}
+	}
 
-    va_end(ap);
+	va_end(ap);
 }
 
-int main(void)
+void main(void)
 {
-    int a = 10; unsigned char b = 100; unsigned char b2 = 'A';
-    float c = 3.14f; double d = 5.125;
+	int a = 10; unsigned char b = 100; unsigned char b2 = 'A';
+	float c = 3.14f; double d = 5.125;
 
-    my_printf("ducffsd",a,b,b2,c,d,"Keyseek",100);
-    my_printf("fdsc", -10.75, 100, "Willtek", 'B');
+	my_printf("ducffsd",a,b,b2,c,d,"Keyseek",100);
+	my_printf("fdsc", -10.75, 100, "Willtek", 'B');
 }
 
 #endif
@@ -3497,17 +3484,17 @@ int main(void)
 #include <stdarg.h>
 
 int my_add(int cnt, ...) {
-    int i, sum = 0;
-    for(i = 1; i<= cnt; i++) {
-        printf("%d\n",*(int*)(&cnt+i));
-        sum+=(*(int*)(&cnt+i));
-    }
-    return sum;
+	int i, sum = 0;
+	for(i = 1; i<= cnt; i++) {
+		printf("%d\n",*(int*)(&cnt+i));
+		sum+=(*(int*)(&cnt+i));
+	}
+	return sum;
 }
 
-int main(void) {
-    printf("%d\n",my_add(3,7,5,4));
-    //printf("%d\n", my_add(5,1,2,6,9,10));
+void main(void) {
+	printf("%d\n",my_add(3,7,5,4));
+	//printf("%d\n", my_add(5,1,2,6,9,10));
 }
 
 #endif
@@ -3522,26 +3509,26 @@ int main(void) {
 #include <stdarg.h>
 
 int my_printf(char * fmt,...) {
-    int n;
-    va_list ap;
-    char string[256];
+	int n;
+	va_list ap;
+	char string[256];
 
-    va_start(ap,fmt);
-    n = vsprintf(string,fmt,ap);
-    printf(string);
-    va_end(ap);
-    return n;
+	va_start(ap,fmt);
+	n = vsprintf(string,fmt,ap);
+	printf(string);
+	va_end(ap);
+	return n;
 }
 
-int main(void) {
-    int a = 10;
-    unsigned char b = 100;
+void main(void) {
+	int a = 10;
+	unsigned char b = 100;
 
-    unsigned char b2 = 'A';
-    float c = 3.14f;
-    double d = 5.125;
+	unsigned char b2 = 'A';
+	float c = 3.14f;
+	double d = 5.125;
 
-    my_printf("ANSWER = %d %u %c %1.2f %1.3f %s %d\n",a,b,b2,c,d,"Keyseek",100);
+	my_printf("ANSWER = %d %u %c %1.2f %1.3f %s %d\n",a,b,b2,c,d,"Keyseek",100);
 }
 
 #endif
@@ -3553,31 +3540,31 @@ int main(void) {
 #if 0 
 #include <stdio.h>
 struct _st {
-    int i;
-    char c;
+	int i;
+	char c;
 };
 
 void my_test(char c,...) {
-    printf("%c\n",c);
-    printf("%d\n",(*(struct _st*)(&c+4)).i);
-    printf("%c\n",((struct _st*)(&c+4))->c);
-    printf("%s\n",*(char**)(&c+12));
-    printf("%f\n",(*(double**)(&c+16))[0]);
-    printf("%f\n",(*(double**)(&c+16))[1]);
-    printf("%f\n",(*(double**)(&c+16))[2]);
-    printf("%d\n",(*(int(**)())(&c+20))(3,4));
+	printf("%c\n",c);
+	printf("%d\n",(*(struct _st*)(&c+4)).i);
+	printf("%c\n",((struct _st*)(&c+4))->c);
+	printf("%s\n",*(char**)(&c+12));
+	printf("%f\n",(*(double**)(&c+16))[0]);
+	printf("%f\n",(*(double**)(&c+16))[1]);
+	printf("%f\n",(*(double**)(&c+16))[2]);
+	printf("%d\n",(*(int(**)())(&c+20))(3,4));
 }
 
 int add(int a,int b) {
-    return a+b;
+	return a+b;
 }
 
-int main(void) {
-    char a = 'A';
-    struct _st x={100, 'B'};
-    double d[3] ={3.14, 5.19, -7.42};
+void main(void) {
+	char a = 'A';
+	struct _st x={100, 'B'};
+	double d[3] ={3.14, 5.19, -7.42};
 
-    my_test(a,x,"Song",d,add);
+	my_test(a,x,"Song",d,add);
 }
 
 #endif
@@ -3589,21 +3576,21 @@ int main(void) {
 #if 0
 #include <stdio.h>
 void my_test(int a,...) {
-    // [1] 넘어온 3.14 인쇄
-    printf("f => %.2f\n",*(double*)(*(double**)(&a+1)));
-    // [2] 넘어온 배열을 이용하여 f1 함수를 간접호출하여 문자열 BIN 출력
-    printf("%s",(*(char*(***)())(&a+2))[0]()+2);
-    // [3] 넘어온 배열을 이용하여 f2 함수를 간접호출하여 문자열 GO 출력
-    typedef char*(**FT)();
-    printf("%s\n",(*(FT*)(&a+2))[1]()+2);
+	// [1] 넘어온 3.14 인쇄
+	printf("f => %.2f\n",*(double*)(*(double**)(&a+1)));
+	// [2] 넘어온 배열을 이용하여 f1 함수를 간접호출하여 문자열 BIN 출력
+	printf("%s",(*(char*(***)())(&a+2))[0]()+2);
+	// [3] 넘어온 배열을 이용하여 f2 함수를 간접호출하여 문자열 GO 출력
+	typedef char*(**FT)();
+	printf("%s\n",(*(FT*)(&a+2))[1]()+2);
 }
 
 char * f1(void) { return "CABIN"; }
 char * f2(void) { return "LOGO"; }
-int main(void) {
-    double d = 3.14;
-    char * (*fa[2])() ={f1, f2};
-    my_test(1,&d,fa);
+void main(void) {
+	double d = 3.14;
+	char * (*fa[2])() ={f1, f2};
+	my_test(1,&d,fa);
 }
 #endif
 
@@ -3620,14 +3607,14 @@ int main(void) {
 #include <stdio.h>
 
 struct _st {
-    short a;
-    int b;
-    char c;
-    int d;
+	short a;
+	int b;
+	char c;
+	int d;
 }st ={0x1111, 0x22222222, 0x33, 0x44444444};
 
-int main(void) {
-    printf("%d\n",sizeof(st));
+void main(void) {
+	printf("%d\n",sizeof(st));
 }
 
 #endif
@@ -3639,14 +3626,14 @@ int main(void) {
 #if 0
 
 struct _st {
-    short a;
-    char b;
-    int c;
-    int d;
+	short a;
+	char b;
+	int c;
+	int d;
 }st ={0x1111, 0x33, 0x22222222, 0x44444444};
 
-int main(void) {
-    printf("%d\n",sizeof(st));
+void main(void) {
+	printf("%d\n",sizeof(st));
 }
 
 #endif
@@ -3666,19 +3653,19 @@ unsigned char buf[] ={0x4d,0x4d,0x55,0x5f,0x45,0x6e,0x61,0x62,0x6c,0x65,0x44,0x4
 #define  BUF	 (buf)
 
 struct st {
-    unsigned char x;
-    unsigned char y;
-    unsigned short length;
+	unsigned char x;
+	unsigned char y;
+	unsigned short length;
 };
 
-int main(void) {
-    struct st info;
+void main(void) {
+	struct st info;
 
-    info.x = *BUF;
-    info.y = *(BUF+1);
-    info.length = *(unsigned short *)(BUF+2);
+	info.x = *BUF;
+	info.y = *(BUF+1);
+	info.length = *(unsigned short *)(BUF+2);
 
-    printf("0x%x, 0x%x, 0x%x\n",info.x,info.y,info.length);
+	printf("0x%x, 0x%x, 0x%x\n",info.x,info.y,info.length);
 }
 
 #endif
@@ -3696,19 +3683,19 @@ unsigned char buf[] ={0x4d,0x4d,0x55,0x5f,0x45,0x6e,0x61,0x62,0x6c,0x65,0x44,0x4
 #define  BUF	 (buf)
 
 struct st {
-    unsigned char x;
-    unsigned char y;
-    unsigned short length;
+	unsigned char x;
+	unsigned char y;
+	unsigned short length;
 };
 
-int main(void) {
-    struct st *info;
+void main(void) {
+	struct st *info;
 
-    info = (struct st *)BUF;
-    printf("0x%x, 0x%x, 0x%x\n",info->x,info->y,info->length);
+	info = (struct st *)BUF;
+	printf("0x%x, 0x%x, 0x%x\n",info->x,info->y,info->length);
 
-    info++;
-    printf("0x%x, 0x%x, 0x%x\n",info->x,info->y,info->length);
+	info++;
+	printf("0x%x, 0x%x, 0x%x\n",info->x,info->y,info->length);
 }
 #endif
 
@@ -3723,14 +3710,14 @@ unsigned char buf[] ={0x4d,0x4d,0x55,0x5f,0x45,0x6e,0x61,0x62,0x6c,0x65,0x44,0x4
 #define  info	 ((struct st *)buf)
 
 struct st {
-    unsigned char x;
-    unsigned char y;
-    unsigned short length;
+	unsigned char x;
+	unsigned char y;
+	unsigned short length;
 };
 
-int main(void) {
-    printf("0x%x, 0x%x, 0x%x\n",info->x,info->y,info->length);
-    printf("0x%x, 0x%x, 0x%x\n",(info+1)->x,(info+1)->y,(info+1)->length);
+void main(void) {
+	printf("0x%x, 0x%x, 0x%x\n",info->x,info->y,info->length);
+	printf("0x%x, 0x%x, 0x%x\n",(info+1)->x,(info+1)->y,(info+1)->length);
 }
 
 #endif
@@ -3750,17 +3737,17 @@ unsigned char buf[] ={0x4d,0x4d,0x55,0x5f,0x45,0x6e,0x61,0x62,0x6c,0x65,0x44,0x4
 #define  info	 ((struct st *)buf)
 
 struct st {
-    unsigned char x;
-    unsigned char y;
-    unsigned short length;
+	unsigned char x;
+	unsigned char y;
+	unsigned short length;
 };
 
-int main(void) {
-    int i;
+void main(void) {
+	int i;
 
-    for(i=0; i<4; i++) {
-        printf("0x%x, 0x%x, 0x%x\n",);
-    }
+	for(i=0; i<4; i++) {
+		printf("0x%x, 0x%x, 0x%x\n",);
+	}
 }
 
 #endif
@@ -3780,17 +3767,17 @@ unsigned char buf[] ={0x4d,0x4d,0x55,0x5f,0x45,0x6e,0x61,0x62,0x6c,0x65,0x44,0x4
 #define  info	 ((struct st *)buf)
 
 struct st {
-    unsigned char x;
-    unsigned char y;
-    unsigned short length;
+	unsigned char x;
+	unsigned char y;
+	unsigned short length;
 };
 
-int main(void) {
-    int i;
+void main(void) {
+	int i;
 
-    for(i=0; i<4; i++) {
-        printf("0x%x, 0x%x, 0x%x\n",);
-    }
+	for(i=0; i<4; i++) {
+		printf("0x%x, 0x%x, 0x%x\n",);
+	}
 }
 
 #endif
@@ -3810,14 +3797,14 @@ unsigned char buf[] ={0x4d,0x4d,0x55,0x5f,0x45,0x6e,0x61,0x62,0x6c,0x65,0x44,0x4
 #define  info	 ((struct st *)buf)
 
 struct st {
-    unsigned char x;
-    unsigned char y;
-    unsigned int length;
+	unsigned char x;
+	unsigned char y;
+	unsigned int length;
 };
 
-int main(void) {
-    printf("0x%x, 0x%x, 0x%x\n",info[0].x,info[0].y,info[0].length);
-    printf("0x%x, 0x%x, 0x%x\n",info[1].x,info[1].y,info[1].length);
+void main(void) {
+	printf("0x%x, 0x%x, 0x%x\n",info[0].x,info[0].y,info[0].length);
+	printf("0x%x, 0x%x, 0x%x\n",info[1].x,info[1].y,info[1].length);
 }
 
 #endif
@@ -3831,26 +3818,26 @@ int main(void) {
 #include <stdio.h>
 
 struct _s1 {
-    short a;
+	short a;
 }s1={0x1234};
 
 struct _s2 {
-    short a;
-    int b;
-    char c;
-    double d;
+	short a;
+	int b;
+	char c;
+	double d;
 }s2={0x1234, 0x56789abc, 0xfe, 3.14};
 
 struct _s3 {
-    char a;
-    short b;
-    int c[2];
+	char a;
+	short b;
+	int c[2];
 }s3={0x12, 0x3456, {0xfedcba98, 0x13579bdf}};
 
-int main(void) {
-    printf("%d, %p\n",sizeof(s1),&s1.a);
-    printf("%d, %p, %p, %p, %p\n",sizeof(s2),&s2.a,&s2.b,&s2.c,&s2.d);
-    printf("%d, %p, %p, %p, %p\n",sizeof(s3),&s3.a,&s3.b,&s3.c[0],&s3.c[1]);
+void main(void) {
+	printf("%d, %p\n",sizeof(s1),&s1.a);
+	printf("%d, %p, %p, %p, %p\n",sizeof(s2),&s2.a,&s2.b,&s2.c,&s2.d);
+	printf("%d, %p, %p, %p, %p\n",sizeof(s3),&s3.a,&s3.b,&s3.c[0],&s3.c[1]);
 }
 
 #endif
@@ -3866,32 +3853,32 @@ int main(void) {
 #pragma pack(1)
 
 struct _s1 {
-    short a;
+	short a;
 }s1={0x1234};
 
 #pragma pack(4)
 
 struct _s2 {
-    short a;
-    int b;
-    char c;
-    double d;
+	short a;
+	int b;
+	char c;
+	double d;
 }s2={0x1234, 0x56789abc, 0xfe, 3.14};
 
 #pragma pack(1)
 
 struct _s3 {
-    char a;
-    short b;
-    int c[2];
+	char a;
+	short b;
+	int c[2];
 }s3={0x12, 0x3456, {0xfedcba98, 0x13579bdf}};
 
 #pragma pack(8)
 
-int main(void) {
-    printf("%d, %p\n",sizeof(s1),&s1.a);
-    printf("%d, %p, %p, %p, %p\n",sizeof(s2),&s2.a,&s2.b,&s2.c,&s2.d);
-    printf("%d, %p, %p, %p, %p\n",sizeof(s3),&s3.a,&s3.b,&s3.c[0],&s3.c[1]);
+void main(void) {
+	printf("%d, %p\n",sizeof(s1),&s1.a);
+	printf("%d, %p, %p, %p, %p\n",sizeof(s2),&s2.a,&s2.b,&s2.c,&s2.d);
+	printf("%d, %p, %p, %p, %p\n",sizeof(s3),&s3.a,&s3.b,&s3.c[0],&s3.c[1]);
 }
 
 #endif
@@ -3908,33 +3895,33 @@ int main(void) {
 #pragma pack(1)
 
 struct _s1 {
-    short a;
+	short a;
 }s1={0x1234};
 
 #pragma pack(push, 4)
 
 struct _s2 {
-    short a;
-    int b;
-    char c;
-    double d;
+	short a;
+	int b;
+	char c;
+	double d;
 }s2={0x1234, 0x56789abc, 0xfe, 3.14};
 
 #pragma pack(pop)
 #pragma pack(show)
 
 struct _s3 {
-    char a;
-    short b;
-    int c[2];
+	char a;
+	short b;
+	int c[2];
 }s3={0x12, 0x3456, {0xfedcba98, 0x13579bdf}};
 
 #pragma pack(8)
 
-int main(void) {
-    printf("%d, %p\n",sizeof(s1),&s1.a);
-    printf("%d, %p, %p, %p, %p\n",sizeof(s2),&s2.a,&s2.b,&s2.c,&s2.d);
-    printf("%d, %p, %p, %p, %p\n",sizeof(s3),&s3.a,&s3.b,&s3.c[0],&s3.c[1]);
+void main(void) {
+	printf("%d, %p\n",sizeof(s1),&s1.a);
+	printf("%d, %p, %p, %p, %p\n",sizeof(s2),&s2.a,&s2.b,&s2.c,&s2.d);
+	printf("%d, %p, %p, %p, %p\n",sizeof(s3),&s3.a,&s3.b,&s3.c[0],&s3.c[1]);
 }
 
 #endif
@@ -3956,16 +3943,16 @@ unsigned char buf[] ={0x4d,0x4d,0x55,0x5f,0x45,0x6e,0x61,0x62,0x6c,0x65,0x44,0x4
 #pragma pack(              )
 
 struct st {
-    unsigned char x;
-    unsigned char y;
-    unsigned int length;
+	unsigned char x;
+	unsigned char y;
+	unsigned int length;
 };
 
 #pragma pack(pop)
 
-int main(void) {
-    printf("0x%x, 0x%x, 0x%x\n",info[0].x,info[0].y,info[0].length);
-    printf("0x%x, 0x%x, 0x%x\n",info[1].x,info[1].y,info[1].length);
+void main(void) {
+	printf("0x%x, 0x%x, 0x%x\n",info[0].x,info[0].y,info[0].length);
+	printf("0x%x, 0x%x, 0x%x\n",info[1].x,info[1].y,info[1].length);
 }
 
 #endif
@@ -3979,25 +3966,25 @@ int main(void) {
 #include <stdio.h>
 
 struct _st1 {
-    unsigned char a:2;
-    unsigned char b:3;
-    unsigned char c:2;
+	unsigned char a:2;
+	unsigned char b:3;
+	unsigned char c:2;
 }x;
 
 struct _st2 {
-    unsigned int a:2;
-    unsigned int b:3;
-    unsigned int c:2;
+	unsigned int a:2;
+	unsigned int b:3;
+	unsigned int c:2;
 }y;
 
-int main(void) {
-    y.a = x.a = 0x2;
-    y.b = x.b = 0x5;
-    y.c = x.c = 0x1;
+void main(void) {
+	y.a = x.a = 0x2;
+	y.b = x.b = 0x5;
+	y.c = x.c = 0x1;
 
-    printf("%d %d\n",sizeof(x),sizeof(y));
-    printf("0x%X 0x%X 0x%X 0x%X\n",x.a,x.b,y.a,y.b);
-    printf("0x%.2X 0x%.8X\n",*(unsigned char *)&x,*(unsigned int *)&y);
+	printf("%d %d\n",sizeof(x),sizeof(y));
+	printf("0x%X 0x%X 0x%X 0x%X\n",x.a,x.b,y.a,y.b);
+	printf("0x%.2X 0x%.8X\n",*(unsigned char *)&x,*(unsigned int *)&y);
 }
 
 #endif
@@ -4013,20 +4000,20 @@ int main(void) {
 unsigned char buf[] ={0x52,0x7a};
 
 struct fat_time {
-    unsigned char sec;
-    unsigned char min;
-    unsigned char hour;
+	unsigned char sec;
+	unsigned char min;
+	unsigned char hour;
 };
 
-int main(void) {
-    struct fat_time time;
-    unsigned short temp = *(unsigned short *)buf;
+void main(void) {
+	struct fat_time time;
+	unsigned short temp = *(unsigned short *)buf;
 
-    time.hour = (temp>>11)&0x1f;
-    time.min = (temp>>5)&0x3f;
-    time.sec = (temp>>0)&0x1f;
+	time.hour = (temp>>11)&0x1f;
+	time.min = (temp>>5)&0x3f;
+	time.sec = (temp>>0)&0x1f;
 
-    printf("Time=%d:%d:%d\n",time.hour,time.min,time.sec*2);
+	printf("Time=%d:%d:%d\n",time.hour,time.min,time.sec*2);
 }
 
 #endif
@@ -4047,11 +4034,11 @@ struct fat_time {
 
 };
 
-int main(void) {
-    struct fat_time * time = (struct fat_time *)buf;
+void main(void) {
+	struct fat_time * time = (struct fat_time *)buf;
 
-    printf("Time=%d:%d:%d\n",time->hour,time->min,time->sec*2);
-    printf("Sizeof Time=%d\n",sizeof(struct fat_time));
+	printf("Time=%d:%d:%d\n",time->hour,time->min,time->sec*2);
+	printf("Sizeof Time=%d\n",sizeof(struct fat_time));
 }
 
 #endif
@@ -4067,25 +4054,25 @@ int main(void) {
 unsigned char buf[] ={0x52,0x7a};
 
 struct fat_time1 {
-    unsigned int sec:5;
-    unsigned int min:6;
-    unsigned int hour:5;
+	unsigned int sec:5;
+	unsigned int min:6;
+	unsigned int hour:5;
 };
 
 struct fat_time2 {
-    unsigned char sec:5;
-    unsigned char min:6;
-    unsigned char hour:5;
+	unsigned char sec:5;
+	unsigned char min:6;
+	unsigned char hour:5;
 };
 
-int main(void) {
-    struct fat_time1 * time1 = (struct fat_time *)buf;
-    struct fat_time2 * time2 = (struct fat_time *)buf;
+void main(void) {
+	struct fat_time1 * time1 = (struct fat_time *)buf;
+	struct fat_time2 * time2 = (struct fat_time *)buf;
 
-    printf("Time=%d:%d:%d\n",time1->hour,time1->min,time1->sec*2);
-    printf("Sizeof Time=%d\n",sizeof(struct fat_time1));
-    printf("Time=%d:%d:%d\n",time2->hour,time2->min,time2->sec*2);
-    printf("Sizeof Time=%d\n",sizeof(struct fat_time2));
+	printf("Time=%d:%d:%d\n",time1->hour,time1->min,time1->sec*2);
+	printf("Sizeof Time=%d\n",sizeof(struct fat_time1));
+	printf("Time=%d:%d:%d\n",time2->hour,time2->min,time2->sec*2);
+	printf("Sizeof Time=%d\n",sizeof(struct fat_time2));
 }
 
 #endif
@@ -4099,21 +4086,21 @@ int main(void) {
 #include <stdio.h>
 
 struct st {
-    int a1:3;
-    int a2:2;
-    int a3:1;
+	int a1:3;
+	int a2:2;
+	int a3:1;
 }x;
 
-int main(void) {
-    x.a3 = -1;
+void main(void) {
+	x.a3 = -1;
 
-    if(x.a3==-1) printf("TRUE\n");
-    else printf("FALSE\n");
+	if(x.a3==-1) printf("TRUE\n");
+	else printf("FALSE\n");
 
-    x.a3 = 1;
+	x.a3 = 1;
 
-    if(x.a3==1) printf("TRUE\n");
-    else printf("FALSE\n");
+	if(x.a3==1) printf("TRUE\n");
+	else printf("FALSE\n");
 }
 
 #endif
@@ -4127,17 +4114,17 @@ int main(void) {
 #include <stdio.h>
 
 volatile struct st {
-    unsigned short LSEON:1;
-    unsigned short LSERDY:1;
-    unsigned short LSEBYP:1;
-    unsigned short rsvd1:5;
-    unsigned short RTCSEL:2;
-    unsigned short rsvd2:5;
-    unsigned short RTCEN:1;
+	unsigned short LSEON:1;
+	unsigned short LSERDY:1;
+	unsigned short LSEBYP:1;
+	unsigned short rsvd1:5;
+	unsigned short RTCSEL:2;
+	unsigned short rsvd2:5;
+	unsigned short RTCEN:1;
 }RTC_CR;
 
-int main(void) {
-    printf("%d\n",sizeof(RTC_CR));
+void main(void) {
+	printf("%d\n",sizeof(RTC_CR));
 }
 
 #endif
@@ -4147,17 +4134,17 @@ int main(void) {
 #include <stdio.h>
 
 volatile struct st {
-    unsigned short LSEON:1;
-    unsigned short LSERDY:1;
-    unsigned short LSEBYP:1;
-    unsigned short:5;
-    unsigned short RTCSEL:2;
-    unsigned short:5;
-    unsigned short RTCEN:1;
+	unsigned short LSEON:1;
+	unsigned short LSERDY:1;
+	unsigned short LSEBYP:1;
+	unsigned short:5;
+	unsigned short RTCSEL:2;
+	unsigned short:5;
+	unsigned short RTCEN:1;
 }RTC_CR;
 
-int main(void) {
-    printf("%d\n",sizeof(RTC_CR));
+void main(void) {
+	printf("%d\n",sizeof(RTC_CR));
 }
 
 #endif
@@ -4171,16 +4158,16 @@ int main(void) {
 #include <stdio.h>
 
 volatile struct st {
-    unsigned int a1:5;
-    unsigned int a2:25;
-    unsigned int a3:3;
-    unsigned int a4:4;
+	unsigned int a1:5;
+	unsigned int a2:25;
+	unsigned int a3:3;
+	unsigned int a4:4;
 }x ={0x1f, 0x0, 0x7, 0x0};
 
-int main(void) {
-    printf("%d\n",sizeof(x));
-    printf("0x%.8x\n",((unsigned int *)&x)[0]);
-    printf("0x%.8x\n",((unsigned int *)&x)[1]);
+void main(void) {
+	printf("%d\n",sizeof(x));
+	printf("0x%.8x\n",((unsigned int *)&x)[0]);
+	printf("0x%.8x\n",((unsigned int *)&x)[1]);
 }
 
 #endif
@@ -4190,20 +4177,20 @@ int main(void) {
 #include <stdio.h>
 
 volatile struct st {
-    unsigned int a1:5;
-    unsigned int:0;
-    unsigned int a2:25;
-    unsigned int:0;
-    unsigned int a3:3;
-    unsigned int:2;
-    unsigned int a4:4;
+	unsigned int a1:5;
+	unsigned int:0;
+	unsigned int a2:25;
+	unsigned int:0;
+	unsigned int a3:3;
+	unsigned int:2;
+	unsigned int a4:4;
 }x ={0x1f, 0x1fffff, 0x7, 0xf};
 
-int main(void) {
-    printf("%d\n",sizeof(x));
-    printf("0x%.8x\n",((unsigned int *)&x)[0]);
-    printf("0x%.8x\n",((unsigned int *)&x)[1]);
-    printf("0x%.8x\n",((unsigned int *)&x)[2]);
+void main(void) {
+	printf("%d\n",sizeof(x));
+	printf("0x%.8x\n",((unsigned int *)&x)[0]);
+	printf("0x%.8x\n",((unsigned int *)&x)[1]);
+	printf("0x%.8x\n",((unsigned int *)&x)[2]);
 }
 
 #endif
@@ -4217,25 +4204,25 @@ int main(void) {
 #include <stdio.h>
 
 union float_data {
-    float f;
+	float f;
 
-    struct {
+	struct {
 
 
 
-    }bit;
+	}bit;
 }fdata;
 
-int main(void) {
-    fdata.f = 13.625;
+void main(void) {
+	fdata.f = 13.625;
 
-    printf("%f\n",fdata.f);
-    printf("sign(1bit):%x\n",fdata.bit.sign);
-    printf("exponent(8bit):%x\n",fdata.bit.exp);
-    printf("mantissa(23bit):%x\n",fdata.bit.mant);
+	printf("%f\n",fdata.f);
+	printf("sign(1bit):%x\n",fdata.bit.sign);
+	printf("exponent(8bit):%x\n",fdata.bit.exp);
+	printf("mantissa(23bit):%x\n",fdata.bit.mant);
 
-    fdata.bit.sign = 1;
-    printf("%f\n",fdata.f);
+	fdata.bit.sign = 1;
+	printf("%f\n",fdata.f);
 }
 
 #endif
@@ -4251,23 +4238,23 @@ int main(void) {
 unsigned char buf[] ={0x25, 0x0f};
 
 struct fat_file {
-    unsigned char r:1;
-    unsigned char h:1;
-    unsigned char s:1;
-    unsigned char v:1;
-    unsigned char d:1;
-    unsigned char a:1;
+	unsigned char r:1;
+	unsigned char h:1;
+	unsigned char s:1;
+	unsigned char v:1;
+	unsigned char d:1;
+	unsigned char a:1;
 };
 
 #define fn	((struct fat_file *)buf)
 
-int main(void) {
-    int i;
+void main(void) {
+	int i;
 
-    for(i=0; i<2; i++) {
-        if() printf("Long File Name\n");
-        else printf("A[%d]D[%d]V[%d]S[%d]H[%d]R[%d]\n",fn[i].a,fn[i].d,fn[i].v,fn[i].s,fn[i].h,fn[i].r);
-    }
+	for(i=0; i<2; i++) {
+		if() printf("Long File Name\n");
+		else printf("A[%d]D[%d]V[%d]S[%d]H[%d]R[%d]\n",fn[i].a,fn[i].d,fn[i].v,fn[i].s,fn[i].h,fn[i].r);
+	}
 }
 
 #endif
@@ -4283,34 +4270,34 @@ int main(void) {
 unsigned char buf[] ={0x25, 0x0f, 0x3f};
 
 struct fat_file {
-    unsigned char r:1;
-    unsigned char h:1;
-    unsigned char s:1;
-    unsigned char v:1;
-    unsigned char d:1;
-    unsigned char a:1;
-    unsigned char:0;
+	unsigned char r:1;
+	unsigned char h:1;
+	unsigned char s:1;
+	unsigned char v:1;
+	unsigned char d:1;
+	unsigned char a:1;
+	unsigned char:0;
 };
 
 struct long_file {
-    unsigned char ln:4;
-    unsigned char:0;
+	unsigned char ln:4;
+	unsigned char:0;
 };
 
 union file {
-    struct fat_file n;
-    struct long_file l;
+	struct fat_file n;
+	struct long_file l;
 };
 
 #define fn	((union file *)buf)
 
-int main(void) {
-    int i;
+void main(void) {
+	int i;
 
-    for(i=0; i<3; i++) {
-        if() printf("Long File Name\n");
-        else printf("A[%d]D[%d]V[%d]S[%d]H[%d]R[%d]\n",fn[i].n.a,fn[i].n.d,fn[i].n.v,fn[i].n.s,fn[i].n.h,fn[i].n.r);
-    }
+	for(i=0; i<3; i++) {
+		if() printf("Long File Name\n");
+		else printf("A[%d]D[%d]V[%d]S[%d]H[%d]R[%d]\n",fn[i].n.a,fn[i].n.d,fn[i].n.v,fn[i].n.s,fn[i].n.h,fn[i].n.r);
+	}
 }
 
 #endif
