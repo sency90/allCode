@@ -1,0 +1,19 @@
+c:/users/plzrun/documents/visual studio 2015/Projects/changePhotoDate/changePhotoDate/bin/Debug/changePhotoDate.exe.config
+c:/users/plzrun/documents/visual studio 2015/Projects/changePhotoDate/changePhotoDate/bin/Debug/changePhotoDate.exe
+c:/users/plzrun/documents/visual studio 2015/Projects/changePhotoDate/changePhotoDate/bin/Debug/changePhotoDate.pdb
+c:/users/plzrun/documents/visual studio 2015/Projects/changePhotoDate/changePhotoDate/obj/Debug/changePhotoDate.csprojResolveAssemblyReference.cache
+c:/users/plzrun/documents/visual studio 2015/Projects/changePhotoDate/changePhotoDate/obj/Debug/changePhotoDate.MainForm.resources
+c:/users/plzrun/documents/visual studio 2015/Projects/changePhotoDate/changePhotoDate/obj/Debug/changePhotoDate.Properties.Resources.resources
+c:/users/plzrun/documents/visual studio 2015/Projects/changePhotoDate/changePhotoDate/obj/Debug/changePhotoDate.csproj.GenerateResource.Cache
+c:/users/plzrun/documents/visual studio 2015/Projects/changePhotoDate/changePhotoDate/obj/Debug/changePhotoDate.exe
+c:/users/plzrun/documents/visual studio 2015/Projects/changePhotoDate/changePhotoDate/obj/Debug/changePhotoDate.pdb
+/Users/lian/Downloads/changePhotoDate (1)/changePhotoDate/bin/Debug/changePhotoDate.exe.config
+/Users/lian/Downloads/changePhotoDate (1)/changePhotoDate/bin/Debug/changePhotoDate.exe
+/Users/lian/Downloads/changePhotoDate (1)/changePhotoDate/bin/Debug/changePhotoDate.pdb
+/Users/lian/Downloads/changePhotoDate (1)/changePhotoDate/obj/Debug/changePhotoDate.csprojResolveAssemblyReference.cache
+/Users/lian/Downloads/changePhotoDate (1)/changePhotoDate/obj/Debug/changePhotoDate.MainForm.resources
+/Users/lian/Downloads/changePhotoDate (1)/changePhotoDate/obj/Debug/changePhotoDate.Properties.Resources.resources
+/Users/lian/Downloads/changePhotoDate (1)/changePhotoDate/obj/Debug/changePhotoDate.csproj.GenerateResource.Cache
+/Users/lian/Downloads/changePhotoDate (1)/changePhotoDate/obj/Debug/changePhotoDate.csproj.CoreCompileInputs.cache
+/Users/lian/Downloads/changePhotoDate (1)/changePhotoDate/obj/Debug/changePhotoDate.exe
+/Users/lian/Downloads/changePhotoDate (1)/changePhotoDate/obj/Debug/changePhotoDate.pdb

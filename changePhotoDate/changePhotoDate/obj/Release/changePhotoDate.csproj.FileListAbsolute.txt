@@ -1,0 +1,9 @@
+C:\Users\plzrun\Documents\Visual Studio 2015\Projects\changePhotoDate\changePhotoDate\bin\Release\changePhotoDate.exe.config
+C:\Users\plzrun\Documents\Visual Studio 2015\Projects\changePhotoDate\changePhotoDate\bin\Release\changePhotoDate.exe
+C:\Users\plzrun\Documents\Visual Studio 2015\Projects\changePhotoDate\changePhotoDate\bin\Release\changePhotoDate.pdb
+C:\Users\plzrun\Documents\Visual Studio 2015\Projects\changePhotoDate\changePhotoDate\obj\Release\changePhotoDate.MainForm.resources
+C:\Users\plzrun\Documents\Visual Studio 2015\Projects\changePhotoDate\changePhotoDate\obj\Release\changePhotoDate.Properties.Resources.resources
+C:\Users\plzrun\Documents\Visual Studio 2015\Projects\changePhotoDate\changePhotoDate\obj\Release\changePhotoDate.csproj.GenerateResource.Cache
+C:\Users\plzrun\Documents\Visual Studio 2015\Projects\changePhotoDate\changePhotoDate\obj\Release\changePhotoDate.exe
+C:\Users\plzrun\Documents\Visual Studio 2015\Projects\changePhotoDate\changePhotoDate\obj\Release\changePhotoDate.pdb
+C:\Users\plzrun\Documents\Visual Studio 2015\Projects\changePhotoDate\changePhotoDate\obj\Release\changePhotoDate.csprojResolveAssemblyReference.cache

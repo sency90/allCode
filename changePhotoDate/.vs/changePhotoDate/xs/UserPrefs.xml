@@ -1,0 +1,14 @@
+﻿<Properties StartupConfiguration="{7541B78B-A0FE-4177-918B-AE520D509407}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="changePhotoDate/MainForm.cs">
+    <Files>
+      <File FileName="changePhotoDate/MainForm.cs" Line="33" Column="22" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.changePhotoDate PreferredExecutionTarget="MonoDevelop.Default" />
+</Properties>
