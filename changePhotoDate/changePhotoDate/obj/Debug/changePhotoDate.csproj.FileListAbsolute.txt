@@ -17,3 +17,13 @@ c:/users/plzrun/documents/visual studio 2015/Projects/changePhotoDate/changePhot
 /Users/lian/Downloads/changePhotoDate (1)/changePhotoDate/obj/Debug/changePhotoDate.csproj.CoreCompileInputs.cache
 /Users/lian/Downloads/changePhotoDate (1)/changePhotoDate/obj/Debug/changePhotoDate.exe
 /Users/lian/Downloads/changePhotoDate (1)/changePhotoDate/obj/Debug/changePhotoDate.pdb
+/Users/lian/allCode/changePhotoDate/changePhotoDate/bin/Debug/changePhotoDate.exe.config
+/Users/lian/allCode/changePhotoDate/changePhotoDate/bin/Debug/changePhotoDate.exe
+/Users/lian/allCode/changePhotoDate/changePhotoDate/bin/Debug/changePhotoDate.pdb
+/Users/lian/allCode/changePhotoDate/changePhotoDate/obj/Debug/changePhotoDate.csprojResolveAssemblyReference.cache
+/Users/lian/allCode/changePhotoDate/changePhotoDate/obj/Debug/changePhotoDate.MainForm.resources
+/Users/lian/allCode/changePhotoDate/changePhotoDate/obj/Debug/changePhotoDate.Properties.Resources.resources
+/Users/lian/allCode/changePhotoDate/changePhotoDate/obj/Debug/changePhotoDate.csproj.GenerateResource.cache
+/Users/lian/allCode/changePhotoDate/changePhotoDate/obj/Debug/changePhotoDate.csproj.CoreCompileInputs.cache
+/Users/lian/allCode/changePhotoDate/changePhotoDate/obj/Debug/changePhotoDate.exe
+/Users/lian/allCode/changePhotoDate/changePhotoDate/obj/Debug/changePhotoDate.pdb
