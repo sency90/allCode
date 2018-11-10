@@ -1,4 +1,43 @@
-#include "Heap.h"
+#ifndef __HEAP_H__
+#define __HEAP_H__
+#include "Vector.h"
+template <class T>
+struct Less{
+	bool operator()(const T& lhs, const T& rhs) const { return lhs<rhs; }
+};
+template <class T>
+struct Greater{
+	bool operator()(const T& lhs, const T& rhs) const { return rhs<lhs; }
+};
+
+template <class T, class Container = Vector<T>, class Cmp = Less<T>>
+class Heap{
+private:
+    int sz;
+    Container arr;
+    Cmp cmp;
+
+//Constructor & Destructor
+public:
+    Heap();
+    virtual ~Heap() = default;
+
+//privaet functions
+private:
+    void swap(T& x, T& y);
+    void up(int at);
+    void down(int at);
+
+
+//public functions
+public:
+    void push(T x);
+    void pop();
+    T top();
+    bool empty();
+    int size();
+    void print();
+};
 
 //Constructor
 template <class T, class Container, class Cmp>
@@ -10,13 +49,15 @@ Heap<T,Container,Cmp>::Heap():sz(0) {
 //public functions
 template <class T, class Container, class Cmp>
 void Heap<T,Container,Cmp>::push(T x) {
-	arr.push_back(x);
-	up(++sz);
+	arr.push_back(x); sz++;
+	up(sz);
 }
 
 template <class T, class Container, class Cmp>
 void Heap<T,Container,Cmp>::pop() {
-	arr[1] = arr[sz--];
+    if(sz<=0) return;
+	arr[1] = arr[sz];
+    arr.pop_back(); sz--;
 	down(1);
 }
 
@@ -63,3 +104,4 @@ void Heap<T,Container,Cmp>::down(int at) {
 		down(pos);
 	}
 }
+#endif
