@@ -6,12 +6,12 @@
 
 extern void recover(unsigned char map[SIZE][SIZE]);
 
-static int seed = 1124;
+static int seed = 1124; 
 static unsigned char org_map[SIZE][SIZE];
 static unsigned char new_map[SIZE][SIZE];
 static unsigned char xoverlay[SIZE][SIZE];
 static unsigned char yoverlay[SIZE][SIZE];
-static unsigned char dummy1[256];
+static unsigned char dummy1[256]; 
 static unsigned char dummy2[SIZE];
 
 bool check_map(unsigned char map[SIZE][SIZE]){
@@ -35,7 +35,8 @@ static bool check_line(int x1, int y1, int x2, int y2)
     return true;
 }
 
-static void draw_rect(void) {
+static void draw_rect(void)
+{
     register int x1;
     register int y1;
     register int x2;
@@ -96,35 +97,34 @@ static void mixing_map() {
     }
 }
 
-static void create_map(void) {
-    for (register int y = 0; y < SIZE; y++) {
+static void create_map(void)
+{
+    for (register int y = 0; y < SIZE; y++)
         for (register int x = 0; x < SIZE; x++) {
             org_map[y][x] = 0;
             xoverlay[y][x] = 0;
             yoverlay[y][x] = 0;
         }
-    }
 
-    for (int c = 0; c < 1024; c++) {
+    for (int c = 0; c < 1024; c++)
         draw_rect();
-    }
 
-    for (register int y = 0; y < SIZE; y++) {
-        for (register int x = 0; x < SIZE; x++) {
+    for (register int y = 0; y < SIZE; y++)
+        for (register int x = 0; x < SIZE; x++) 
             new_map[y][x] = org_map[y][x];
-        }
-    }
 
-    mixing_map();
+    mixing_map();	
 }
 
 
 
-int main(void) {
+int main(void)
+{
     int N;
-    scanf("%d", &N); // no meaning, but at least one input is required to the marking system.
+    //freopen("output.txt", "w", stdout);
+    //scanf("%d", &N); // no meaning, but at least one input is required to the marking system.
 
-    setbuf(stdout, NULL);
+    //setbuf(stdout, NULL);
     int score = 1000000;
     memset(dummy2, 0, SIZE);
     for (int T = 0; T < 10; T++){

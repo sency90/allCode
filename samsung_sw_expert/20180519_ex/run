@@ -1,0 +1,4 @@
+g++ -c main.cpp -O2
+g++ -c user.cpp -O2
+g++ -o go main.o user.o -O2
+rm main.o user.o
