@@ -1,0 +1,3 @@
+g++ -c main.cpp -O2
+g++ -c solution.cpp -O2
+g++ -o main main.o solution.o -O2
