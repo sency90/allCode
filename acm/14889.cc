@@ -1,50 +1,47 @@
 #include <cstdio>
 #include <cstring>
-#include <vector>
 using namespace std;
-int n, v[21][21], sum;
-int mn = 0x3f3f3f3f;
-bool chk[21];
-int diff(int x, int y) {
-    return (x<y)?y-x:x-y;
-}
-void dfs(int x, int pick, int ans) {
-    if(pick == (n>>1)) {
-        mn = min(mn,diff(sum-ans, ans));
-        return;
+int v[21][21], n, diff;
+int l[11], r[11];
+inline int ABS(int x) { return (x<0)?-x:x; }
+inline int MIN(int x, int y) { return (x<y)?x:y; }
+int getans() {
+    int L=0, R=0, m=n/2;
+
+    for(int i=0; i<m; i++) {
+        for(int j=i+1; j<m; j++) {
+            L += v[l[i]][l[j]] + v[l[j]][l[i]];
+            R += v[r[i]][r[j]] + v[r[j]][r[i]];
+        }
     }
 
-    for(int y=x+1; y<n; y++) {
-        if(chk[y]) continue;
-        chk[y] = true;
-        dfs(x+1, pick+2, ans+v[x][y]);
-        chk[y] = false;
-        dfs(x+1, pick, ans);
+    return ABS(L-R);
+}
+int ans = 0x3f3f3f3f;
+void dfs(int x, int p, int bit) {
+    if(p==n/2) {
+        int lidx=0, ridx=0;
+        for(int i=0; i<n; i++) {
+            if(((bit>>i)&1) == 1) l[lidx++]=i;
+            else r[ridx++]=i;
+        }
+        ans = MIN(ans, getans());
+        return;
     }
+    else if(x>=n || p>=n/2) return;
+
+    dfs(x+1,p,bit);
+    dfs(x+1,p+1,bit|(1<<x));
 }
 int main() {
-    scanf("%d",&n);
+    scanf("%d", &n);
     for(int i=0; i<n; i++) {
         for(int j=0; j<n; j++) {
             scanf("%d", &v[i][j]);
-            if(i>j) {
-                v[j][i]+=v[i][j];
-            }
         }
     }
 
-    for(int i=0; i<n; i++) {
-        for(int j=1; j<=i; j++) {
-            printf("  ");
-        }
-        for(int j=i+1; j<n; j++) {
-            printf("%d ", v[i][j]);
-        }
-        puts("");
-    }
-
-    chk[0] = true;
-    dfs(0,0,0);
-    printf("%d", mn);
+    dfs(0, 0, 0);
+    printf("%d\n", ans);
     return 0;
 }

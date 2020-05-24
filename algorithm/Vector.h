@@ -5,22 +5,22 @@
 using namespace std;
 template <class T>
 class Vector{
-private:
-    int sz,idx;
-    T *arr;
+	private:
+		int sz,idx;
+		T *arr;
 
-private:
-    void expand(int size);
+	private:
+		void expand(int size);
 
-public:
-    Vector();
-    virtual ~Vector();
-    void clear();
-    void push_back(T x);
-    void pop_back() { idx--; }
-    void resize(int size);
-    int size() const;
-    T& operator[](int at) const;
+	public:
+		Vector();
+		virtual ~Vector();
+		void clear();
+		void push_back(T x);
+		void pop_back() { idx--; }
+		void resize(int size);
+		int size() const;
+		T& operator[](int at) const;
 };
 
 //public functions
@@ -55,9 +55,14 @@ void Vector<T>::resize(int size) {
 	//if(idx >= (1<<30)) exit(1); //error
 	if(idx >= sz) {
 		while(idx>=sz) sz<<=1;
-		do {
-			arr = (T*)realloc(arr, (sz)*sizeof(T));
-		} while(!arr);
+        T *tmp = NULL;
+        while(true) {
+			T *tmp = (T*)realloc(arr, (sz)*sizeof(T));
+            if(tmp != NULL) {
+                arr = tmp;
+                break;
+            }
+		}
 	}
 }
 
@@ -72,9 +77,13 @@ T& Vector<T>::operator[](int at) const {
 //private functions
 template <class T>
 void Vector<T>::expand(int size) {
-	do {
-		arr = (T*)realloc(arr, (size)*sizeof(T));
-	} while(!arr);
+    while(true) {
+        T *tmp = (T*)realloc(arr, (sz)*sizeof(T));
+        if(tmp != NULL) {
+            arr = tmp;
+            break;
+        }
+	}
 }
 
 #endif
