@@ -313,5 +313,4 @@ func findStockCode(company: String) -> Stock? {
 //print(mn, mx)
 
 let v = readLine()?.split{$0==" "}.map{Int($0)!}
-let a = v[0]!
 

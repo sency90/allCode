@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "MinHeap.push(_:):main.swift">
+      </ContextState>
+      <ContextState
+         contextName = "MinHeap.pop():main.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "idx">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "main:main.swift">
+      </ContextState>
+      <ContextState
+         contextName = "closure #5 in :main.swift">
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
