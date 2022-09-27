@@ -1,0 +1,32 @@
+#include <stdio.h>
+#include <cassert>
+typedef long long ll;
+int len;
+char str[202];
+int strlen(const char * s) {
+	int ret = 0;
+	while(s[ret]) ret++;
+	return ret;
+}
+//ex = term {'+'|'-', trem}
+ll term(int &);
+ll factor(int &);
+ll ex(int & idx) {
+	ll ret = term(idx);
+	while(idx<len) {
+		char sym = str[idx++];
+		if(sym == '+') ret += term(idx);
+		else if(sym == '-') ret -= term(idx);
+		else assert(false);
+	}
+	return ret;
+}
+//term = factor {'*'|'/', factor}
+//factor = (['+'|'-'], digit) | ( '(', ex, ')' )
+int main() {
+	scanf("%s", str);
+	len = strlen(str);
+	int idx = 0;
+	printf("%lld", ex(idx));
+	return 0;
+}

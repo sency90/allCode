@@ -1,1 +1,0 @@
-exec $JAVA_DIR/bin/java -cp "${PKG_DIR}/." <%= p('pipeline_ui.java_opts')%> -Dspring.config.location=${JOB_CONFIG} org.springframework.boot.loader.WarLauncher >>$LOG_DIR/$JOB_NAME.stdout.log 2>>$LOG_DIR/$JOB_NAME.stderr.log &

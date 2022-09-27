@@ -20,7 +20,7 @@ long long int: "long long int", unsigned long long int: "unsigned long long int"
 /***********************************************************/
 #if 0
 #include <stdio.h>
-int main(void) {
+int main() {
 	int si = -1;
 	unsigned int ui = 0xffffffff;
 
@@ -31,6 +31,8 @@ int main(void) {
 	printf("%d\n", ui);
 	printf("%u\n", ui);
 	printf("%#x\n", ui);
+
+    return 0;
 }
 #endif
 
@@ -117,6 +119,7 @@ int main(void) {
 #endif
 
 
+#if 0
 #include <stdio.h>
 int main() {
     unsigned char uc;
@@ -132,6 +135,7 @@ int main() {
     printf("%x %x\n", sc, uc);
     return 0;
 }
+#endif
 
 /***********************************************************/
 // [1-1-4] : signed short vs. unsigned short
@@ -2398,7 +2402,7 @@ int main(void)
 // [2-5-6] : 함수를 받고 함수를 리턴하는 함수
 /***********************************************************/
 
-#if 0
+#if 1
 
 #include <stdio.h> 
 #include <stdlib.h> 
@@ -2425,8 +2429,15 @@ int get_key(void)
 
 int (*fa[3])(int, int) = {add, sub, mul};
 
-op(     fp     )
-{
+#if 0
+typedef int (*F)(int,int);
+F op(int (*fp)(void)) {
+    return fa[fp()];
+}
+#endif
+int func() { return 0; }
+int (*g)() = func;
+int (*op(int (*fp)(void)))(int,int) {
     return fa[fp()];
 }
 
