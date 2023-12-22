@@ -1,86 +1,124 @@
-#define SIZE (1048576)
+//SCORE: 157
 typedef unsigned int uint;
+typedef unsigned short ushort;
+#define SIZE (1048576)
 
-const uint UINT_MSB = (1U<<30);
-const uint SHORT_MSB = (1U<<15);
-const uint SHORT_SZ = (1U<<16);
-#define Z 1024
-extern void hw_sort(short data[Z]);
+extern void hw_sort(short data[1024]);
+void merge_dsc(int s, int m, int e,ushort *v) {
+	ushort tmp[2048];
+	int i=m-1,j=e-1,k=s;
+	while(i>=0 && j>=m) {
+		if(v[i]>v[j])  tmp[k++] = v[i--];
+		else tmp[k++] = v[j--];
+	}
+	while(i>=0) tmp[k++] = v[i--];
+	while(j>=m) tmp[k++] = v[j--];
 
-uint msk(uint x) { return x&0xFFFFU; }
-uint sft(uint x) {return msk(x>>16); }
-void swap(uint *x, uint *y) {
-	uint t = *x;
-	*x = *y;
-	*y = t;
+	//assert(k==e);
+	for(i=s; i<e; i++) v[i]=tmp[i];
 }
-void mkroom(int s, int e, int sbit, int ebit, uint *cnt, uint *data) {
-	const uint mask = (1U<<(ebit-sbit))-1U;
 
-	for(int i=0; i<=mask; i++) cnt[i] = 0; //cnt배열 초기화
-	for(int i=s; i<e; i++) cnt[(data[i]>>sbit)&mask]++; //cnt배열로 counting
-	for(int i=1; i<=mask; i++) cnt[i] += cnt[i-1]; //cnt sum구하기
-	for(int i=e-1; i>=s; i--) {
-		if(data[i]&UINT_MSB) {
-			//원래대로 돌려놓는다.
-			data[i]^=UINT_MSB;
-		}
-		else {
-			while(true) {
-				int j = --cnt[((data[i] >> sbit) & mask)]+s;
-				if(i==j) break; //i자리에 와야하는 data[]가 온 경우
-								// data[i]는 data[j]가 있는 곳으로 가야 한다.
-								//그럼 data[j]와 data[i]를 swap하고
-								//다시 data[i]에 대해서 진행해보자.
-				swap(&data[i], &data[j]);
-				//근데 j가 자기 자리를 찾았으니 뭔가 표시해보자.
-				data[j] |= UINT_MSB;
-			}
-		}
+void merge_asc(int s, int m, int e, ushort *v) {
+	ushort tmp[2048];
+	int i=s,j=m,k=s;
+	while(i<m && j<e) {
+		if(v[i]<v[j])  tmp[k++] = v[i++];
+		else tmp[k++] = v[j++];
 	}
+	while(i<m) tmp[k++] = v[i++];
+	while(j<e) tmp[k++] = v[j++];
+
+	for(i=s; i<e; i++) v[i]=tmp[i];
 }
-void test(unsigned int data[SIZE]) {
-	bool chk[SHORT_SZ];
-	for(int i=0; i<SHORT_SZ; i++) chk[i] = false;
+
+template <typename T> void swap(T &x,T &y) { T tmp=x; x=y; y=tmp; }
+void test(uint data[SIZE]) {
+	const ushort M = 1U<<15;
+	ushort en[2048],chk[1<<16];
+	int en_i=0;
+
+	for(register int i=0; i<(1<<16); i++) chk[i]=0;
 	for(int i=0; i<SIZE; i++) {
-		chk[msk(data[i])] = chk[sft(data[i])] = true;
-	}
-	//order: 값을 넣으면 순서를 알 수 있다.
-	//val: 순서를 넣으면 값을 알 수 있다.
-	int order[SHORT_SZ] = {0, };
-	int val[2048] = {0, };
-	int no = 0;
-	for(int i=SHORT_SZ-1; i>=0; i--) {
-		if(chk[i]) {
-			order[i] = no;
-			val[no++] = i;
+		uint a = ((data[i] >> 16)&0xffff)^M;
+		uint b = (data[i] & 0xffff)^M;
+		if(!chk[a]) {
+			chk[a] = 1;
+			en[en_i++] = a;
+		}
+		if(!chk[b]) {
+			chk[b] = 1;
+			en[en_i++] = b;
 		}
 	}
 
-	//32bit->22bit
-	for(int i=0; i<SIZE; i++) {
-		int upper = order[sft(data[i])];
-		int lower = order[msk(data[i])];
-		data[i] = (upper<<11) | lower;
+	const ushort inf = 0xffffU;
+	for(int i=en_i; i<2048; i++) {
+		en[i]=inf^M;
 	}
 
-	uint cnt[1<<11];
-	const int intv_i = (1<<11);
-	mkroom(0,SIZE,11,22,cnt,data);
-	int s=0;
-	for(int i=1; i<SIZE; i++) {
-		if((data[s]>>11) != (data[i]>>11)) {
-			mkroom(s, i, 0,11,cnt,data);
-			s = i;
+	hw_sort((short*)en);
+	hw_sort((short*)en+1024);
+
+	for(int i=0; i<en_i; i++) {
+		en[i]^=M;
+	}
+
+	merge_dsc(0,1024, en_i, en);
+	for(int i=0; i<en_i; i++) {
+		//printf("[%4d] %04X\n", i, en[i]);
+		chk[en[i]] = i;
+	}
+
+	int tcnt=0;
+
+	int cnt[2048]={0,},cnt2[2049]={0,};
+	for(int i=0; i<SIZE; i++) {
+		uint a = ((data[i] >> 16)&0xffff);
+		uint b = (data[i] & 0xffff);
+
+		data[i] = ((((uint)chk[a])<<11) | (uint)chk[b]);
+		cnt[chk[a]]++;
+	}
+
+	for(int i=1; i<2048; i++) cnt[i]+=cnt[i-1];
+	for(int i=0; i<2048; i++) cnt2[i+1]=cnt[i];
+
+	const uint f = 1U<<30;
+	const ushort MASK = (1U<<11)-1;
+	uint x;
+	for(int i=0; i<SIZE; i++) {
+		while((data[i]&f) == 0) {
+			data[i]|=f;
+			ushort a = (data[i] >> 11)&MASK;
+			swap(data[--cnt[a]],data[i]);
 		}
 	}
-	mkroom(s,SIZE,0,11,cnt,data);
-	s=SIZE;
 
-	//복원
+
+	ushort tmp[2048];
+	for(int i=0; i<2048; i++) {
+		int len = cnt2[i+1]-cnt2[i];
+		if(len==0) break;
+		else if(len<=1024) {
+			int j=0; for(; j<len; j++) tmp[j]=data[cnt2[i]+j]&MASK;
+			for(; j<1024; j++) tmp[j] = inf^M;
+			hw_sort((short*)tmp);
+			for(j=0; j<len; j++) data[cnt2[i]+j] = (data[cnt2[i]+j]&0x3FF800U) | tmp[j];
+		}
+		else if(len<=2048) {
+			int j=0; for(; j<len; j++) tmp[j]=data[cnt2[i]+j]&MASK;
+			for(; j<2048; j++) tmp[j] = inf^M;
+			hw_sort((short*)tmp);
+			hw_sort((short*)tmp+1024);
+			merge_asc(0,1024,len,tmp);
+			for(j=0; j<len; j++) data[cnt2[i]+j] = (data[cnt2[i]+j]&0x3FF800U) | tmp[j];
+		}
+		//else {
+		//	printf("len:%d, i:%d\n",len,i);
+		//}
+	}
+
 	for(int i=0; i<SIZE; i++) {
-		uint upper = val[data[i]>>11];
-		uint lower = val[data[i]&0x7FF];
-		data[i] = (upper<<16) | lower;
+		data[i] = ((uint)en[(data[i]>>11)&MASK]<<16) | en[data[i]&MASK];
 	}
 }

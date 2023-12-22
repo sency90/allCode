@@ -1,9 +1,6 @@
 /// ***** main.cpp *****
 #include <stdio.h>
 #include <time.h>
-#include <algorithm>
-#include <functional>
-using namespace std;
 
 #define DATA_SIZE 1048576
 #define DIGIT_SIZE 2048
@@ -54,26 +51,20 @@ void hw_sort(short data[1024]) {
 
 int main() {
 	SEED = 5;
-	for (int TC = 0; TC < 10; TC++) {
+	int TestCase = 1; //=10;
+	for (int TC = 0; TC < TestCase; TC++) {
 		for (int i = 0; i < DIGIT_SIZE; i++) {
-			digit[i] = i; //myrand() % 65536;
+			digit[i] = myrand() % 65536;
 		}
 		for (int i = 0; i < DATA_SIZE; i++) {
-			int x = i%DIGIT_SIZE;//myrand() % DIGIT_SIZE;
-			int y = myrand()%DIGIT_SIZE;//myrand() % DIGIT_SIZE;
+			int x = myrand() % DIGIT_SIZE;
+			int y = myrand() % DIGIT_SIZE;
 			data[i] = user_data[i] = ((digit[x] << 16) | digit[y]);
 		}
 
 		clock_t start = clock();
 		test(user_data);
 		SCORE += clock() - start;
-
-		//sort(data, data+DATA_SIZE, greater<unsigned int>());
-		//printf("**data: ");
-		//for(int i=0; i<10; i++) {
-		//	printf("[%d]:0x%08X ", i, data[i]);
-		//}
-		//puts("");
 
 		for (int i = 0; i < DATA_SIZE - 1; i++) {
 			if (user_data[i] < user_data[i + 1]) {
