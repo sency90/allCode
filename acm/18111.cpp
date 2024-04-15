@@ -1,11 +1,17 @@
 #include <stdio.h>
+#include <algorithm>
+using namespace std;
+
 int v[501*501], sv[501*501], cnt[257];
 int min(int x, int y) { return x<y?x:y; }
 int max(int x, int y) { return x>y?x:y; }
 const int inf = 0x3f3f3f3f;
 int n,m;
 int main() {
-	//freopen("input.txt", "r", stdin);
+
+#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+#endif
 	int b,mn=inf,mx=0,i,j;
 	scanf("%d%d%d",&n,&m,&b);
 	int lim = n*m;
