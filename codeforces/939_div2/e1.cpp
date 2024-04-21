@@ -1,41 +1,73 @@
-#include <bits/stdc++.h>
+#include <cstdio>
 using namespace std;
-int a[200001];
+typedef long long ll;
+ll a[200005];
+int mem_i=1;
+bool check() {
+	for(int i=mem_i; i<=n; i++) {
+		if(a[i]&&a[i+1]&&a[i+2]&&a[i+3]) {
+			mem_i = i;
+			return true;
+		}
+	}
+	return false;
+}
+int cnt;
+bool ans[200005];
 int main() {
 	ios::sync_with_stdio(false); cin.tie(0);
 	int tc; cin >> tc;
 	while(tc--) {
 		int n; cin >> n;
-		for(int i=0; i<n; i++) {
+		for(int i=1; i<=n; i++) {
 			cin >> a[i];
 		}
-		a[n] = a[0];
-
-		int cnt=0;
-		while(true) {
-			bool do_more = false;
-			cnt=0;
-			int pa;
-			for(register int i=0; i<n; i++) {
-				if(a[i]==0) continue;
-				if(a[i+1]==0) {
-					cnt++;
-					continue;
+		if(n==2) {
+			a[n+1]=a[1];
+			while(true) {
+				for(int i=1; i<=n; i++) {
+					a[i+1] = max(0,a[i+1]-a[i]);
 				}
-				if(a[i]==0 || a[i+1]==0) continue;
-				pa = a[i+1];
-				a[i+1]-=a[i];
-				if(a[i+1]<0) a[i+1]=0;
-				do_more = true;
+				a[1]=a[n+1];
+				if(!a[1]||!a[2]) break;
 			}
-			a[0] = a[n];
-			if(!do_more) break;
+			for(int i=1; i<=n; i++) {
+				if(!a[i]&&a[i+1]) ans[i+1]=true, cnt++;
+			}
+			ans[1] = ans[n+1];
+		}
+		else if(n==3) {
+			a[n+1]=a[1];
+			while(true) {
+				for(int i=1; i<=n; i++) {
+					a[i+1] = max(0,a[i+1]-a[i]);
+				}
+				a[1]=a[n+1];
+				if(!a[1]||!a[2]||!a[3]) break;
+			}
+			for(int i=1; i<=n; i++) {
+				if(!a[i]&&a[i+1]) ans[i+1]=true, cnt++;
+			}
+			ans[1] = ans[n+1];
+		}
+		else {
+			a[n+1]=a[1];
+			a[n+2]=a[2];
+			a[n+3]=a[3];
+
+			while(true) {
+				for(int i=1; i<=n; i++) {
+					a[i+1] = max(0,a[i+1]-a[i]);
+				}
+			}
 		}
 		printf("%d\n", cnt);
-		for(register int i=0; i<n; i++) {
-			if(a[i]) printf("%d ", i+1);
+		for(int i=1; i<=n; i++) {
+			if(ans[i]) printf("%d ", i);
 		}
 		puts("");
+		memset(ans, false, sizeof(bool)*(n+4));
 	}
 	return 0;
 }
+
