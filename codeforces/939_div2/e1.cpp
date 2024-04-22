@@ -1,8 +1,11 @@
 #include <cstdio>
+#include <cstring>
+#include <algorithm>
+#include <iostream>
 using namespace std;
 typedef long long ll;
 ll a[200005];
-int mem_i=1;
+int mem_i=1, n;
 bool check() {
 	for(int i=mem_i; i<=n; i++) {
 		if(a[i]&&a[i+1]&&a[i+2]&&a[i+3]) {
@@ -18,7 +21,7 @@ int main() {
 	ios::sync_with_stdio(false); cin.tie(0);
 	int tc; cin >> tc;
 	while(tc--) {
-		int n; cin >> n;
+		cin >> n;
 		for(int i=1; i<=n; i++) {
 			cin >> a[i];
 		}
@@ -26,7 +29,7 @@ int main() {
 			a[n+1]=a[1];
 			while(true) {
 				for(int i=1; i<=n; i++) {
-					a[i+1] = max(0,a[i+1]-a[i]);
+					a[i+1] = max(0LL,a[i+1]-a[i]);
 				}
 				a[1]=a[n+1];
 				if(!a[1]||!a[2]) break;
@@ -40,7 +43,7 @@ int main() {
 			a[n+1]=a[1];
 			while(true) {
 				for(int i=1; i<=n; i++) {
-					a[i+1] = max(0,a[i+1]-a[i]);
+					a[i+1] = max(0LL,a[i+1]-a[i]);
 				}
 				a[1]=a[n+1];
 				if(!a[1]||!a[2]||!a[3]) break;
@@ -55,9 +58,27 @@ int main() {
 			a[n+2]=a[2];
 			a[n+3]=a[3];
 
-			while(true) {
+			while(check()) {
 				for(int i=1; i<=n; i++) {
-					a[i+1] = max(0,a[i+1]-a[i]);
+					a[i+1] = max(0LL,a[i+1]-a[i]);
+				}
+				a[1] = a[n+1];
+				printf("*");
+				for(int i=1; i<=n; i++) {
+					printf("%lld ", a[i]);
+				}
+				puts("");
+			}
+			for(int i=1; i<=n; i++) {
+				if(!a[i]&&a[i+1]&&a[i+3]) {
+					ans[i+1]=true, cnt++;
+					ll m = a[i+2]/a[i+1];
+					if(a[i+3] > m*a[i+2]-m*(m+1)/2*a[i+1]) {
+						ans[i+3]=true, cnt++;
+						i+=3;
+					}
+					else if(!a[i+2]) i++;
+					else if(!a[i+3]) i+=2;
 				}
 			}
 		}
@@ -67,6 +88,7 @@ int main() {
 		}
 		puts("");
 		memset(ans, false, sizeof(bool)*(n+4));
+		cnt=0;
 	}
 	return 0;
 }
