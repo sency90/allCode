@@ -4,7 +4,6 @@ int n, l, r;
 int v[51][51];
 int chk[51][51];
 int CHKVAL;
-int g[51][51];
 int dx[] = {1,-1,0,0};
 int dy[] = {0,0,1,-1};
 struct Info{
@@ -23,27 +22,24 @@ struct Coord{
 Coord co_list[2501];
 int co_N;
 inline int ABS(int x) { return x<0?-x:x; }
-Info dfs(int x, int y, int gno) {
+Info dfs(int x, int y) {
     chk[x][y] = CHKVAL;
-    g[x][y] = gno;
     Info ret(v[x][y], 1);
     co_list[co_N++] = {x,y};
     for(int i=0; i<4; i++) {
         int nx=x+dx[i];
         int ny=y+dy[i];
         if(nx<0||ny<0||nx>=n||ny>=n) continue;
-        int diff = ABS(v[nx][ny]-v[x][y]);
         if(chk[nx][ny] == CHKVAL) continue;
+        int diff = ABS(v[nx][ny]-v[x][y]);
         if (l <= diff && diff <= r) {
-            ret += dfs(x, y, gno);
+            ret += dfs(nx, ny);
         }
     }
     return ret;
 }
 int main() {
-    #ifdef _WIN32
-    freopen("C:\\Users\\User\\Documents\\allCode\\samsung_codingtest\\in", "r", stdin);
-    #endif
+    //freopen("in", "r", stdin);
     scanf("%d%d%d",&n,&l,&r);
     for(int i=0; i<n; i++) {
         for(int j=0; j<n; j++) {
@@ -53,7 +49,6 @@ int main() {
 
     int z=1;
     for(; z<=2000; z++) {
-        int gno=0;
         CHKVAL++;
         Info info;
         bool has_changed = false;
@@ -61,7 +56,7 @@ int main() {
             for(int j=0; j<n; j++) {
                 if(chk[i][j] == CHKVAL) continue;
                 co_N=0;
-                info = dfs(i,j,++gno);
+                info = dfs(i,j);
                 if (info.cnt > 1) {
                     has_changed = true;
                     int val = info.sum / info.cnt;
@@ -73,6 +68,6 @@ int main() {
         }
         if(!has_changed) break;
     }
-    printf("%d\n", z);
+    printf("%d\n", z-1);
     return 0;
 }
