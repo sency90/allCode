@@ -1,0 +1,41 @@
+{
+  "vim.autoindent": true,
+  "terminal.integrated.profiles.windows": {
+    "PowerShell": {
+      "source": "PowerShell",
+      "icon": "terminal-powershell"
+    },
+    "Command Prompt": {
+      "path": [
+        "${env:windir}\\Sysnative\\cmd.exe",
+        "${env:windir}\\System32\\cmd.exe"
+      ],
+      "args": [],
+      "icon": "terminal-cmd"
+    },
+    "Git Bash": {
+      "source": "Git Bash"
+    },
+    "Ubuntu-20.04 (WSL)": {
+      "path": "C:\\Windows\\System32\\wsl.exe",
+      "args": [
+        "-d",
+        "Ubuntu-20.04"
+      ]
+    }
+  },
+  "terminal.integrated.defaultProfile.windows": "Ubuntu-20.04 (WSL)",
+  "[cpp]": {
+    "editor.defaultFormatter": "xaver.clang-format",
+    "editor.formatOnSave": false,
+    "editor.formatOnPaste": false,
+    "editor.formatOnType": false,
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true, // Tab 대신 공백 사용
+    "editor.detectIndentation": false // 자동 추정 비활성화
+  },
+  "C_Cpp.formatting": "disabled", // cpptools 포맷 비활성화 (충돌 방지)
+  "editor.formatOnSave": false, // 저장 자동포맷 끔 (원하면 true로)
+  "clang-format.executable": "/usr/bin/clang-format-16",
+  "clang-format.style": "file" // .clang-format 사용 강제
+}
