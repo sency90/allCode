@@ -1,0 +1,20 @@
+# .clang-format (v16 OK)
+BasedOnStyle: LLVM
+IndentWidth: 4
+UseTab: Never
+ColumnLimit: 100
+
+# for/if/while 뒤 공백 제거 → for(
+SpaceBeforeParens: Never
+
+# 괄호 안쪽 공백 금지: (i = 0) 같은 걸 방지
+SpacesInParentheses: false
+SpacesInCStyleCastParentheses: false
+SpacesInSquareBrackets: false
+SpacesInAngles: false
+
+PointerAlignment: Left
+BreakBeforeBraces: Attach
+AllowShortFunctionsOnASingleLine: All
+AllowShortIfStatementsOnASingleLine: true
+AllowShortLoopsOnASingleLine: true
