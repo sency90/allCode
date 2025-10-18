@@ -1,0 +1,12 @@
+Codeforces 1515C - Phoenix and Towers
+Codeforces 1509D - Another Yet Another Task
+Codeforces 1506D - Zigzags
+Codeforces 1507D - Playlist
+Codeforces 1497C - Minimum Grid Path
+Codeforces 1494D - Dogeforces
+Codeforces 1493D - The Hidden Pair
+Codeforces 1485C - Floor and Mod
+Codeforces 1484D - Powerful Ksenia
+Codeforces 1480E - Nezzar and Binary String
+이 문제들은 C와 D 난이도에 속하는 문제로, 평판이 좋거나 재미있게 풀리는 문제들입니다.
+다양한 주제와 아이디어를 경험하며 PS 능력을 향상시키기에 좋을 것입니다.
