@@ -37,5 +37,8 @@
   "C_Cpp.formatting": "disabled", // cpptools 포맷 비활성화 (충돌 방지)
   "editor.formatOnSave": false, // 저장 자동포맷 끔 (원하면 true로)
   "clang-format.executable": "/usr/bin/clang-format-16",
-  "clang-format.style": "file" // .clang-format 사용 강제
+  "clang-format.style": "file",
+  "files.associations": {
+    "iostream": "cpp"
+  } // .clang-format 사용 강제
 }

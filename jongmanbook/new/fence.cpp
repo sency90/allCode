@@ -9,10 +9,10 @@ struct Info {
         else return h<rhs.h;
     }
 };
-vector<Info> st;
+vector<Info> storage;
 void Init() {
-    st.clear();
-    st.emplace_back(-1,0);
+    storage.clear();
+    storage.emplace_back(-1,0);
 }
 int h[20002];
 int ans[20002];
@@ -27,21 +27,21 @@ int main() {
             cin >> h[i];
         }
         for(int i=1; i<=N; i++) {
-            while(h[i] <= st.back().h) {
-                st.pop_back();
+            while(h[i] <= storage.back().h) {
+                storage.pop_back();
             }
-            ans[i] = (i-st.back().idx)*h[i];
-            st.emplace_back(h[i], i);
+            ans[i] = (i-storage.back().idx)*h[i];
+            storage.emplace_back(h[i], i);
         }
 
-        st.clear();
-        st.emplace_back(-1,N+1);
+        storage.clear();
+        storage.emplace_back(-1,N+1);
         for(int i=N; i>=1; i--) {
-            while(h[i] <= st.back().h) {
-                st.pop_back();
+            while(h[i] <= storage.back().h) {
+                storage.pop_back();
             }
-            ans[i] += (st.back().idx-i-1)*h[i];
-            st.emplace_back(h[i],i);
+            ans[i] += (storage.back().idx-i-1)*h[i];
+            storage.emplace_back(h[i],i);
         }
         int mx_ans = 0;
         for(int i=1; i<=N; i++) {
