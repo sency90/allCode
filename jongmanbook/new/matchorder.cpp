@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-using pii = pair<int, int>;
-vector<pii> russia, korea;
+vector<int> russia, korea;
 int main() {
     ios::sync_with_stdio(false); cin.tie(0);
     int tc; cin >> tc;
@@ -12,11 +11,11 @@ int main() {
         korea.clear();
         for(int i=0; i<n; i++) {
             cin >> x;
-            russia.emplace_back(x,i);
+            russia.push_back(x);
         }
         for(int i=0; i<n; i++) {
             cin >> x;
-            korea.emplace_back(x,n);
+            korea.push_back(x);
         }
 
         sort(russia.begin(), russia.end());
