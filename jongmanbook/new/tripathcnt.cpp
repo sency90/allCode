@@ -2,21 +2,21 @@
 using namespace std;
 vector<vector<int>> v;
 int n;
-struct Info{
+struct Hint{
     int mx, cnt;
-    Info() {}
-    Info(int mx, int cnt):mx(mx),cnt(cnt) {}
+    Hint() {}
+    Hint(int mx, int cnt):mx(mx),cnt(cnt) {}
 };
-Info info[101][101];
-Info f(int x, int y) {
-    if(y<0||y>=n) return Info(0,0);
-    if(x==n-1) return Info(v[x][y],1);
+Hint info[101][101];
+Hint f(int x, int y) {
+    if(y<0||y>=n) return Hint(0,0);
+    if(x==n-1) return Hint(v[x][y],1);
 
-    Info & ret = info[x][y];
+    Hint & ret = info[x][y];
     if(ret.mx) return ret;
 
-    Info lhs = f(x+1,y);
-    Info rhs = f(x+1,y+1);
+    Hint lhs = f(x+1,y);
+    Hint rhs = f(x+1,y+1);
     ret.mx = max(lhs.mx, rhs.mx) + v[x][y];
     if(lhs.mx > rhs.mx) ret.cnt=lhs.cnt;
     else if(lhs.mx < rhs.mx) ret.cnt=rhs.cnt;
@@ -38,7 +38,7 @@ int main() {
         }
 
         memset(info, 0, sizeof(info));
-        Info ans = f(0,0);
+        Hint ans = f(0,0);
         printf("%d\n", ans.cnt);
     }
     return 0;

@@ -2,17 +2,17 @@
 using namespace std;
 using ll = long long;
 int n;
-struct Info{
+struct Hint{
     int m,e,idx;
-    Info(){}
-    Info(int m, int e):m(m),e(e) {}
-    bool operator<(const Info & rhs) const {
+    Hint(){}
+    Hint(int m, int e):m(m),e(e) {}
+    bool operator<(const Hint & rhs) const {
         if(e==rhs.e) return m<rhs.m;
         else return e>rhs.e;
     }
 };
 ll ans;
-Info v[10001];
+Hint v[10001];
 int main() {
     ios::sync_with_stdio(false); cin.tie(0);
     int tc; cin >> tc;

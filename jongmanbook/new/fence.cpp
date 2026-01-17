@@ -1,15 +1,15 @@
 #include <bits/stdc++.h>
 using namespace std;
-struct Info {
+struct Hint {
     int h, idx;
-    Info() {}
-    Info(int h, int idx):h(h),idx(idx) {}
-    bool operator<(const Info & rhs) const {
+    Hint() {}
+    Hint(int h, int idx):h(h),idx(idx) {}
+    bool operator<(const Hint & rhs) const {
         if(h == rhs.h) return idx < rhs.idx;
         else return h<rhs.h;
     }
 };
-vector<Info> storage;
+vector<Hint> storage;
 void Init() {
     storage.clear();
     storage.emplace_back(-1,0);

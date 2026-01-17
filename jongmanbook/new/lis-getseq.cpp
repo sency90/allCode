@@ -2,15 +2,15 @@
 using namespace std;
 typedef pair<int,int> pii;
 vector<int> w;
-struct Info {
+struct Hint {
     int x,idx;
-    Info(){}
-    Info(int x, int idx):x(x),idx(idx) {}
-    bool operator<(const Info & rhs) const {
+    Hint(){}
+    Hint(int x, int idx):x(x),idx(idx) {}
+    bool operator<(const Hint & rhs) const {
         return x<rhs.x;
     }
 };
-vector<Info> v;
+vector<Hint> v;
 int p[501];
 void dfs(int idx) {
     if(idx<0) return;
@@ -31,13 +31,13 @@ int main() {
                 v.emplace_back(x,i);
             }
             else {
-                auto it = lower_bound(v.begin(), v.end(), Info(x,i));
+                auto it = lower_bound(v.begin(), v.end(), Hint(x,i));
                 if(it == v.end()) {
                     p[i] = v.back().idx;
                     v.emplace_back(x, i);
                 }
                 else {
-                    *it = Info(x,i);
+                    *it = Hint(x,i);
                     if(it != v.begin()) {
                         p[i] = (it-1)->idx;
                     }
