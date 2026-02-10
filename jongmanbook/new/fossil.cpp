@@ -119,6 +119,29 @@ void GetIntersection(int vi, int vj, int wi, int wj, vector<pdd> & cvh) {
         cvh.push_back(insec);
     }
 }
+double F(vector<pdd> & g, double x) {
+    static vector<double> ans;
+    ans.clear();
+    for(int i=0; i<g.size()-1; i++) {
+        if ((g[i].first <= x && x <= g[i + 1].first) ||
+            (g[i + 1].first <= x && x <= g[i].first)) {
+                if(fabs(g[i].first-g[i+1].first)<1e-8) { //==0
+                    ans.push_back(g[i].second);
+                    ans.push_back(g[i+1].second);
+                }
+                else if(fabs(g[i].second-g[i+1].second)<1e-8) {
+                    ans.push_back(g[i].second);
+                }
+                else {
+                    double a = (g[i].second - g[i + 1].second) / (g[i].first - g[i + 1].first);
+                    ans.push_back(a*(x-g[i].first)+g[i].second);
+                }
+        }
+    }
+    if(ans.empty()) return 0.0;
+    sort(ans.begin(), ans.end());
+    return ans.back() - ans[0];
+}
 int main() {
     ios::sync_with_stdio(false); cin.tie(0);
     int tc; cin>> tc;
@@ -170,11 +193,32 @@ int main() {
             for (int i = 0; i < widx.size(); i++) cvh.push_back(w[widx[i]]);
         }
 
+        //for(int i=0; i<cvh.size(); i++) {
+        //    printf("[%d] %.2lf %.2lf\n", i, cvh[i].first, cvh[i].second);
+        //}
+
         if(cvh.size()<=2) {
-            printf("%.8lf\n", 0);
+            printf("%.8lf\n", 0.0);
         }
         else {
+            double lo=101, hi=-1.0;
+            for (int i = 0; i < cvh.size(); i++) {
+                lo = min(lo, cvh[i].first);
+                hi = max(hi, cvh[i].first);
+            }
 
+            cvh.push_back(cvh[0]);
+            for(int z=0; z<100; z++) {
+                double lmid = (lo*2+hi)/3;
+                double rmid = (lo+hi*2)/3;
+
+                double lres = F(cvh, lmid);
+                double rres = F(cvh, rmid);
+                if(lres < rres) lo=lmid;
+                else hi=rmid;
+            }
+
+            printf("%.10lf\n", F(cvh, lo));
         }
     }
     
