@@ -165,10 +165,17 @@ int main() {
                 GetIntersection(i, i + 1, j, j + 1, cvh);
             }
         }
+        //for(int i=0; i<cvh.size(); i++) {
+        //    printf("(%.3lf, %.3lf)\n", cvh[i].first, cvh[i].second);
+        //}
+        //puts("");
         //한쪽 ConvexHull의 점이 다른 한쪽의 ConvexHull 안으로 들어가는 경우 cvh에 추가.
         GetIncCo(v, w, cvh);
         GetIncCo(w, v, cvh);
         SortByConvexHullOrder(cvh);
+        //for(int i=0; i<cvh.size(); i++) {
+        //    printf("(%.3lf, %.3lf)\n", cvh[i].first, cvh[i].second);
+        //}
 
         double ans = 0.0;
         if (cvh.size() > 2) { //ternary search

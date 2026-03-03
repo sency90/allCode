@@ -41,13 +41,17 @@ struct Vec{
         Vec rhs_unit = rhs.UnitVec();
         return rhs_unit * (this->Dot(rhs_unit));
     }
+
+    double Ccw(const Vec & rhs) const {
+        return this->Cross(rhs);
+    }
 };
 
 double Ccw(const Vec & lhs, const Vec & rhs) {
     return lhs.Cross(rhs);
 }
 double Ccw(const Vec & p, const Vec & a, const Vec & b) {
-    return Ccw(a-p,b-p);
+    return (a-p).Ccw(b-p);
 }
 
 struct LineSeg{ //선분
@@ -59,13 +63,13 @@ struct LineSeg{ //선분
         double r1 = p.Cross(a);
         double r2 = p.Cross(b);
         if(fabs(r1)<EPSILON && fabs(r2)<EPSILON) { // if(r1 == 0 && r2 == 0) -> 모두 하나의 직선 위에 있다.
-            return HasParallelSeg(rhs);
+            return HasCollinearOverlap(rhs);
         }
         else {
             return r1*r2<=0.0;
         }
     }
-    bool HasParallelSeg(const LineSeg & rhs) const {
+    bool HasCollinearOverlap(const LineSeg & rhs) const {
         LineSeg l = *this;
         LineSeg r = rhs;
         if(l.v[1] < l.v[0]) std::swap(l.v[0], l.v[1]);
@@ -74,15 +78,15 @@ struct LineSeg{ //선분
         if(l.v[1]<r.v[0] || r.v[1]<l.v[0]) return false;
         else return true;
     }
-    shared_ptr<Vec> GetIntersectionVec(const LineSeg & rhs) const {
-        if(!HasIntersection(rhs)) return nullptr;
+    Vec GetIntersectionVec(const LineSeg & rhs) const {
+        assert(HasIntersection(rhs));
 
         Vec a = rhs.v[1]-rhs.v[0];
         Vec b = rhs.v[0]-v[0];
         Vec c = v[1]-v[0];
 
         double t = b.Cross(a) / c.Cross(a);
-        return make_shared<Vec>(c*t + v[0]);
+        return Vec(c*t + v[0]);
     }
 };
 
